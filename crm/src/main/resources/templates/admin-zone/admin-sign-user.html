@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form action="#" th:action="@{/admin/sign-new-user}" th:object="${user}" method="post">
+    <ul>
+        <li>
+    <label for="firstName">First name</label>
+    <input type="text" th:field="*{firstName}" id="firstName" placeholder="First name">
+    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </li>
+
+        <li>
+    <label for="lastName">Last name</label>
+    <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last name">
+    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </li>
+
+        <li>
+    <label for="nickname">Nickname</label>
+    <input type="text" th:field="*{nickname}" id="nickname" placeholder="Nickname">
+    <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span>
+        </li>
+
+        <li>
+    <label for="email">Email</label>
+    <input type="text" th:field="*{email}" id="email" placeholder="Email">
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </li>
+
+        <li>
+    <label for="password">Password</label>
+    <input type="password" th:field="*{password}" id="password" placeholder="Password">
+    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </li>
+
+        <li>
+    <label for="position">Position</label>
+    <input type="text" th:field="*{position}" id="position" placeholder="Position">
+    <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+        </li>
+
+        <li>
+    <label for="mobilePhoneNumber">Mobile phone number</label>
+    <input type="text" th:field="*{mobilePhoneNumber}" id="mobilePhoneNumber" placeholder="Mobile phone number">
+    <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></span>
+        </li>
+
+        <li>
+    <label for="internalPhoneNumber">Internal phone number</label>
+    <input type="text" th:field="*{internalPhoneNumber}" id="internalPhoneNumber" placeholder="Internal phone number">
+    <span th:if="${#fields.hasErrors('internalPhoneNumber')}" th:errors="*{internalPhoneNumber}"></span>
+        </li>
+
+        <li>
+            <label>Departments</label>
+            <select th:field="*{department}">
+                <option th:each="d : ${departmentList}" th:value="${d.id}" th:text="${d.name}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></span>
+        </li>
+    </ul>
+    <input type="submit">submit</input>
+</form>
+</body>
+</html>

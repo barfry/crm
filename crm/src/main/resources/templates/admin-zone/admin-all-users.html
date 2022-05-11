@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<header>
+<div th:replace="admin-zone/fragments/header :: header">
+</div>
+</header>
+
+<p><a href="/admin/sign-new-user">Sign new user</a> </p>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">Nickname</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Mobile phone number</th>
+        <th scope="col">Internal phone number</th>
+        <th scope="col">Departments</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Enabled</th>
+        <th scope="col">Functions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.id}" />
+        <td th:text="${user.firstName}" />
+        <td th:text="${user.lastName}" />
+        <td th:text="${user.nickname}" />
+        <td th:text="${user.email}" />
+        <td th:text="${user.mobilePhoneNumber}" />
+        <td th:text="${user.internalPhoneNumber}" />
+        <td th:text="${user.department}" />
+        <td th:text="${user.roles}" />
+        <td th:text="${user.enabled}" />
+        <td>
+            <form th:action="@{/admin/remove-user}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Delete" class="btn btn-danger"
+                       th:data-confirm-delete="|Please confirm removal of the user ${user.firstName} ${user.lastName} ${user.email}|"
+                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"/>
+            </form>
+            <form th:action="@{/admin/edit-user}" method="get">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Edit" class="btn btn-danger">
+            </form>
+            <div th:if="${!user.roles.contains(admin)}">
+            <form th:action="@{/admin/grant-admin-role}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Grant ADMIN" class="btn btn-danger"
+                       th:data-confirm-delete="|Please confirm granting ADMIN role to the user ${user.firstName} ${user.lastName} ${user.email}|"
+                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"/>
+            </form>
+            </div>
+            <div th:if="${user.roles.contains(admin)}">
+            <form th:action="@{/admin/revoke-admin-role}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Revoke ADMIN" class="btn btn-danger"
+                       th:data-confirm-delete="|Please confirm revoking ADMIN role from the user ${user.firstName} ${user.lastName} ${user.email}|"
+                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"/>
+            </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">Nickname</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Mobile phone number</th>
+        <th scope="col">Internal phone number</th>
+        <th scope="col">Departments</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Enabled</th>
+        <th scope="col">Functions</th>
+    </tr>
+    </tfoot>
+</table>
+</body>
+</html>
