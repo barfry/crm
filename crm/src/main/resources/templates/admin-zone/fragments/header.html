@@ -9,6 +9,7 @@
 <div th:fragment="header">
     <div sec:authorize="hasAuthority('ADMIN')">
     <ul class="user-menu">
+        <li><a href="/user-zone">Home</a></li>
         <li><a href="/admin/users">Users</a> </li>
         <li><a href="">Roles</a> </li>
         <li><a href="">Privileges</a> </li>

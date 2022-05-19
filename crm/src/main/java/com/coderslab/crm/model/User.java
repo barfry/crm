@@ -39,6 +39,7 @@ public class User implements UserDetails {
     @Length(message = "This field should contain 3 characters")
     private String nickname;
 
+    //Add duplicate error validation
     @NotNull
     @NotBlank(message = "This field can't be empty")
     @Email(message = "Please enter proper e-mail format")

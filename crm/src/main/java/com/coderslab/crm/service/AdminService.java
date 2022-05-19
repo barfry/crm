@@ -54,10 +54,6 @@ public class AdminService {
         userRepository.save(user);
     }
 
-    public List<User> getUsersByDepartment(String department){
-        return userRepository.getUsersByDepartment(department);
-    }
-
     public void revokeAdminRole(Long id){
         User user = getUserById(id);
         roleService.removeAdminRole(user);
@@ -66,5 +62,61 @@ public class AdminService {
 
     public long countAdmins(){
         return userRepository.countByRoles_Name("ADMIN");
+    }
+
+    public void disableUser(Long id){
+        User user = getUserById(id);
+        user.setEnabled(false);
+        userRepository.save(user);
+    }
+
+    public void enableUser(Long id){
+        User user = getUserById(id);
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    public List<User> getUsersByFirstName(String firstName){
+        return userRepository.findByFirstNameContains(firstName);
+    }
+
+    public List<User> getUsersByLastName(String lastName){
+        return userRepository.findByLastNameContains(lastName);
+    }
+
+    public List<User> getUsersByNickname(String nickname){
+        return userRepository.findByNicknameContains(nickname);
+    }
+
+    public List<User> getUsersByEmail(String email){
+        return userRepository.findByEmailContains(email);
+    }
+
+    public List<User> getUsersByMobile(String mobilePhoneNumber){
+        return userRepository.findByMobilePhoneNumberContains(mobilePhoneNumber);
+    }
+
+    public List<User> getUsersByInternal(String internalPhoneNumber){
+        return userRepository.findByInternalPhoneNumberContains(internalPhoneNumber);
+    }
+
+    public List<User> getUsersByDepartment(String department){
+        return  userRepository.findByDepartment_NameContains(department);
+    }
+
+    public List<User> getUsersByPosition(String position){
+        return userRepository.findByPositionContains(position);
+    }
+
+    public List<User> getUsersByRole(String role){
+        return userRepository.findByRoles_NameContains(role);
+    }
+
+    public List<User> getUsersByEnabled(Boolean enabled){
+        return  userRepository.findByEnabledIs(enabled);
+    }
+
+    public List<User> getUsersByMultiSearch(String firstName, String lastName, String nickname, String email, String mobilePhoneNumber, String internalPhoneNumber, String department, String position, String role, Boolean enabled){
+        return userRepository.findByFirstNameContainsAndLastNameContainsAndNicknameContainsAndEmailContainsAndMobilePhoneNumberContainsAndInternalPhoneNumberContainsAndDepartment_NameContainsAndPositionContainsAndRoles_NameContainsAndEnabledIs(firstName, lastName, nickname, email, mobilePhoneNumber, internalPhoneNumber, department, position, role, enabled);
     }
 }
