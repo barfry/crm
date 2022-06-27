@@ -72,6 +72,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role", joinColumns =
         @JoinColumn(name = "user_id"), inverseJoinColumns =
             @JoinColumn(name = "role_id"))
+    @OrderBy("name ASC")
     private Set<Role> roles;
 
     private Boolean enabled = true;

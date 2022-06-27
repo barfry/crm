@@ -1,33 +1,40 @@
 package com.coderslab.crm.controller;
 
+import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.User;
+import com.coderslab.crm.repository.UserRepository;
 import com.coderslab.crm.service.AdminService;
 import com.coderslab.crm.service.DepartmentService;
 import com.coderslab.crm.service.RoleService;
 import com.coderslab.crm.validation.OnPersist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
+@SessionAttributes("userFilter")
 public class AdminController {
 
     @Autowired
     DepartmentService departmentService;
     AdminService adminService;
     RoleService roleService;
+    UserRepository userRepository;
 
-
-    public AdminController(DepartmentService departmentService, AdminService adminService, RoleService roleService) {
+    public AdminController(DepartmentService departmentService, AdminService adminService, RoleService roleService, UserRepository userRepository) {
         this.departmentService = departmentService;
         this.adminService = adminService;
         this.roleService = roleService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -37,10 +44,35 @@ public class AdminController {
 
     @GetMapping("/users")
     public String showUsers(Model model){
-        model.addAttribute("users",adminService.getAllUsers());
+        UserFilter userFilter = new UserFilter();
+        model.addAttribute("userFilter", userFilter);
+        return showUsersPage(userFilter,1,"id","asc", model);
+    }
+
+    @GetMapping("/users/page/{pageNo}")
+    public String showUsersPage(@ModelAttribute UserFilter userFilter, @PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir,
+                                Model model) {
+        int pageSize = 5;
+
+        Page < User > page = adminService.findUsersBySearchWithPaginationAndSorting(pageNo, pageSize, sortField, sortDir, userFilter);
+        List < User > listUsers = page.getContent();
+
+        model.addAttribute("userFilter", userFilter);
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("users",listUsers);
         model.addAttribute("admin", roleService.getAdminRole());
         return "admin-zone/admin-all-users";
     }
+
 
     @GetMapping("/sign-new-user")
     public String showSignUpForm(User user, Model model) {
@@ -65,7 +97,7 @@ public class AdminController {
     }
 
     @GetMapping("/edit-user")
-    public String initEditUser(@RequestParam Long id, Model model){
+    public String initEditUser(@RequestParam(value = "id") Long id, Model model){
         model.addAttribute("user", adminService.getUserById(id));
         model.addAttribute("departmentList", departmentService.getAllDepartments());
         return "admin-zone/admin-edit-user";
@@ -110,83 +142,6 @@ public class AdminController {
     public String enableUser(@RequestParam Long id){
         adminService.enableUser(id);
         return "redirect:/admin/users";
-    }
-
-    @GetMapping("/search-users-by-firstname")
-    public String searchUsersByFirstName(@RequestParam String firstName, Model model){
-        model.addAttribute("users", adminService.getUsersByFirstName(firstName));
-        model.addAttribute("admin", roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-lastname")
-    public String searchUsersByLastName(@RequestParam String lastName, Model model){
-        model.addAttribute("users",adminService.getUsersByLastName(lastName));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-nickname")
-    public String searchUsersByNickname(@RequestParam String nickname, Model model){
-        model.addAttribute("users", adminService.getUsersByNickname(nickname));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-email")
-    public String searchUsersByEmail(@RequestParam String email, Model model){
-        model.addAttribute("users", adminService.getUsersByEmail(email));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-mobile")
-    public String searchUsersByMobilePhoneNumber(@RequestParam String mobilePhoneNumber, Model model){
-        model.addAttribute("users", adminService.getUsersByMobile(mobilePhoneNumber));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-internal")
-    public String searchUsersByInternalPhoneNumber(@RequestParam String internalPhoneNumber, Model model){
-        model.addAttribute("users", adminService.getUsersByInternal(internalPhoneNumber));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-position")
-    public String searchUsersByPosition(@RequestParam String position, Model model){
-        model.addAttribute("users", adminService.getUsersByPosition(position));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-department")
-    public String searchUsersByDepartment(@RequestParam String department, Model model){
-        model.addAttribute("users", adminService.getUsersByDepartment(department));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-role")
-    public String searchUsersByRole(@RequestParam String role, Model model){
-        model.addAttribute("users", adminService.getUsersByRole(role));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/search-users-by-enabled")
-    public String searchUsersByEnabled(@RequestParam Boolean enabled, Model model){
-        model.addAttribute("users", adminService.getUsersByEnabled(enabled));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
-    }
-
-    @GetMapping("/multi-search")
-    public String searchUsersByAll(@RequestParam String firstName, @RequestParam String lastname, @RequestParam String nickname, @RequestParam String email, @RequestParam String mobilePhoneNumber, @RequestParam String internalPhoneNumber, @RequestParam String department, @RequestParam String position, @RequestParam String role, @RequestParam Boolean enabled, Model model){
-        model.addAttribute("users",adminService.getUsersByMultiSearch(firstName,lastname,nickname,email,mobilePhoneNumber,internalPhoneNumber,department,position,role,enabled));
-        model.addAttribute("admin",roleService.getAdminRole());
-        return "admin-zone/admin-all-users";
     }
 
 }
