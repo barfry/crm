@@ -15,63 +15,82 @@
     <p style="color:red">Unable to revoke ADMIN role, there must be at least 1 ADMIN</p>
 </div>
 
+
 <p><a href="/admin/sign-new-user">Sign new user</a> </p>
 <table class="table table-sm table-hover table-dark table-bordered text-center">
     <thead>
     <tr>
-        <th scope="col">Id</th>
-        <th scope="col">First name</th>
-        <th scope="col">Last name</th>
-        <th scope="col">Nickname</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Mobile phone number</th>
-        <th scope="col">Internal phone number</th>
-        <th scope="col">Position</th>
-        <th scope="col">Departments</th>
-        <th scope="col">Roles</th>
-        <th scope="col">Enabled</th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}">First name</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}">Last name</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=nickname&sortDir=' + ${reverseSortDir}}">Nickname</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">E-mail</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=mobilePhoneNumber&sortDir=' + ${reverseSortDir}}">Mobile phone number</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=internalPhoneNumber&sortDir=' + ${reverseSortDir}}">Internal phone number</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=position&sortDir=' + ${reverseSortDir}}">Position</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=department&sortDir=' + ${reverseSortDir}}">Department</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=roles&sortDir=' + ${reverseSortDir}}">Roles</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${reverseSortDir}}">Enabled</a>
+        </th>
         <th scope="col">Functions</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <th scope="col">Search by:</th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-firstname}" method="get">
-            <input type="text" name="firstName" th:value="${firstName}" placeholder="First name" size="15">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-lastname}" method="get">
-            <input type="text" name="lastName" th:value="${lastName}" placeholder="Last name" size="15">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-nickname}" method="get">
-            <input type="text" name="nickname" th:value="${nickname}" placeholder="Nickname" size="3">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-email}" method="get">
-            <input type="text" name="email" th:value="${email}" placeholder="E-mail" size="15">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-mobile}" method="get">
-            <input type="text" name="mobilePhoneNumber" th:value="${mobilePhoneNumber}" placeholder="Mobile phone number" size="12">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-internal}" method="get">
-            <input type="text" name="internalPhoneNumber" th:value="${internalPhoneNumber}" placeholder="Internal phone number" size="12">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-position}" method="get">
-            <input type="text" name="position" th:value="${position}" placeholder="Position" size="25">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-department}" method="get">
-            <input type="text" name="department" th:value="${department}" placeholder="Department" size="15">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-role}" method="get">
-            <input type="text" name="role" th:value="${role}" placeholder="Role" size="15">
-        </form></th>
-        <th scope="col"><form th:action="@{/admin/search-users-by-enabled}" method="get">
-            <select>
-                <option th:value="${''}">all</option>
-                <option th:value="${true}">true</option>
-                <option th:value="${false}">false</option>
-            </select>
-            <input type="submit">
-        </form></th>
-        <th scope="col"></th>
+        <form action="#" th:action="@{/admin/users/page/1}" method="get" th:object="${userFilter}">
+        <th scope="col">Search:</th>
+        <th scope="col">
+            <input type="text" name="firstName" th:value="*{firstName}" placeholder="First name" size="15">
+        </th>
+        <th scope="col">
+            <input type="text" name="lastName" th:value="*{lastName}" placeholder="Last name" size="15">
+        </th>
+        <th scope="col">
+            <input type="text" name="nickname" th:value="*{nickname}" placeholder="Nickname" size="3">
+        </th>
+        <th scope="col">
+            <input type="text" name="email" th:value="*{email}" placeholder="E-mail" size="15">
+        </th>
+        <th scope="col">
+            <input type="text" name="mobilePhoneNumber" th:value="*{mobilePhoneNumber}" placeholder="Mobile phone number" size="12">
+        </th>
+        <th scope="col">
+            <input type="text" name="internalPhoneNumber" th:value="*{internalPhoneNumber}" placeholder="Internal phone number" size="12">
+        </th>
+        <th scope="col">
+            <input type="text" name="position" th:value="*{position}" placeholder="Position" size="25">
+        </th>
+        <th scope="col">
+            <input type="text" name="departmentName" th:value="*{departmentName}" placeholder="Department" size="15">
+        </th>
+        <th scope="col">
+            <input type="text" name="roleName" th:value="*{roleName}" placeholder="Role" size="15">
+        </th>
+        <th scope="col">
+        </th>
+        <th scope="col"><input type="submit" class="btn btn-danger" value="Search"></th>
+        </form>
     </tr>
     <tr th:each="user: ${users}">
         <td th:text="${user.id}" />
@@ -150,5 +169,27 @@
     </tr>
     </tfoot>
 </table>
+<div th:if="${totalPages > 1}">
+    <div class="row col-sm-10">
+        <div class="col-sm-2">
+            Total Rows: [[${totalItems}]]
+        </div>
+        <div class="col-sm-1">
+                    <span th:if="${currentPage != i}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+      <a th:if="${currentPage != i}" th:href="@{'/admin/users/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                    </span>
+        </div>
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/users/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/users/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+    </div>
+</div>
 </body>
 </html>

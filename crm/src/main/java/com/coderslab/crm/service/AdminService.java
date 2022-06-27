@@ -1,13 +1,22 @@
 package com.coderslab.crm.service;
 
+import com.coderslab.crm.filter.UserFilter;
+import com.coderslab.crm.model.Department;
+import com.coderslab.crm.model.Role;
 import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.UserRepository;
+import com.coderslab.crm.specification.SearchCriteria;
+import com.coderslab.crm.specification.UserSpecification;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,47 +85,24 @@ public class AdminService {
         userRepository.save(user);
     }
 
-    public List<User> getUsersByFirstName(String firstName){
-        return userRepository.findByFirstNameContains(firstName);
-    }
+    public Page<User> findUsersBySearchWithPaginationAndSorting(int pageNo, int pageSize, String sortField, String sortDirection, UserFilter userFilter){
 
-    public List<User> getUsersByLastName(String lastName){
-        return userRepository.findByLastNameContains(lastName);
-    }
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
 
-    public List<User> getUsersByNickname(String nickname){
-        return userRepository.findByNicknameContains(nickname);
-    }
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
 
-    public List<User> getUsersByEmail(String email){
-        return userRepository.findByEmailContains(email);
-    }
+        UserSpecification spec1 = new UserSpecification(new SearchCriteria("firstName",":",userFilter.getFirstName()));
+        UserSpecification spec2 = new UserSpecification(new SearchCriteria("lastName",":",userFilter.getLastName()));
+        UserSpecification spec3 = new UserSpecification(new SearchCriteria("nickname",":",userFilter.getNickname()));
+        UserSpecification spec4 = new UserSpecification(new SearchCriteria("email",":",userFilter.getEmail()));
+        UserSpecification spec5 = new UserSpecification(new SearchCriteria("mobilePhoneNumber",":",userFilter.getMobilePhoneNumber()));
+        UserSpecification spec6 = new UserSpecification(new SearchCriteria("internalPhoneNumber",":",userFilter.getInternalPhoneNumber()));
+        UserSpecification spec7 = new UserSpecification(new SearchCriteria("position",":",userFilter.getPosition()));
+        UserSpecification spec8 = new UserSpecification(new SearchCriteria("department",":", userFilter.getDepartmentName()));
+        UserSpecification spec9 = new UserSpecification(new SearchCriteria("roles",":", userFilter.getRoleName()));
 
-    public List<User> getUsersByMobile(String mobilePhoneNumber){
-        return userRepository.findByMobilePhoneNumberContains(mobilePhoneNumber);
-    }
-
-    public List<User> getUsersByInternal(String internalPhoneNumber){
-        return userRepository.findByInternalPhoneNumberContains(internalPhoneNumber);
-    }
-
-    public List<User> getUsersByDepartment(String department){
-        return  userRepository.findByDepartment_NameContains(department);
-    }
-
-    public List<User> getUsersByPosition(String position){
-        return userRepository.findByPositionContains(position);
-    }
-
-    public List<User> getUsersByRole(String role){
-        return userRepository.findByRoles_NameContains(role);
-    }
-
-    public List<User> getUsersByEnabled(Boolean enabled){
-        return  userRepository.findByEnabledIs(enabled);
-    }
-
-    public List<User> getUsersByMultiSearch(String firstName, String lastName, String nickname, String email, String mobilePhoneNumber, String internalPhoneNumber, String department, String position, String role, Boolean enabled){
-        return userRepository.findByFirstNameContainsAndLastNameContainsAndNicknameContainsAndEmailContainsAndMobilePhoneNumberContainsAndInternalPhoneNumberContainsAndDepartment_NameContainsAndPositionContainsAndRoles_NameContainsAndEnabledIs(firstName, lastName, nickname, email, mobilePhoneNumber, internalPhoneNumber, department, position, role, enabled);
+        return this.userRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7).and(spec8).and(spec9), pageable);
     }
 }
+
