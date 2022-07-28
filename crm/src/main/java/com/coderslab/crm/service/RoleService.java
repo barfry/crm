@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class RoleService {
@@ -35,4 +36,9 @@ public class RoleService {
     public void removeAdminRole(User user){
         user.getRoles().remove(roleRepository.findById(2L).get());
     }
+
+    public List<Role> getAllRoles(){
+        return roleRepository.findAll();
+    }
+
 }

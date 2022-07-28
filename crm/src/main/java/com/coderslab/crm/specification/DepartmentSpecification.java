@@ -1,6 +1,7 @@
 package com.coderslab.crm.specification;
 
 import com.coderslab.crm.model.Department;
+import com.coderslab.crm.model.Privilege;
 import com.coderslab.crm.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -17,19 +18,12 @@ public class DepartmentSpecification implements Specification<Department> {
     public Predicate toPredicate
             (Root<Department> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-        if (criteria.getOperation().equalsIgnoreCase(">")) {
-            return builder.greaterThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString());
-        }
-        else if (criteria.getOperation().equalsIgnoreCase("<")) {
-            return builder.lessThanOrEqualTo(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString());
-        }
-        else if (criteria.getOperation().equalsIgnoreCase(":")) {
+        if (criteria.getOperation().equalsIgnoreCase(":")) {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return builder.like(
                         root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
-            } else {
+            }
+            else {
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         }

@@ -32,6 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     long countByRoles_Name(String name);
 
+    long countByDepartment_Id(Long id);
 
+
+    @Query(value = "SELECT u FROM User u JOIN Role r WHERE r.id = ?1")
+    List<User> getUsersByRoleId(Long id);
 
 }

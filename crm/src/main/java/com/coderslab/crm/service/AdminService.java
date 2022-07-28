@@ -1,5 +1,6 @@
 package com.coderslab.crm.service;
 
+import com.coderslab.crm.filter.DepartmentFilter;
 import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.Department;
 import com.coderslab.crm.model.Role;
@@ -15,6 +16,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,5 +110,30 @@ public class AdminService {
 
         return this.userRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7).and(spec8).and(spec9), pageable);
     }
+
+    public long countUsersInDepartment(Long id){
+        return userRepository.countByDepartment_Id(id);
+    }
+
+    public Page<User> findUsersWithUserRoleBySearchWithPaginationAndSorting(int pageNo, int pageSize, String sortField, String sortDirection, UserFilter userFilter){
+
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+
+        UserSpecification spec1 = new UserSpecification(new SearchCriteria("firstName",":",userFilter.getFirstName()));
+        UserSpecification spec2 = new UserSpecification(new SearchCriteria("lastName",":",userFilter.getLastName()));
+        UserSpecification spec3 = new UserSpecification(new SearchCriteria("nickname",":",userFilter.getNickname()));
+        UserSpecification spec4 = new UserSpecification(new SearchCriteria("email",":",userFilter.getEmail()));
+        UserSpecification spec5 = new UserSpecification(new SearchCriteria("mobilePhoneNumber",":",userFilter.getMobilePhoneNumber()));
+        UserSpecification spec6 = new UserSpecification(new SearchCriteria("internalPhoneNumber",":",userFilter.getInternalPhoneNumber()));
+        UserSpecification spec7 = new UserSpecification(new SearchCriteria("position",":",userFilter.getPosition()));
+        UserSpecification spec8 = new UserSpecification(new SearchCriteria("department",":", userFilter.getDepartmentName()));
+        UserSpecification spec9 = new UserSpecification(new SearchCriteria("roles",":", "user"));
+
+        return this.userRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7).and(spec8).and(spec9), pageable);
+    }
+
 }
 

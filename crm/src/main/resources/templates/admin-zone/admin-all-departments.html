@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Departments</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <div th:replace="admin-zone/fragments/header :: header">
+    </div>
+</header>
+<div th:if="${error}">
+    <p style="color:red" th:text="'Cannot delete the department ' + ${department.name} + ', You need to remove the users asigned to the department first'"></p>
+</div>
+
+<p><a href="/admin/create-new-department">Create new department</a> </p>
+<table class="table table-sm table-hover table-dark table-bordered text-center">
+    <thead>
+    <tr>
+        <th scope="col">
+            <a th:href="@{'/admin/departments/page/' + ${currentPage} +'?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/departments/page/' + ${currentPage} +'?sortField=name&sortDir=' + ${reverseSortDir}}">Name</a>
+        </th>
+        <th scope="col">
+            <a th:href="@{'/admin/departments/page/' + ${currentPage} +'?sortField=description&sortDir=' + ${reverseSortDir}}">Description</a>
+        </th>
+        <th scope="col">
+            <a href="">Privilege</a>
+        </th>
+        <th scope="col">
+            Functions
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <form action="#" th:action="@{/admin/departments/page/1}" method="get" th:object="${departmentFilter}">
+        <th scope="col">
+            Search:
+        </th>
+        <th scope="col">
+            <input type="text" name="name" th:value="*{name}" placeholder="Name" size="15">
+        </th>
+        <th scope="col">
+            <input type="text" name="description" th:value="*{description}" placeholder="Description" size="30">
+        </th>
+        <th scope="col">
+
+        </th>
+        <th scope="col">
+            <input type="submit" class="btn btn-danger" value="Search">
+        </th>
+        </form>
+    </tr>
+    <tr th:each="department: ${departments}">
+        <td th:text="${department.id}"/>
+        <td th:text="${department.name}"/>
+        <td th:text="${department.description}"/>
+        <td>
+            <ul th:each="privilege: ${department.privilege}" class="list-unstyled">
+                <li th:text="|Sales : ${privilege.sales}|"></li>
+                <li th:text="|Service : ${privilege.service}|"></li>
+                <li th:text="|Accountancy : ${privilege.accountancy}|"></li>
+            </ul>
+        </td>
+        <td>
+            <form th:action="@{/admin/remove-department}" method="post">
+                <input type="hidden" name="id" th:value="${department.id}"/>
+                <input type="submit" value="Delete" class="btn btn-danger"
+                       th:data-confirm-delete="|Please confirm removal of the department${department.name}|"
+                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"/>
+            </form>
+            <form th:action="@{/admin/edit-department}" method="get">
+                <input type="hidden" name="id" th:value="${department.id}"/>
+                <input type="submit" value="Edit" class="btn btn-danger">
+            </form>
+            <form th:action="@{'/admin/show-users-by-department/' + ${department.name}}" method="get">
+                <input type="hidden" name="id" th:value="${department.id}"/>
+                <input type="submit" th:value="'Show users in ' + ${department.name} + ' department'" class="btn btn-danger">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th scope="col">
+            <a href="">Id</a>
+        </th>
+        <th scope="col">
+            <a href="">Name</a>
+        </th>
+        <th scope="col">
+            <a href="">Description</a>
+        </th>
+        <th scope="col">
+            <a href="">Privilege</a>
+        </th>
+        <th scope="col">
+            Functions
+        </th>
+    </tr>
+    </tfoot>
+</table>
+<div th:if="${totalPages > 1}">
+    <div class="row col-sm-10">
+        <div class="col-sm-2">
+            Total Rows: [[${totalItems}]]
+        </div>
+        <div class="col-sm-1">
+                    <span th:if="${currentPage != i}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+      <a th:if="${currentPage != i}" th:href="@{'/admin/departments/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                    </span>
+        </div>
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/departments/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/departments/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
