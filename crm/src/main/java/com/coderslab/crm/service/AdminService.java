@@ -1,9 +1,6 @@
 package com.coderslab.crm.service;
 
-import com.coderslab.crm.filter.DepartmentFilter;
 import com.coderslab.crm.filter.UserFilter;
-import com.coderslab.crm.model.Department;
-import com.coderslab.crm.model.Role;
 import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.UserRepository;
 import com.coderslab.crm.specification.SearchCriteria;
@@ -16,13 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,6 +39,10 @@ public class AdminService {
     }
 
     public void deleteUserById(Long id){
+        if(getUserById(id).getRoles().contains("ADMIN")){
+
+        }
+
         userRepository.delete(userRepository.getById(id));
     }
 

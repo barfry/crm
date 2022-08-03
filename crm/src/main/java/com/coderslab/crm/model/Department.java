@@ -21,7 +21,7 @@ public class Department {
     @NotBlank(message = "This field can't be empty")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "privilege_id", referencedColumnName = "id")
     private Privilege privilege;
 

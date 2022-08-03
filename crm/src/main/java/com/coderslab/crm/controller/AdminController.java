@@ -5,10 +5,10 @@ import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.Department;
 import com.coderslab.crm.model.Privilege;
 import com.coderslab.crm.model.User;
-import com.coderslab.crm.repository.PrivilegeRepository;
 import com.coderslab.crm.repository.UserRepository;
 import com.coderslab.crm.service.AdminService;
 import com.coderslab.crm.service.DepartmentService;
+import com.coderslab.crm.service.PrivilegeService;
 import com.coderslab.crm.service.RoleService;
 import com.coderslab.crm.validation.OnPersist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -33,14 +32,14 @@ public class AdminController {
     AdminService adminService;
     RoleService roleService;
     UserRepository userRepository;
-    PrivilegeRepository privilegeRepository;
+    PrivilegeService privilegeService;
 
-    public AdminController(DepartmentService departmentService, AdminService adminService, RoleService roleService, UserRepository userRepository, PrivilegeRepository privilegeRepository) {
+    public AdminController(DepartmentService departmentService, AdminService adminService, RoleService roleService, UserRepository userRepository, PrivilegeService privilegeService) {
         this.departmentService = departmentService;
         this.adminService = adminService;
         this.roleService = roleService;
         this.userRepository = userRepository;
-        this.privilegeRepository = privilegeRepository;
+        this.privilegeService = privilegeService;
     }
 
     @GetMapping("/")
@@ -97,7 +96,8 @@ public class AdminController {
 
     @PostMapping("/remove-user")
     public String removeUser(@RequestParam Long id, Model model) {
-        if(adminService.countAdmins() >= 1){
+
+        if(adminService.getUserById(id).getRoles().iterator().next().getName().equals("ADMIN") && adminService.countAdmins() == 1){
             model.addAttribute("errorRemove","errorRemove");
             model.addAttribute("users",adminService.getAllUsers());
             model.addAttribute("admin", roleService.getAdminRole());
@@ -134,7 +134,7 @@ public class AdminController {
 
     @PostMapping("/revoke-admin-role")
     public String revokeAdminRole(@RequestParam Long id, Model model){
-        if(adminService.countAdmins() >= 1){
+        if(adminService.countAdmins() == 1){
             model.addAttribute("errorRevoke","errorRevoke");
             model.addAttribute("users",adminService.getAllUsers());
             model.addAttribute("admin", roleService.getAdminRole());
@@ -253,11 +253,10 @@ public class AdminController {
 
     @GetMapping("/privileges")
     public String showPrivileges(Model model){
-        model.addAttribute("privileges", privilegeRepository.findAll());
-
+        model.addAttribute("privileges", privilegeService.getAllPrivileges());
+        model.addAttribute("departments", departmentService.getAllDepartments());
         return "admin-zone/admin-all-privileges";
     }
-
 
     @GetMapping("/show-users-by-role/{roleName}")
     public String showUsersByRole(@PathVariable String roleName, Model model){
@@ -265,5 +264,13 @@ public class AdminController {
         userFilter.setRoleName(roleName);
         model.addAttribute("userFilter", userFilter);
         return showUsersPage(userFilter,1,"id","asc", model);
+    }
+
+    @GetMapping("/show-departments-by-name/{departmentName}")
+    public String showDepartmentsByName(@PathVariable String departmentName, Model model){
+        DepartmentFilter departmentFilter = new DepartmentFilter();
+        departmentFilter.setName(departmentName);
+        model.addAttribute("departmentFilter", departmentFilter);
+        return showDepartmentsPage(departmentFilter,1,"id","asc", model);
     }
 }

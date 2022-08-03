@@ -72,8 +72,13 @@ public class DepartmentService {
     }
 
     public void editDepartment(Department department){
+        Privilege privilege = privilegeRepository.findBySalesAndServiceAndAccountancy(department.getPrivilege().getSales(),department.getPrivilege().getService(),department.getPrivilege().getAccountancy());
+        if(privilege == null){
+            privilegeRepository.save(department.getPrivilege());
+        }
+        else{
+            department.setPrivilege(privilege);
+        }
         departmentRepository.save(department);
     }
-
-
 }

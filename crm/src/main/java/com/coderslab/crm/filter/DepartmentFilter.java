@@ -1,5 +1,8 @@
 package com.coderslab.crm.filter;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class DepartmentFilter {
 
     private String name = "";

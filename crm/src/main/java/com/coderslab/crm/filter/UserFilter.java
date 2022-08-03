@@ -1,6 +1,8 @@
 package com.coderslab.crm.filter;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserFilter {
 
     private String firstName = "";
