@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -43,6 +44,13 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
+        roleRepository.save(new Role(1L,"USER"));
+        roleRepository.save(new Role(2L, "ADMIN"));
+
+        Set<Role> roles = new HashSet<>();
+        user.setRoles(roles);
+        user.getRoles().add(roleRepository.getById(1L));
+        user.getRoles().add(roleRepository.getById(2L));
         user.setEnabled(true);
         userRepository.save(user);
     }
