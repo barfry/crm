@@ -8,14 +8,38 @@
 <body>
 <div th:fragment="header">
     <div sec:authorize="hasAuthority('ADMIN')">
-    <ul class="user-menu">
-        <li><a href="/user-zone">Home</a></li>
-        <li><a href="/admin/users">Users</a> </li>
-        <li><a href="/admin/roles">Roles</a> </li>
-        <li><a href="/admin/privileges">Privileges</a> </li>
-        <li><a href="/admin/departments">Departments</a> </li>
-        <li><a href="/logout">Log out</a></li>
-    </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">CRM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/user-zone">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/admin/users">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/admin/roles">Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/admin/privileges">Privileges</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/admin/departments">Departments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 </div>
 </body>
