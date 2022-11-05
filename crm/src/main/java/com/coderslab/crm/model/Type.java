@@ -21,7 +21,6 @@ public class Type {
     private String name;
 
     @OneToMany
-    @JoinColumn(name = "type_id")
     private Set<Category> categoryList;
 
     public Long getId() {

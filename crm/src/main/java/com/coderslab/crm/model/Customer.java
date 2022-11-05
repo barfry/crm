@@ -34,8 +34,7 @@ public class Customer {
     @Length(min = 2, max = 30, message = "This field should contain from 2 up to 30 characters")
     private String street;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
+    @NotNull(message = "This field can't be empty")
     @Min(1)
     @Max(1000)
     private Integer streetNumber;
@@ -78,8 +77,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private Set<Machine> machineList;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
+    @NotNull(message = "This field can't be empty")
     @Min(1)
     @Max(5)
     private Integer servicePriority;
@@ -96,7 +94,7 @@ public class Customer {
             @JoinColumn(name = "offer_id"))
     private Set<Offer> offerList;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "customer_category", joinColumns =
         @JoinColumn(name = "customer_id"), inverseJoinColumns =
             @JoinColumn(name = "category_id"))
@@ -112,7 +110,7 @@ public class Customer {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate updateDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "modifier_id")
     private User modifier;
 

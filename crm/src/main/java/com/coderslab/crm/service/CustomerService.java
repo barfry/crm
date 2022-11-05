@@ -26,6 +26,11 @@ public class CustomerService {
     CustomerRepository customerRepository;
     UserService userService;
 
+    public CustomerService(CustomerRepository customerRepository, UserService userService) {
+        this.customerRepository = customerRepository;
+        this.userService = userService;
+    }
+
     public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
     }

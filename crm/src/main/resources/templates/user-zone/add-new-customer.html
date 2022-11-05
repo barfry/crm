@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new customer form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <div th:replace="admin-zone/fragments/header :: header">
+  </div>
+</header>
+<form class="row g-3 mx-5 my-2" action="#" th:action="@{/customers/add-new-customer}" th:object="${customer}" method="post">
+  <input type="hidden" th:field="*{id}" id="id">
+  <div class="col-md-6">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="taxCode" class="form-label">Tax code</label>
+    <input type="text" th:field="*{taxCode}" class="form-control" id="taxCode" placeholder="Tax code">
+    <span th:if="${#fields.hasErrors('taxCode')}" th:errors="*{taxCode}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Province</label>
+    <select id="inputState" class="form-select" th:field="*{province}">
+      <option th:value="'Lower Silesia'">Lower Silesia</option>
+      <option th:value="'Kujawsko-Pomorskie'">Kujawsko-Pomorskie</option>
+      <option th:value="'Łódź Province'">Łódź Province</option>
+      <option th:value="'Lublin Province'">Lublin Province</option>
+      <option th:value="'Lubuskie Province'">Lubuskie Province</option>
+      <option th:value="'Małopolska Province'">Małopolska Province</option>
+      <option th:value="'Masovia Province'">Masovia Province</option>
+      <option th:value="'Opole Province'">Opole Province</option>
+      <option th:value="'Podkarpackie Province'">Podkarpackie Province</option>
+      <option th:value="'Podlasie Province'">Podlasie Province</option>
+      <option th:value="'Pomerania Province'">Pomerania Province</option>
+      <option th:value="'Silesia Province'">Silesia Province</option>
+      <option th:value="'Holy Cross Province'">Holy Cross Province</option>
+      <option th:value="'Warmia-Masuria'">Warmia-Masuria</option>
+      <option th:value="'Wielkopolska Province'">Wielkopolska Province</option>
+      <option th:value="'West Pomerania'">West Pomerania</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="zipCode" class="form-label">Zip code</label>
+    <input type="text" th:field="*{zipCode}" class="form-control" id="zipCode" placeholder="Zip code">
+    <span th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="city" class="form-label">City</label>
+    <input type="text" th:field="*{city}" class="form-control" id="city" placeholder="City">
+    <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="street" class="form-label">Street</label>
+    <input type="text" th:field="*{street}" class="form-control" id="street" placeholder="Street">
+    <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="streetNumber" class="form-label">Street number</label>
+    <input type="text" th:field="*{streetNumber}" class="form-control" id="streetNumber" placeholder="Street number">
+    <span th:if="${#fields.hasErrors('streetNumber')}" th:errors="*{streetNumber}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="phoneNumber" class="form-label">Phone number</label>
+    <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" placeholder="Phone number">
+    <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="email" class="form-label">E-mail</label>
+    <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="E-mail">
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+  </div>
+  <div class="col-md-4">
+    <label for="webPage" class="form-label">Web page</label>
+    <input type="text" th:field="*{webPage}" class="form-control" id="webPage" placeholder="Web page">
+    <span th:if="${#fields.hasErrors('webPage')}" th:errors="*{webPage}"></span>
+  </div>
+  <div class="col-md-4">
+      <label class="form-label" for="servicePriority">Service priority</label>
+      <select id="servicePriority" th:field="*{servicePriority}" class="form-select">
+        <option th:value="1">1</option>
+        <option th:value="2">2</option>
+        <option th:value="3">3</option>
+        <option th:value="4">4</option>
+        <option th:value="5">5</option>
+      </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Categories:
+      <input type="checkbox" name="categories"
+             th:each="category : ${categories}"
+             th:text="${category.name}"
+             th:value="${category.id}"
+             th:field="*{categoryList}"
+      />
+    </label>
+  </div>
+  <div class="col-md-6">
+    <button type="submit" class="btn btn-danger">Add customer</button>
+  </div>
+</form>
+</body>
+</html>
