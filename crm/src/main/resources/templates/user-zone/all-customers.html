@@ -11,7 +11,7 @@
     <div th:replace="admin-zone/fragments/header :: header">
     </div>
 </header>
-<p><a href="/customers/create-new-customer">Create new customer</a> </p>
+<p><a href="/customers/add-new-customer">Create new customer</a> </p>
 <table class="table table-sm table-hover table-dark table-bordered text-center">
     <thead>
     <tr>
@@ -68,7 +68,7 @@
                 <input type="text" name="taxCode" th:value="*{taxCode}" placeholder="Tax code">
             </th>
             <th scope="col">
-                <input type="submit" class="btn btn-danger" value="Search">
+                <input type="submit" class="btn btn-danger btn-sm" value="Search">
             </th>
         </form>
     </tr>
@@ -84,7 +84,7 @@
         <td>
             <form method="get">
                 <input type="hidden" name="id" th:value="${customer.id}"/>
-                <input type="submit" value="Edit" class="btn btn-danger">
+                <input type="submit" value="Details" class="btn btn-danger btn-sm">
             </form>
         </td>
     </tr>

@@ -3,13 +3,16 @@ package com.coderslab.crm.controller;
 import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.User;
+import com.coderslab.crm.service.CategoryService;
 import com.coderslab.crm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -19,6 +22,12 @@ public class CustomerController {
 
     @Autowired
     CustomerService customerService;
+    CategoryService categoryService;
+
+    public CustomerController(CustomerService customerService, CategoryService categoryService) {
+        this.customerService = customerService;
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("")
     public String showAllCustomers(Model model){
@@ -51,5 +60,27 @@ public class CustomerController {
         return "user-zone/all-customers";
     }
 
+    @GetMapping("/add-new-customer")
+    public String initAddNewCustomerPage(Model model){
+
+        model.addAttribute("customer", new Customer());
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "user-zone/add-new-customer";
+    }
+
+    @PostMapping("/add-new-customer")
+    public String addNewCustomer(@Valid Customer customer, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customer", customer);
+            model.addAttribute("categories", categoryService.getAllCategories());
+
+            return "user-zone/add-new-customer";
+        }
+
+        customerService.addNewCustomer(customer);
+
+        return "redirect:/customers";
+    }
 
 }
