@@ -39,7 +39,7 @@ public class Event {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate eventDate;
 
-    private LocalTime eventTime;;
+    private LocalTime eventTime;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")

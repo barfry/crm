@@ -25,10 +25,6 @@ public class Inquiry {
     @JoinColumn(name = "machine_id")
     private Machine machine;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
-    private Type type;
-
     @NotNull
     @NotBlank(message = "This field can't be empty")
     private String machineStatus;
@@ -76,14 +72,6 @@ public class Inquiry {
 
     public void setMachine(Machine machine) {
         this.machine = machine;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public String getMachineStatus() {
@@ -134,11 +122,10 @@ public class Inquiry {
         this.interventionList = interventionList;
     }
 
-    public Inquiry(Long id, Customer customer, Machine machine, Type type, String machineStatus, LocalDate inquiryDate, String description, Boolean active, String comment, Set<Intervention> interventionList) {
+    public Inquiry(Long id, Customer customer, Machine machine, String machineStatus, LocalDate inquiryDate, String description, Boolean active, String comment, Set<Intervention> interventionList) {
         this.id = id;
         this.customer = customer;
         this.machine = machine;
-        this.type = type;
         this.machineStatus = machineStatus;
         this.inquiryDate = inquiryDate;
         this.description = description;
@@ -156,7 +143,6 @@ public class Inquiry {
                 "id=" + id +
                 ", customer=" + customer +
                 ", machine=" + machine +
-                ", type=" + type +
                 ", machineStatus='" + machineStatus + '\'' +
                 ", inquiryDate=" + inquiryDate +
                 ", description='" + description + '\'' +

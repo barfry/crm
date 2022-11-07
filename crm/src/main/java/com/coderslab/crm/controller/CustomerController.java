@@ -83,4 +83,11 @@ public class CustomerController {
         return "redirect:/customers";
     }
 
+    @GetMapping("/customer-details")
+    public String customerDetailsPage(@RequestParam(value = "customerId") Long customerId, Model model){
+
+        model.addAttribute("customer", customerService.getCustomerById(customerId));
+
+        return "user-zone/customer-details";
+    }
 }
