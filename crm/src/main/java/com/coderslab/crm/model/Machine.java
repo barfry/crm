@@ -115,12 +115,6 @@ public class Machine {
             @JoinColumn(name = "equipment_id"))
     private Set<Equipment> equipmentList;
 
-    @OneToMany
-    @JoinTable(name = "machine_categories", joinColumns =
-        @JoinColumn(name = "machine_id"), inverseJoinColumns =
-            @JoinColumn(name = "category_id"))
-    private Set<Category> categoryList;
-
     @OneToOne
     @JoinColumn(name = "modifier_id")
     private User modifier;
@@ -313,14 +307,6 @@ public class Machine {
         this.equipmentList = equipmentList;
     }
 
-    public Set<Category> getCategoryList() {
-        return categoryList;
-    }
-
-    public void setCategoryList(Set<Category> categoryList) {
-        this.categoryList = categoryList;
-    }
-
     public User getModifier() {
         return modifier;
     }
@@ -337,7 +323,7 @@ public class Machine {
         this.updateDate = updateDate;
     }
 
-    public Machine(Long id, Customer customer, Type type, Manufacturer manufacturer, String serialNumber, LocalDate productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, Set<Category> categoryList, User modifier, Date updateDate) {
+    public Machine(Long id, Customer customer, Type type, Manufacturer manufacturer, String serialNumber, LocalDate productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList,  User modifier, Date updateDate) {
         this.id = id;
         this.customer = customer;
         this.type = type;
@@ -361,7 +347,6 @@ public class Machine {
         this.inquiryList = inquiryList;
         this.taskList = taskList;
         this.equipmentList = equipmentList;
-        this.categoryList = categoryList;
         this.modifier = modifier;
         this.updateDate = updateDate;
     }
@@ -395,7 +380,6 @@ public class Machine {
                 ", serviceInquiryList=" + inquiryList +
                 ", taskList=" + taskList +
                 ", equipmentList=" + equipmentList +
-                ", categoryList=" + categoryList +
                 ", modifier=" + modifier +
                 ", updateDate=" + updateDate +
                 '}';

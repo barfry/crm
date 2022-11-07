@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <div th:replace="admin-zone/fragments/header :: header">
+    </div>
+</header>
+<div class="container-fluid mt-2">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-3 mb-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Name</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.name}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"
+                                 th:text="${customer.province + ' ' + customer.zipCode + ' ' + customer.city + ', ' + customer.street + ' ' + customer.streetNumber}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">E-mail</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.email}"></div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Web page</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.webPage}"></div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Phone number</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.phoneNumber}"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Tax code</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.taxCode}"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Service priority</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.servicePriority}"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <form th:action="@{/customers/edit-customer-details}" method="get">
+                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                    <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                        <div class="row mb-3">
+                            <div class="col-auto me-auto">
+                                <h6>Contacts</h6>
+                            </div>
+                            <div class="col-auto">
+                                <form th:action="@{/customers/customer-details/add-new-contact}" method="get">
+                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                    <input type="submit" value="Add-new-contact" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-hover table-dark table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <a>Name</a>
+                                </th>
+                                <th scope="col">
+                                    <a>E-mail</a>
+                                </th>
+                                <th scope="col">
+                                    <a>Mobile</a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="contact : ${customer.contactPersonList}">
+                                <td th:text="${contact.firstName + ' ' + contact.lastName}"></td>
+                                <td th:text="${contact.email}"></td>
+                                <td th:text="${contact.mobilePhoneNumber}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-3">
+                            <div class="col-auto">
+                                <a class="btn btn-danger btn-sm">More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Service inquiries</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/customers/customer-details/add-new-inquiry}" method="get">
+                                        <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                        <input type="submit" value="Add new inquiry" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Id</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Machine</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Serial number</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Status</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Inquiry date</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Active intervention</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-auto">
+                                    <a class="btn btn-danger btn-sm">More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3">Calendar</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3">Map</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Machines</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/customers/customer-details/add-new-machine}" method="get">
+                                        <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                        <input type="submit" value="Add-new-machine" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Type</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Manufacturer</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Serial number</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Warranty</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <a class="btn btn-danger btn-sm" href="">More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Events</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/customers/customer-details/add-new-event}" method="get">
+                                        <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                        <input type="submit" value="Add new event" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Type</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Title</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Main user</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Assisting user</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Date</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-auto">
+                                    <a class="btn btn-danger btn-sm">More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Interventions</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/customers/customer-details/add-new-intervention}" method="get">
+                                        <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                        <input type="submit" value="Add new intervention" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Id</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Machine</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Serial number</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Date</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Main technician</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Confirmed</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-auto">
+                                    <a class="btn btn-danger btn-sm">More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
