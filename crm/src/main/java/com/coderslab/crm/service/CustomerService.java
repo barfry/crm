@@ -39,7 +39,7 @@ public class CustomerService {
         return customerRepository.getById(id);
     }
 
-    public void addNewCustomer(Customer customer){
+    public void addNewOrUpdateCustomer(Customer customer){
         customer.setUpdateDate(LocalDate.now());
         customer.setModifier(userService.getCurrentUser());
 

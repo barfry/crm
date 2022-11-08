@@ -78,7 +78,7 @@ public class CustomerController {
             return "user-zone/add-new-customer";
         }
 
-        customerService.addNewCustomer(customer);
+        customerService.addNewOrUpdateCustomer(customer);
 
         return "redirect:/customers";
     }
@@ -89,5 +89,27 @@ public class CustomerController {
         model.addAttribute("customer", customerService.getCustomerById(customerId));
 
         return "user-zone/customer-details";
+    }
+
+    @GetMapping("/customer-details/edit-customer")
+    public String initEditCustomerPage(@RequestParam(value = "customerId") Long customerId, Model model){
+        model.addAttribute("customer", customerService.getCustomerById(customerId));
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "/user-zone/edit-customer";
+    }
+
+    @PostMapping("/customer-details/edit-customer")
+    public String editCustomer(@Valid Customer customer, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customer", customer);
+            model.addAttribute("categories", categoryService.getAllCategories());
+
+            return "/user-zone/edit-customer";
+        }
+
+        customerService.addNewOrUpdateCustomer(customer);
+
+        return "redirect:/customers/customer-details?customerId=" + customer.getId();
     }
 }
