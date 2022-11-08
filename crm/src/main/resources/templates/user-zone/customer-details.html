@@ -26,6 +26,10 @@
                             </div>
                             <div class="col-sm-8 text-secondary" th:text="${customer.name}">
                             </div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Tax code</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${customer.taxCode}"></div>
                         </div>
                         <hr>
                         <div class="row">
@@ -54,9 +58,14 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-4">
-                                <h6 class="mb-0">Tax code</h6>
+                                <h6 class="mb-0">Categories</h6>
                             </div>
-                            <div class="col-sm-8 text-secondary" th:text="${customer.taxCode}"></div>
+                            <div class="col-sm-8 text-secondary">
+                                <ul th:each="category : ${customer.categoryList}">
+                                    <li th:text="${category.name}">
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <hr>
                         <div class="row">
@@ -67,7 +76,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-sm-12">
-                                <form th:action="@{/customers/edit-customer-details}" method="get">
+                                <form th:action="@{/customers/customer-details/edit-customer}" method="get">
                                     <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                     <input type="submit" value="Edit" class="btn btn-danger btn-sm">
                                 </form>

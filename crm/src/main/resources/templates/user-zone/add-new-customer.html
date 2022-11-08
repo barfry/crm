@@ -14,7 +14,7 @@
     <div th:replace="admin-zone/fragments/header :: header">
     </div>
 </header>
-<form class="row g-3 mx-5 my-2" action="#" th:action="@{/customers/add-new-customer}" th:object="${customer}"
+<form class="row g-3 mx-5 my-2" action="#" th:action="@{/add-new-customer}" th:object="${customer}"
       method="post">
     <input type="hidden" th:field="*{id}" id="id">
     <div class="col-md-6">
@@ -105,7 +105,7 @@
         </label>
     </div>
     <div class="col-md-6">
-        <button type="submit" class="btn btn-danger">Add customer</button>
+        <button type="submit" class="btn btn-danger">Save</button>
     </div>
 </form>
 </body>
