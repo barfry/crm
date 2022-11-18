@@ -11,12 +11,13 @@
 </head>
 <body>
 <header>
-  <div th:replace="admin-zone/fragments/header :: header">
+  <div th:replace="user-zone/fragments/header :: header">
   </div>
 </header>
 <form class="row g-3 mx-5 my-2" action="#" th:action="@{/customers/customer-details/edit-customer}" th:object="${customer}"
       method="post">
   <input type="hidden" th:field="*{id}" id="id">
+  <input type="hidden" th:field="*{contactPersonList}" id="contactPersonList">
   <div class="col-md-6">
     <label for="name" class="form-label">Name</label>
     <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">

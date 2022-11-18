@@ -11,10 +11,10 @@
 </head>
 <body>
 <header>
-    <div th:replace="admin-zone/fragments/header :: header">
+    <div th:replace="user-zone/fragments/header :: header">
     </div>
 </header>
-<form class="row g-3 mx-5 my-2" action="#" th:action="@{/add-new-customer}" th:object="${customer}"
+<form class="row g-3 mx-5 my-2" action="#" th:action="@{/customers/add-new-customer}" th:object="${customer}"
       method="post">
     <input type="hidden" th:field="*{id}" id="id">
     <div class="col-md-6">

@@ -1,9 +1,11 @@
 package com.coderslab.crm.controller;
 
 import com.coderslab.crm.filter.CustomerFilter;
+import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.User;
 import com.coderslab.crm.service.CategoryService;
+import com.coderslab.crm.service.ContactPersonService;
 import com.coderslab.crm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,10 +25,12 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
     CategoryService categoryService;
+    ContactPersonService contactPersonService;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService) {
         this.customerService = customerService;
         this.categoryService = categoryService;
+        this.contactPersonService = contactPersonService;
     }
 
     @GetMapping("")
@@ -112,4 +116,66 @@ public class CustomerController {
 
         return "redirect:/customers/customer-details?customerId=" + customer.getId();
     }
+
+    @GetMapping("/customer-details/add-new-contact")
+    public String initAddNewContact(@RequestParam(value = "customerId") Long customerId, Model model){
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("contactPerson", new ContactPerson());
+
+        return "/user-zone/add-new-contact";
+    }
+
+    @PostMapping("/customer-details/add-new-contact")
+    public String addNewContact(@RequestParam(value = "customerId") Long customerId, @Valid ContactPerson contactPerson, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("contactPerson", contactPerson);
+
+            return "/user-zone/add-new-contact";
+        }
+
+        contactPersonService.addNewContactPersonToCustomer(contactPerson, customerService.getCustomerById(customerId));
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/edit-contact")
+    public String initEditContactPage(@RequestParam(value = "contactId") Long contactId, @RequestParam(value = "customerId") Long customerId, Model model){
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("contactPerson", contactPersonService.getContactPersonById(contactId));
+
+        return "/user-zone/edit-contact";
+    }
+
+    @PostMapping("/customer-details/edit-contact")
+    public String editContact(@RequestParam(value = "customerId") Long customerId, @Valid ContactPerson contactPerson, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("contactPerson", contactPerson);
+
+            return "/user-zone/edit-contact";
+        }
+
+        contactPersonService.editContactPerson(contactPerson);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @PostMapping("/customer-details/disable-contact")
+    public String disableContact(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "contactId") Long contactId, Model model){
+
+        contactPersonService.disableContactPerson(contactId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @PostMapping("/customer-details/activate-contact")
+    public String activateContact(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "contactId") Long contactId, Model model){
+
+        contactPersonService.activateContactPerson(contactId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+
 }

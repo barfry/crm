@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit contact form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <div th:replace="user-zone/fragments/header :: header">
+    </div>
+</header>
+<form class="row g-3 mx-5 my-2" action="#" th:action="@{/customers/customer-details/edit-contact}" th:object="${contactPerson}"
+      method="post">
+    <input type="hidden" th:field="*{id}" id="contactId">
+    <input type="hidden" th:field="*{active}" id="active">
+    <input type="hidden" id="customerId"  th:value="${customerId}" name="customerId">
+    <div class="col-md-auto">
+        <label for="firstName" class="form-label">First name</label>
+        <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="First name">
+        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="lastName" class="form-label">Last name</label>
+        <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Last name">
+        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="position" class="form-label">Position</label>
+        <input type="text" th:field="*{position}" class="form-control" id="position" placeholder="Position">
+        <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="stationaryPhoneNumber" class="form-label">Stationary phone number</label>
+        <input type="text" th:field="*{stationaryPhoneNumber}" class="form-control" id="stationaryPhoneNumber" placeholder="Stationary phone number">
+        <span th:if="${#fields.hasErrors('stationaryPhoneNumber')}" th:errors="*{stationaryPhoneNumber}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="mobilePhoneNumber" class="form-label">Mobile phone number</label>
+        <input type="text" th:field="*{mobilePhoneNumber}" class="form-control" id="mobilePhoneNumber" placeholder="Mobile phone number">
+        <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="E-mail">
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </div>
+    <div class="col-md-auto">
+        <label for="inputState" class="form-label">Profile</label>
+        <select id="inputState" class="form-select" th:field="*{profile}">
+            <option th:value="'DECIDES'">DECIDES</option>
+            <option th:value="'INITIATES'">INITIATES</option>
+            <option th:value="'ADVICES'">ADVICES</option>
+            <option th:value="'WORKER'">WORKER</option>
+            <option th:value="'FINANCES'">FINANCES</option>
+            <option th:value="'RETIRED'">RETIRED</option>
+        </select>
+    </div>
+    <div class="col-md-a">
+        <button type="submit" class="btn btn-danger">Save</button>
+    </div>
+</form>
+</body>
+</html>
