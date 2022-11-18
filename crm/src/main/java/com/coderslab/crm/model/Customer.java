@@ -69,6 +69,7 @@ public class Customer {
     private String taxCode;
 
     @OneToMany
+    @OrderBy("id asc")
     private Set<ContactPerson> contactPersonList;
 
     @OneToMany(mappedBy = "customer")
