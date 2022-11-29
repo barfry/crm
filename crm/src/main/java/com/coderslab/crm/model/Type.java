@@ -20,6 +20,10 @@ public class Type {
     @Length(min = 2, max = 20, message = "This field should contain from 2 up to 20 characters")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_id")
+    private Manufacturer manufacturer;
+
     @OneToMany
     private Set<Category> categoryList;
 
@@ -47,9 +51,18 @@ public class Type {
         this.categoryList = categoryList;
     }
 
-    public Type(Long id, String name, Set<Category> categoryList) {
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Type(Long id, String name, Manufacturer manufacturer, Set<Category> categoryList) {
         this.id = id;
         this.name = name;
+        this.manufacturer = manufacturer;
         this.categoryList = categoryList;
     }
 

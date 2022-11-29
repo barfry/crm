@@ -68,14 +68,15 @@ public class Customer {
     @Pattern(regexp = "^\\d{10}$")
     private String taxCode;
 
-    @OneToMany
-    @OrderBy("id asc")
+    @OneToMany()
+    @OrderBy("active desc, id asc")
     private Set<ContactPerson> contactPersonList;
 
     @OneToMany(mappedBy = "customer")
     private Set<Event> eventList;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OrderBy("active desc, id asc")
     private Set<Machine> machineList;
 
     @NotNull(message = "This field can't be empty")

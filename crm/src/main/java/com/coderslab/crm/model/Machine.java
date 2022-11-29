@@ -18,24 +18,22 @@ public class Machine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @ManyToOne()
+    @JoinColumn(name = "customer_id", updatable = false)
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
-
-    @ManyToOne
-    @JoinColumn(name = "manufacturer_id")
-    private Manufacturer manufacturer;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
     private String serialNumber;
 
-    @DateTimeFormat(pattern = "yyyy")
-    private LocalDate productionYear;
+    @NotNull
+    @NotBlank(message = "This field can't be empty")
+    @Pattern(regexp = "(19|20)[0-9][0-9]", message = "Production year only allows (19|20)[0-9][0-9] format")
+    private String productionYear;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate commissioningDate;
@@ -44,7 +42,7 @@ public class Machine {
     private LocalDate warrantyStartDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate warrantyEndDate;
+    private Date warrantyEndDate;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -58,7 +56,6 @@ public class Machine {
 
     @Min(0)
     @Max(5)
-    @NotNull
     private Integer servicePriority;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -66,11 +63,11 @@ public class Machine {
     private LocalDate creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", updatable = false)
     private User creator;
 
-    @OneToOne
-    @JoinColumn(name = "contract_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contract_id", referencedColumnName = "id")
     private Contract contract;
 
     @NotNull
@@ -88,8 +85,7 @@ public class Machine {
     @Length(min = 2, max = 30, message = "This field should contain from 2 up to 30 characters")
     private String street;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
+    @NotNull(message = "This field can't be empty")
     @Min(1)
     @Max(1000)
     private Integer streetNumber;
@@ -147,14 +143,6 @@ public class Machine {
         this.type = type;
     }
 
-    public Manufacturer getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -163,11 +151,11 @@ public class Machine {
         this.serialNumber = serialNumber;
     }
 
-    public LocalDate getProductionYear() {
+    public String getProductionYear() {
         return productionYear;
     }
 
-    public void setProductionYear(LocalDate productionYear) {
+    public void setProductionYear(String productionYear) {
         this.productionYear = productionYear;
     }
 
@@ -187,12 +175,20 @@ public class Machine {
         this.warrantyStartDate = warrantyStartDate;
     }
 
-    public LocalDate getWarrantyEndDate() {
+    public Date getWarrantyEndDate() {
         return warrantyEndDate;
     }
 
-    public void setWarrantyEndDate(LocalDate warrantyEndDate) {
+    public void setWarrantyEndDate(Date warrantyEndDate) {
         this.warrantyEndDate = warrantyEndDate;
+    }
+
+    public Set<Inquiry> getInquiryList() {
+        return inquiryList;
+    }
+
+    public void setInquiryList(Set<Inquiry> inquiryList) {
+        this.inquiryList = inquiryList;
     }
 
     public String getGeneralNotice() {
@@ -323,11 +319,10 @@ public class Machine {
         this.updateDate = updateDate;
     }
 
-    public Machine(Long id, Customer customer, Type type, Manufacturer manufacturer, String serialNumber, LocalDate productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList,  User modifier, Date updateDate) {
+    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, Date warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, Date updateDate) {
         this.id = id;
         this.customer = customer;
         this.type = type;
-        this.manufacturer = manufacturer;
         this.serialNumber = serialNumber;
         this.productionYear = productionYear;
         this.commissioningDate = commissioningDate;
@@ -360,7 +355,6 @@ public class Machine {
                 "id=" + id +
                 ", customer=" + customer +
                 ", type=" + type +
-                ", manufacturer=" + manufacturer +
                 ", serialNumber='" + serialNumber + '\'' +
                 ", productionYear=" + productionYear +
                 ", commissioningDate=" + commissioningDate +

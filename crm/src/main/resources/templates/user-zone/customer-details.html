@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
-    <link  href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
 <header>
@@ -113,7 +113,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="contact, i : ${customer.contactPersonList}" th:if="${i.index}<6 and ${contact.active} eq true">
+                            <tr th:each="contact, i : ${customer.contactPersonList}"
+                                th:if="${i.index}<6">
                                 <td th:text="${contact.firstName + ' ' + contact.lastName}"></td>
                                 <td th:text="${contact.email}"></td>
                                 <td th:text="${contact.mobilePhoneNumber}"></td>
@@ -122,7 +123,8 @@
                         </table>
                         <div class="row mt-3">
                             <div class="col-auto me-auto">
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#contactModal">
                                     More
                                 </button>
                             </div>
@@ -133,7 +135,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="contactModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -183,7 +186,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="contact : ${customer.contactPersonList}" th:style="${contact.active} == false ? 'color: grey' : ''">
+                                <tr th:each="contact : ${customer.contactPersonList}"
+                                    th:style="${contact.active} == false ? 'color: grey' : ''">
                                     <td th:text="${contact.firstName}"></td>
                                     <td th:text="${contact.lastName}"></td>
                                     <td th:text="${contact.position}"></td>
@@ -203,7 +207,8 @@
                                     </td>
                                     <td>
                                         <div th:if="${contact.active eq true}">
-                                            <form th:action="@{/customers/customer-details/disable-contact}" method="post">
+                                            <form th:action="@{/customers/customer-details/disable-contact}"
+                                                  method="post">
                                                 <input type="hidden" name="contactId" th:value="${contact.id}"/>
                                                 <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                 <input type="submit" value="Disable" class="btn btn-danger btn-sm"
@@ -212,7 +217,8 @@
                                             </form>
                                         </div>
                                         <div th:if="${contact.active eq false}">
-                                            <form th:action="@{/customers/customer-details/activate-contact}" method="post">
+                                            <form th:action="@{/customers/customer-details/activate-contact}"
+                                                  method="post">
                                                 <input type="hidden" name="contactId" th:value="${contact.id}"/>
                                                 <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                 <input type="submit" value="Activate" class="btn btn-danger btn-sm"
@@ -306,7 +312,7 @@
                                 <div class="col-auto">
                                     <form th:action="@{/customers/customer-details/add-new-machine}" method="get">
                                         <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                        <input type="submit" value="Add-new-machine" class="btn btn-danger btn-sm">
+                                        <input type="submit" value="Add new machine" class="btn btn-danger btn-sm">
                                     </form>
                                 </div>
                             </div>
@@ -329,11 +335,131 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-
+                                <tr th:each="machine : ${customer.machineList}"
+                                    th:style="${machine.active} == false ? 'color: grey' : ''">
+                                    <td th:text="${machine.type.name}"></td>
+                                    <td th:text="${machine.type.manufacturer.name}"></td>
+                                    <td th:text="${machine.serialNumber}"></td>
+                                    <td>
+                                        <span th:if="${machine.warrantyEndDate == null}">NO</span>
+                                        <div th:unless="${machine.warrantyEndDate == null}">
+                                            <div th:switch="${machine.warrantyEndDate.before(#dates.createNow())}">
+                                                <span th:case="true">NO</span>
+                                                <span th:case="false">YES</span>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <a class="btn btn-danger btn-sm" href="">More</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#machineModal">
+                                More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="machineModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="machineModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="machineModalLabel">All contacts</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Manufacturer</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Warranty start</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Warranty end</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Service priority</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Active</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Open inquiries</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Disable</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                    <tr th:each="machine : ${customer.machineList}"
+                                        th:style="${machine.active} == false ? 'color: grey' : ''">
+                                        <td th:text="${machine.type.name}"></td>
+                                        <td th:text="${machine.type.manufacturer.name}"></td>
+                                        <td th:text="${machine.serialNumber}"></td>
+                                        <td th:text="${machine.warrantyStartDate}"></td>
+                                        <td th:text="${machine.warrantyEndDate}"></td>
+                                        <td th:text="${machine.servicePriority}"></td>
+                                        <td th:text="${machine.active}"></td>
+                                        <td th:text="${#lists.size(machine.inquiryList)}"></td>
+                                        <td>
+                                            <form th:action="@{/customers/customer-details/edit-machine}" method="get">
+                                                <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <div th:if="${machine.active eq true}">
+                                                <form th:action="@{/customers/customer-details/disable-machine}"
+                                                      method="post">
+                                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <input type="submit" value="Disable" class="btn btn-danger btn-sm"
+                                                           th:data-disable-machine="|Please confirm disabling machine: ${machine.type.name} ${machine.serialNumber}|"
+                                                           onclick="if (!confirm(this.getAttribute('data-disable-machine'))) return false"/>
+                                                </form>
+                                            </div>
+                                            <div th:if="${machine.active eq false}">
+                                                <form th:action="@{/customers/customer-details/activate-machine}"
+                                                      method="post">
+                                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <input type="submit" value="Activate" class="btn btn-danger btn-sm"
+                                                           th:data-activate-machine="|Please confirm activating machine: ${machine.type.name} ${machine.serialNumber}|"
+                                                           onclick="if (!confirm(this.getAttribute('data-activate-machine'))) return false"/>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{/machines/machine-details}" method="get">
+                                                <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

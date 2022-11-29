@@ -32,7 +32,7 @@ public class Contract {
     @Length(min = 20, max = 20, message = "This field should contain 20 characters")
     private String offerNumber;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -66,7 +66,7 @@ public class Contract {
     @Length(min = 2, max = 200, message = "This field should contain from 2 up to 200 characters")
     private String generalNotice;
 
-    @OneToOne
+    @OneToOne(mappedBy = "contract")
     @JoinColumn(name = "machine_id")
     private Machine machine;
 
