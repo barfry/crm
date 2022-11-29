@@ -3,10 +3,9 @@ package com.coderslab.crm.controller;
 import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
+import com.coderslab.crm.model.Machine;
 import com.coderslab.crm.model.User;
-import com.coderslab.crm.service.CategoryService;
-import com.coderslab.crm.service.ContactPersonService;
-import com.coderslab.crm.service.CustomerService;
+import com.coderslab.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -26,11 +25,15 @@ public class CustomerController {
     CustomerService customerService;
     CategoryService categoryService;
     ContactPersonService contactPersonService;
+    MachineService machineService;
+    TypeService typeService;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService) {
         this.customerService = customerService;
         this.categoryService = categoryService;
         this.contactPersonService = contactPersonService;
+        this.machineService = machineService;
+        this.typeService = typeService;
     }
 
     @GetMapping("")
@@ -118,7 +121,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customer-details/add-new-contact")
-    public String initAddNewContact(@RequestParam(value = "customerId") Long customerId, Model model){
+    public String initAddNewContactPage(@RequestParam(value = "customerId") Long customerId, Model model){
         model.addAttribute("customerId", customerId);
         model.addAttribute("contactPerson", new ContactPerson());
 
@@ -177,5 +180,67 @@ public class CustomerController {
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }
 
+    @GetMapping("/customer-details/add-new-machine")
+    public String initAddNewMachinePage(@RequestParam(value = "customerId") Long customerId, Model model){
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("machine", new Machine());
+        model.addAttribute("types", typeService.getAllTypes());
+
+        return "/user-zone/add-new-machine";
+    }
+
+    @PostMapping("/customer-details/add-new-machine")
+    public String addNewMachine(@RequestParam(value = "customerId") Long customerId, @Valid Machine machine, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("machine", machine);
+            model.addAttribute("types", typeService.getAllTypes());
+
+            return "/user-zone/add-new-machine";
+        }
+
+        machineService.addNewMachine(machine, customerService.getCustomerById(customerId));
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/edit-machine")
+    public String initEditMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("machine", machineService.getMachineById(machineId));
+        model.addAttribute("types", typeService.getAllTypes());
+
+        return "/user-zone/edit-machine";
+    }
+
+    @PostMapping("/customer-details/edit-machine")
+    public String editMachine(@RequestParam(value = "customerId") Long customerId, @Valid Machine machine, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("machine", machine);
+            model.addAttribute("types", typeService.getAllTypes());
+
+            return "/user-zone/edit-machine";
+        }
+        machineService.editMachine(machine);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @PostMapping("/customer-details/disable-machine")
+    public String disableMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
+
+       machineService.disableMachine(machineId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @PostMapping("/customer-details/activate-machine")
+    public String activateMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
+
+        machineService.activateMachine(machineId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
 
 }
