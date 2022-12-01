@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MachineService {
@@ -57,5 +58,9 @@ public class MachineService {
         machine.setUpdateDate(new Date());
         machine.setModifier(userService.getCurrentUser());
         return machineRepository.save(machine);
+    }
+
+    public List<Machine> getMachinesByCustomerId(Long customerId){
+        return machineRepository.getMachinesByCustomerId(customerId);
     }
 }

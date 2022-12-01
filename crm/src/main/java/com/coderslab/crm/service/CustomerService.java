@@ -1,13 +1,10 @@
 package com.coderslab.crm.service;
 
 import com.coderslab.crm.filter.CustomerFilter;
-import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.Customer;
-import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.CustomerRepository;
 import com.coderslab.crm.specification.CustomerSpecification;
 import com.coderslab.crm.specification.SearchCriteria;
-import com.coderslab.crm.specification.UserSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,7 +60,5 @@ public class CustomerService {
 
         return this.customerRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7), pageable);
     }
-
-
 
 }

@@ -244,25 +244,4 @@ public class Contract {
     public Contract() {
     }
 
-    @Override
-    public String toString() {
-        return "Contract{" +
-                "id=" + id +
-                ", contractNumber='" + contractNumber + '\'' +
-                ", contractDate=" + contractDate +
-                ", offerNumber='" + offerNumber + '\'' +
-                ", customer=" + customer +
-                ", manufacturer=" + manufacturer +
-                ", netValue=" + netValue +
-                ", currency='" + currency + '\'' +
-                ", externalOrderNumber='" + externalOrderNumber + '\'' +
-                ", seller=" + seller +
-                ", supervisor=" + supervisor +
-                ", generalNotice='" + generalNotice + '\'' +
-                ", machine=" + machine +
-                ", updateDate=" + updateDate +
-                ", modifier=" + modifier +
-                ", active=" + active +
-                '}';
-    }
 }
