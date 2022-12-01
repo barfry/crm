@@ -265,22 +265,35 @@
                                         <a>Status</a>
                                     </th>
                                     <th scope="col">
-                                        <a>Inquiry date</a>
+                                        <a>Type</a>
                                     </th>
                                     <th scope="col">
-                                        <a>Active intervention</a>
+                                        <a>Inquiry date</a>
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-
+                                <tbody th:each="machine : ${customer.machineList}">
+                                <tr th:each="inquiry, i : ${machine.inquiryList}"
+                                    th:style="${inquiry.active} == false ? 'color: grey' : ''"
+                                    th:if="${i.index}<6">
+                                    <td th:text="${inquiry.id}"></td>
+                                    <td th:text="${machine.type.name}"></td>
+                                    <td th:text="${machine.serialNumber}"></td>
+                                    <td th:text="${inquiry.machineStatus}"></td>
+                                    <td th:text="${inquiry.inquiryType}"></td>
+                                    <td th:text="${inquiry.inquiryDate}"></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="row mt-3">
+                                <div class="col-auto me-auto">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#inquiryModal">
+                                        More
+                                    </button>
+                                </div>
                                 <div class="col-auto">
-                                    <a class="btn btn-danger btn-sm">More</a>
+                                    <a th:text="'All inquiries: ?????'"></a>
                                 </div>
                             </div>
                         </div>
@@ -297,6 +310,83 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h6 class="d-flex align-items-center mb-3">Map</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="inquiryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inquiryModalLabel">All inquiries</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Id</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Machine</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Serial number</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Status</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Type</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Inquiry date</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Description</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Active</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Edit</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>A/D</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tbody th:each="machine : ${customer.machineList}">
+                                <tr th:each="inquiry : ${machine.inquiryList}"
+                                    th:style="${inquiry.active} == false ? 'color: grey' : ''">
+                                    <td th:text="${inquiry.id}"></td>
+                                    <td th:text="${machine.type.name}"></td>
+                                    <td th:text="${machine.serialNumber}"></td>
+                                    <td th:text="${inquiry.machineStatus}"></td>
+                                    <td th:text="${inquiry.inquiryType}"></td>
+                                    <td th:text="${inquiry.inquiryDate}"></td>
+                                    <td th:text="${inquiry.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis" th:title="${inquiry.description}"></td>
+                                    <td th:text="${inquiry.active}"></td>
+                                    <td>
+                                        <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">
+                                            <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
+                                            <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                            <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form th:action="@{/customers/customer-details/inquiry-details}" method="get">
+                                            <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
+                                            <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                            <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -335,8 +425,9 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                <tr th:each="machine : ${customer.machineList}"
-                                    th:style="${machine.active} == false ? 'color: grey' : ''">
+                                <tr th:each="machine,i : ${customer.machineList}"
+                                    th:style="${machine.active} == false ? 'color: grey' : ''"
+                                    th:if="${i.index}<6">
                                     <td th:text="${machine.type.name}"></td>
                                     <td th:text="${machine.type.manufacturer.name}"></td>
                                     <td th:text="${machine.serialNumber}"></td>

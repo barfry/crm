@@ -18,7 +18,7 @@ public class Inquiry {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", updatable = false)
     private Customer customer;
 
     @ManyToOne
@@ -28,6 +28,10 @@ public class Inquiry {
     @NotNull
     @NotBlank(message = "This field can't be empty")
     private String machineStatus;
+
+    @NotNull
+    @NotBlank(message = "This field can't be empty")
+    private String inquiryType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate inquiryDate;
@@ -39,9 +43,6 @@ public class Inquiry {
 
     private Boolean active = true;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
-    @Length(min = 2, max = 300, message = "This field should contain from 2 up to 300 characters")
     private String comment;
 
     @OneToMany
@@ -80,6 +81,14 @@ public class Inquiry {
 
     public void setMachineStatus(String machineStatus) {
         this.machineStatus = machineStatus;
+    }
+
+    public String getInquiryType() {
+        return inquiryType;
+    }
+
+    public void setInquiryType(String inquiryType) {
+        this.inquiryType = inquiryType;
     }
 
     public LocalDate getInquiryDate() {
@@ -122,11 +131,12 @@ public class Inquiry {
         this.interventionList = interventionList;
     }
 
-    public Inquiry(Long id, Customer customer, Machine machine, String machineStatus, LocalDate inquiryDate, String description, Boolean active, String comment, Set<Intervention> interventionList) {
+    public Inquiry(Long id, Customer customer, Machine machine, String machineStatus, String inquiryType, LocalDate inquiryDate, String description, Boolean active, String comment, Set<Intervention> interventionList) {
         this.id = id;
         this.customer = customer;
         this.machine = machine;
         this.machineStatus = machineStatus;
+        this.inquiryType = inquiryType;
         this.inquiryDate = inquiryDate;
         this.description = description;
         this.active = active;
@@ -137,18 +147,4 @@ public class Inquiry {
     public Inquiry() {
     }
 
-    @Override
-    public String toString() {
-        return "ServiceInquiry{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", machine=" + machine +
-                ", machineStatus='" + machineStatus + '\'' +
-                ", inquiryDate=" + inquiryDate +
-                ", description='" + description + '\'' +
-                ", active=" + active +
-                ", comment='" + comment + '\'' +
-                ", interventionList=" + interventionList +
-                '}';
-    }
 }

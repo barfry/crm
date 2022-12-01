@@ -1,10 +1,7 @@
 package com.coderslab.crm.controller;
 
 import com.coderslab.crm.filter.CustomerFilter;
-import com.coderslab.crm.model.ContactPerson;
-import com.coderslab.crm.model.Customer;
-import com.coderslab.crm.model.Machine;
-import com.coderslab.crm.model.User;
+import com.coderslab.crm.model.*;
 import com.coderslab.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,13 +24,15 @@ public class CustomerController {
     ContactPersonService contactPersonService;
     MachineService machineService;
     TypeService typeService;
+    InquiryService inquiryService;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService) {
         this.customerService = customerService;
         this.categoryService = categoryService;
         this.contactPersonService = contactPersonService;
         this.machineService = machineService;
         this.typeService = typeService;
+        this.inquiryService = inquiryService;
     }
 
     @GetMapping("")
@@ -241,6 +240,51 @@ public class CustomerController {
         machineService.activateMachine(machineId);
 
         return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/add-new-inquiry")
+    public String initAddNewInquiryPage(@RequestParam(value = "customerId") Long customerId, Model model){
+        model.addAttribute("inquiry", new Inquiry());
+        model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+        model.addAttribute("customerId", customerId);
+
+        return "/user-zone/add-new-inquiry";
+    }
+
+    @PostMapping("/customer-details/add-new-inquiry")
+    public String addNewInquiry(@RequestParam(value = "customerId") Long customerId, @Valid Inquiry inquiry, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("inquiry",inquiry);
+            model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+            model.addAttribute("customerId", customerId);
+            return "/user-zone/add-new-inquiry";
+        }
+
+        inquiryService.addNewInquiry(inquiry, customerId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/edit-inquiry")
+    public String initEditInquiryPage(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "inquiryId") Long inquiryId, Model model){
+        model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
+        model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+        model.addAttribute("customerId", customerId);
+
+        return "/user-zone/edit-inquiry";
+    }
+
+    @PostMapping("/customer-details/edit-inquiry")
+    public String editInquiry(@RequestParam(name = "customerId") Long customerId ,@Valid Inquiry inquiry, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("inquiry", inquiry);
+            model.addAttribute("machines", machineService.getMachinesByCustomerId(inquiry.getCustomer().getId()));
+            return "/user-zone/edit-inquiry";
+        }
+
+        inquiryService.editInquiry(inquiry);
+
+        return "redirect:/customers/customer-details?customerId=" +customerId;
     }
 
 }

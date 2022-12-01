@@ -92,16 +92,10 @@ public class Machine {
 
     private Boolean active = true;
 
-    @OneToMany
-    @JoinTable(name = "machine_inquiries", joinColumns =
-        @JoinColumn(name = "machine_id"), inverseJoinColumns =
-            @JoinColumn(name = "inquiry_id"))
+    @OneToMany(mappedBy = "machine")
     private Set<Inquiry> inquiryList;
 
     @OneToMany
-    @JoinTable(name = "machine_tasks", joinColumns =
-        @JoinColumn(name = "machine_id"), inverseJoinColumns =
-            @JoinColumn(name = "task_id"))
     private Set<Task> taskList;
 
 
@@ -349,33 +343,4 @@ public class Machine {
     public Machine() {
     }
 
-    @Override
-    public String toString() {
-        return "Machine{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", type=" + type +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", productionYear=" + productionYear +
-                ", commissioningDate=" + commissioningDate +
-                ", warrantyStartDate=" + warrantyStartDate +
-                ", warrantyEndDate=" + warrantyEndDate +
-                ", generalNotice='" + generalNotice + '\'' +
-                ", serviceNotice='" + serviceNotice + '\'' +
-                ", servicePriority=" + servicePriority +
-                ", creationDate=" + creationDate +
-                ", creator=" + creator +
-                ", contract=" + contract +
-                ", zipCode='" + zipCode + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", streetNumber=" + streetNumber +
-                ", active=" + active +
-                ", serviceInquiryList=" + inquiryList +
-                ", taskList=" + taskList +
-                ", equipmentList=" + equipmentList +
-                ", modifier=" + modifier +
-                ", updateDate=" + updateDate +
-                '}';
-    }
 }

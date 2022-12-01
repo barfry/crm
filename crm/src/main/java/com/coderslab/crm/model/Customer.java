@@ -322,31 +322,5 @@ public class Customer {
     public Customer() {
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", streetNumber=" + streetNumber +
-                ", zipCode='" + zipCode + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", webPage='" + webPage + '\'' +
-                ", province='" + province + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", contactPersonList=" + contactPersonList +
-                ", eventList=" + eventList +
-                ", machineList=" + machineList +
-                ", servicePriority=" + servicePriority +
-                ", contractList=" + contractList +
-                ", offerList=" + offerList +
-                ", categoryList=" + categoryList +
-                ", paymentList=" + paymentList +
-                ", updateDate=" + updateDate +
-                ", modifier=" + modifier +
-                ", active=" + active +
-                '}';
-    }
+
 }
