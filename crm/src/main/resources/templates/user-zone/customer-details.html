@@ -354,7 +354,7 @@
                                         <a>Edit</a>
                                     </th>
                                     <th scope="col">
-                                        <a>A/D</a>
+                                        <a>Details</a>
                                     </th>
                                 </tr>
                                 </thead>
@@ -368,7 +368,9 @@
                                     <td th:text="${inquiry.machineStatus}"></td>
                                     <td th:text="${inquiry.inquiryType}"></td>
                                     <td th:text="${inquiry.inquiryDate}"></td>
-                                    <td th:text="${inquiry.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis" th:title="${inquiry.description}"></td>
+                                    <td th:text="${inquiry.description}"
+                                        style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                        th:title="${inquiry.description}"></td>
                                     <td th:text="${inquiry.active}"></td>
                                     <td>
                                         <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">

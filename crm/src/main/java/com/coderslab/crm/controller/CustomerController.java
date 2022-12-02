@@ -84,7 +84,7 @@ public class CustomerController {
             return "user-zone/add-new-customer";
         }
 
-        customerService.addNewOrUpdateCustomer(customer);
+        customerService.addNewCustomer(customer);
 
         return "redirect:/customers";
     }
@@ -114,7 +114,7 @@ public class CustomerController {
             return "/user-zone/edit-customer";
         }
 
-        customerService.addNewOrUpdateCustomer(customer);
+        customerService.editCustomer(customer);
 
         return "redirect:/customers/customer-details?customerId=" + customer.getId();
     }

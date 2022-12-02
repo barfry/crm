@@ -88,18 +88,21 @@ public class Customer {
     @JoinTable(name = "customer_contracts", joinColumns =
         @JoinColumn(name = "customer_id"), inverseJoinColumns =
             @JoinColumn(name = "contract_id"))
+    @OrderBy("id asc")
     private Set<Contract> contractList;
 
     @OneToMany
     @JoinTable(name = "customer_offers",joinColumns =
         @JoinColumn(name = "customer_id"), inverseJoinColumns =
             @JoinColumn(name = "offer_id"))
+    @OrderBy("id asc")
     private Set<Offer> offerList;
 
     @ManyToMany
     @JoinTable(name = "customer_category", joinColumns =
         @JoinColumn(name = "customer_id"), inverseJoinColumns =
             @JoinColumn(name = "category_id"))
+    @OrderBy("id asc")
     private Set<Category> categoryList;
 
     @OneToMany
