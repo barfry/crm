@@ -169,20 +169,4 @@ public class ContactPerson {
     public ContactPerson() {
     }
 
-    @Override
-    public String toString() {
-        return "ContactPerson{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", position='" + position + '\'' +
-                ", stationaryPhoneNumber='" + stationaryPhoneNumber + '\'' +
-                ", mobilePhoneNumber='" + mobilePhoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", profile='" + profile + '\'' +
-                ", updateDate=" + updateDate +
-                ", modifier=" + modifier +
-                ", active=" + active +
-                '}';
-    }
 }

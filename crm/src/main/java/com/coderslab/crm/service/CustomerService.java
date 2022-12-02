@@ -36,11 +36,19 @@ public class CustomerService {
         return customerRepository.getById(id);
     }
 
-    public void addNewOrUpdateCustomer(Customer customer){
+    public void addNewCustomer(Customer customer){
         customer.setUpdateDate(LocalDate.now());
         customer.setModifier(userService.getCurrentUser());
 
         customerRepository.save(customer);
+    }
+
+    public Customer editCustomer(Customer customer){
+        customer.setContactPersonList(customerRepository.getById(customer.getId()).getContactPersonList());
+        customer.setUpdateDate(LocalDate.now());
+        customer.setModifier(userService.getCurrentUser());
+
+        return customerRepository.save(customer);
     }
 
     public Page<Customer> findCustomersBySearchWithPaginationAndSorting(int pageNo, int pageSize, String sortField, String sortDirection, CustomerFilter customerFilter){

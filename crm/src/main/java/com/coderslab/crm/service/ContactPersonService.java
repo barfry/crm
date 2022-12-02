@@ -34,7 +34,7 @@ public class ContactPersonService {
 
         customer.getContactPersonList().add(contactPerson);
 
-        customerService.addNewOrUpdateCustomer(customer);
+        customerService.addNewCustomer(customer);
     }
 
     public void editContactPerson(ContactPerson contactPerson){
