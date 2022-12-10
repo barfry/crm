@@ -1,5 +1,6 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -73,6 +74,8 @@ public class Customer {
     private Set<ContactPerson> contactPersonList;
 
     @OneToMany(mappedBy = "customer")
+    @OrderBy("active desc, start desc")
+    @JsonManagedReference
     private Set<Event> eventList;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add new event form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <div th:replace="user-zone/fragments/header :: header">
+  </div>
+</header>
+<form action="#" th:action="@{/customers/customer-details/edit-event}" th:object="${event}" method="post">
+  <div class="row g-3 mx-5 my-2">
+    <input type="hidden" th:field="*{id}" id="id">
+    <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
+    <div class="col-md-auto">
+      <label>Type</label>
+      <select th:field="*{type}">
+        <option th:value="'CALL'">CALL</option>
+        <option th:value="'CONSULTATIVE VISIT'">CONSULTATIVE VISIT</option>
+        <option th:value="'COURTESY VISIT'">COURTESY VISIT</option>
+        <option th:value="'PREVENTIVE VISIT'">PREVENTIVE VISIT</option>
+        <option th:value="'NEGOTIATIONS'">NEGOTIATIONS</option>
+      </select>
+    </div>
+    <div class="col-md-auto">
+      <label>Main user</label>
+      <span th:text="${mainUser.firstName + ' ' + mainUser.lastName}"></span>
+    </div>
+    <div class="col-md-auto">
+      <label>Assisting user</label>
+      <select th:field="*{assistingUser}">
+        <option th:each="u : ${users}" th:value="${u.id}"
+                th:text="${u.firstName + ' ' + u.lastName}"></option>
+      </select>
+    </div>
+  </div>
+  <div class="row g-3 mx-5 my-2">
+    <div class="col-md-auto">
+      <label for="start" class="form-label">Event start</label>
+      <input type="datetime-local" th:field="*{start}" class="form-control" id="start"
+             placeholder="Event start">
+      <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
+    </div>
+    <div class="col-md-auto">
+      <label for="end" class="form-label">Event end</label>
+      <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
+             placeholder="Event end">
+      <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+    </div>
+    <div class="col-md-a">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
+      <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+    </div>
+    <div class="col-md-auto">
+      <label for="description" class="form-label">Description</label>
+      <textarea type="text" rows="5" cols="50" th:field="*{description}" class="form-control" id="description"
+                placeholder="Description"></textarea>
+      <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+    </div>
+    <div class="col-md-a">
+      <button type="submit" class="btn btn-danger">Save</button>
+    </div>
+  </div>
+</form>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.coderslab.crm.controller;
 
 import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.model.*;
+import com.coderslab.crm.repository.RoleRepository;
 import com.coderslab.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,14 +26,22 @@ public class CustomerController {
     MachineService machineService;
     TypeService typeService;
     InquiryService inquiryService;
+    UserService userService;
+    EventService eventService;
+    RoleService roleService;
+    RoleRepository roleRepository;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService, UserService userService, EventService eventService, RoleService roleService, RoleRepository roleRepository) {
         this.customerService = customerService;
         this.categoryService = categoryService;
         this.contactPersonService = contactPersonService;
         this.machineService = machineService;
         this.typeService = typeService;
         this.inquiryService = inquiryService;
+        this.userService = userService;
+        this.eventService = eventService;
+        this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("")
@@ -93,6 +102,7 @@ public class CustomerController {
     public String customerDetailsPage(@RequestParam(value = "customerId") Long customerId, Model model){
 
         model.addAttribute("customer", customerService.getCustomerById(customerId));
+        model.addAttribute("currentUserId", userService.getCurrentUser().getId());
 
         return "user-zone/customer-details";
     }
@@ -285,6 +295,77 @@ public class CustomerController {
         inquiryService.editInquiry(inquiry);
 
         return "redirect:/customers/customer-details?customerId=" +customerId;
+    }
+
+    @GetMapping("/customer-details/add-new-event")
+    public String initAddNewEventPage(@RequestParam(name = "customerId") Long customerId, Model model){
+        model.addAttribute("event", new Event());
+        model.addAttribute("mainUser", userService.getCurrentUser());
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("users", userService.getActiveUsers());
+
+        return "/user-zone/add-new-event";
+    }
+
+    @PostMapping("/customer-details/add-new-event")
+    public String addNewEventPage(@RequestParam(name = "customerId") Long customerId, @Valid Event event, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("event", event);
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("users", userService.getActiveUsers());
+
+            return "/user-zone/add-new-event";
+        }
+
+        eventService.addNewEvent(event, customerId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/edit-event")
+    public String initEditEventPage(@RequestParam(name = "customerId") Long customerId, @RequestParam(name = "eventId") Long eventId, Model model){
+
+        model.addAttribute("event", eventService.getEventById(eventId));
+        model.addAttribute("mainUser", userService.getCurrentUser());
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("users", userService.getActiveUsers());
+
+        return "/user-zone/edit-event";
+    }
+
+    @PostMapping("/customer-details/edit-event")
+    public String editEvent(@RequestParam(name = "customerId") Long customerId, @Valid Event event, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("event", event);
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("users", userService.getActiveUsers());
+
+            return "/user-zone/edit-event";
+        }
+
+        eventService.editEvent(event);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/complete-event")
+    public String initCompleteEventPage(@RequestParam(name = "eventId") Long eventId, @RequestParam(name = "customerId") Long customerId, Model model){
+        model.addAttribute("event", eventService.getEventById(eventId));
+        model.addAttribute("customerId", customerId);
+        return "/user-zone/complete-event";
+    }
+
+    @PostMapping("/customer-details/complete-event")
+    public String completeEvent(@RequestParam(name = "customerId") Long customerId, @Valid Event event, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("event", event);
+            model.addAttribute("customerId", customerId);
+            return "/user-zone/complete-event";
+        }
+
+        eventService.completeEvent(event);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
     }
 
 }

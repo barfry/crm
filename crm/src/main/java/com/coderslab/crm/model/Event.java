@@ -1,5 +1,7 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +25,8 @@ public class Event {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false)
+    @JsonBackReference
     private Customer customer;
 
     @NotNull
@@ -30,16 +34,19 @@ public class Event {
     @Length(min = 2, max = 20, message = "This field should contain from 2 up to 20 characters")
     private String type;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_responsible_users", joinColumns =
-        @JoinColumn(name = "user_id"), inverseJoinColumns =
-            @JoinColumn(name = "event_id"))
-    private Set<User> responsibleUsers;
+    @ManyToOne
+    @JoinColumn(name = "main_user_id", referencedColumnName = "id", updatable = false)
+    private User mainUser;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate eventDate;
+    @ManyToOne
+    @JoinColumn(name = "assisting_user_id", referencedColumnName = "id")
+    private User assistingUser;
 
-    private LocalTime eventTime;
+    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime start;
+
+    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime end;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -54,16 +61,11 @@ public class Event {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reminderDate;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
     @Length(min = 2, max = 80, message = "This field should contain from 2 up to 20 characters")
     private String commentAfterEvent;
 
-    @OneToOne
-    @JoinColumn(name = "creator_id")
-    private User creator;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(updatable = false)
     private LocalDate creationDate;
 
     @OneToOne
@@ -99,28 +101,36 @@ public class Event {
         this.type = type;
     }
 
-    public Set<User> getResponsibleUsers() {
-        return responsibleUsers;
+    public User getMainUser() {
+        return mainUser;
     }
 
-    public void setResponsibleUsers(Set<User> responsibleUsers) {
-        this.responsibleUsers = responsibleUsers;
+    public void setMainUser(User mainUser) {
+        this.mainUser = mainUser;
     }
 
-    public LocalDate getEventDate() {
-        return eventDate;
+    public User getAssistingUser() {
+        return assistingUser;
     }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
+    public void setAssistingUser(User assistingUser) {
+        this.assistingUser = assistingUser;
     }
 
-    public LocalTime getEventTime() {
-        return eventTime;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setEventTime(LocalTime eventTime) {
-        this.eventTime = eventTime;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
     public String getTitle() {
@@ -155,14 +165,6 @@ public class Event {
         this.commentAfterEvent = commentAfterEvent;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
     public LocalDate getCreationDate() {
         return creationDate;
     }
@@ -195,18 +197,18 @@ public class Event {
         this.active = active;
     }
 
-    public Event(Long id, Customer customer, String type, Set<User> responsibleUsers, LocalDate eventDate, LocalTime eventTime, String title, String description, LocalDate reminderDate, String commentAfterEvent, User creator, LocalDate creationDate, User modifier, LocalDate updateDate, Boolean active) {
+    public Event(Long id, Customer customer, String type, User mainUser, User assistingUser, LocalDateTime start, LocalDateTime end, String title, String description, LocalDate reminderDate, String commentAfterEvent, LocalDate creationDate, User modifier, LocalDate updateDate, Boolean active) {
         this.id = id;
         this.customer = customer;
         this.type = type;
-        this.responsibleUsers = responsibleUsers;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.mainUser = mainUser;
+        this.assistingUser = assistingUser;
+        this.start = start;
+        this.end = end;
         this.title = title;
         this.description = description;
         this.reminderDate = reminderDate;
         this.commentAfterEvent = commentAfterEvent;
-        this.creator = creator;
         this.creationDate = creationDate;
         this.modifier = modifier;
         this.updateDate = updateDate;
@@ -216,24 +218,4 @@ public class Event {
     public Event() {
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", type='" + type + '\'' +
-                ", responsibleUsers=" + responsibleUsers +
-                ", eventDate=" + eventDate +
-                ", eventTime=" + eventTime +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", reminderDate=" + reminderDate +
-                ", commentAfterEvent='" + commentAfterEvent + '\'' +
-                ", creator=" + creator +
-                ", creationDate=" + creationDate +
-                ", modifier=" + modifier +
-                ", updateDate=" + updateDate +
-                ", active=" + active +
-                '}';
-    }
 }

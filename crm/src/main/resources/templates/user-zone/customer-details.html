@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Customer details</title>
@@ -9,12 +9,46 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/main.css" th:href="@{/css/tooltip.css}" rel="stylesheet"/>
+    <link href="http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.css"
+          th:href="@{/webjars/fullcalendar/2.2.5/fullcalendar.css}" rel="stylesheet"></link>
+    <link href="http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.print.css"
+          th:href="@{/webjars/fullcalendar/2.2.5/fullcalendar.print.css}" rel="stylesheet" media="print"></link>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"
+            th:src="@{/webjars/momentjs/2.9.0/min/moment.min.js}" type="text/javascript"></script>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.3/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.3/jquery.min.js}" type="text/javascript"></script>
+    <script src="http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.min.js"
+            th:src="@{/webjars/fullcalendar/2.2.5/fullcalendar.min.js}" type="text/javascript"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultDate: Date.now(),
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: {
+                    url: '/events?customerId=' + [[${customer.id}]],
+                    type: 'GET',
+                    error: function () {
+                        alert('there was an error while fetching events!');
+                    },
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
 <header>
     <div th:replace="user-zone/fragments/header :: header">
     </div>
 </header>
+
 <div class="container-fluid mt-2">
     <div class="main-body">
         <div class="row gutters-sm">
@@ -114,7 +148,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="contact, i : ${customer.contactPersonList}"
-                                th:if="${i.index}<6">
+                                th:if="${i.index}<6" th:style="${contact.active} == false ? 'color: grey' : ''">
                                 <td th:text="${contact.firstName + ' ' + contact.lastName}"></td>
                                 <td th:text="${contact.email}"></td>
                                 <td th:text="${contact.mobilePhoneNumber}"></td>
@@ -303,6 +337,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h6 class="d-flex align-items-center mb-3">Calendar</h6>
+                            <div id='calendar' th:id="calendar"></div>
                         </div>
                     </div>
                 </div>
@@ -591,15 +626,134 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-
+                                <tr th:each="event, i : ${customer.eventList}"
+                                    th:if="${i.index}<6" th:style="${event.active} == false ? 'color: grey' : ''">
+                                    <td th:text="${event.type}"></td>
+                                    <td th:text="${event.title}"></td>
+                                    <td th:text="${event.mainUser.nickname}"></td>
+                                    <td th:text="${event.assistingUser.nickname}"></td>
+                                    <td th:text="${#temporals.format(event.start, 'dd-MM-yyyy')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="row mt-3">
                                 <div class="col-auto">
-                                    <a class="btn btn-danger btn-sm">More</a>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#eventModal">
+                                        More
+                                    </button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="eventModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="eventModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel">All contacts</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Title</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Description</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Main user</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Assisting user</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Start</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>End</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Complete</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                    <tr th:each="event : ${customer.eventList}"
+                                        th:style="${event.active} == false ? 'color: grey' : ''">
+                                        <td th:text="${event.type}"></td>
+                                        <td th:text="${event.title}"></td>
+                                        <td th:text="${event.description}"
+                                            style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                            th:title="${event.description}"></td>
+                                        <td th:text="${event.mainUser.firstName + ' ' + event.mainUser.lastName}"></td>
+                                        <td th:text="${event.assistingUser.firstName + ' ' + event.assistingUser.lastName}"></td>
+                                        <td th:text="${#temporals.format(event.start, 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${#temporals.format(event.end, 'dd-MM-yyyy')}"></td>
+                                        <td>
+                                            <form th:action="@{/customers/customer-details/edit-event}" method="get">
+                                                <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <div th:switch="${event.mainUser.id == currentUserId}">
+                                                    <input th:case="true" type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                                    <input th:case="false" rel="tooltip" title="The event can be only edited by its creator" type="button" value="Edit" class="btn btn-secondary btn-sm disabled tooltip-button">
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <div th:if="${event.active eq true}">
+                                                <form th:action="@{/customers/customer-details/complete-event}"
+                                                      method="get">
+                                                    <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <div th:switch="${event.mainUser.id == currentUserId}">
+                                                        <input th:case="true" type="submit" value="Complete"
+                                                               class="btn btn-danger btn-sm"
+                                                               th:data-complete-event="|Please confirm completing event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}. Comment after the vent is required, fill the next form.|"
+                                                               onclick="if (!confirm(this.getAttribute('data-complete-event'))) return false"/>
+                                                        <input th:case="false" type="button" value="Disable" rel="tooltip"
+                                                               class="btn btn-secondary btn-sm tooltip-button disabled"
+                                                               title="Only creator of the event can complete it"/>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div th:if="${event.active eq false}">
+                                                <form th:action="@{/customers/customer-details/complete-event}"
+                                                      method="post">
+                                                    <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <input type="submit" value="Activate" class="btn btn-danger btn-sm"
+                                                           th:data-activate-event="|Please confirm activating event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}|"
+                                                           onclick="if (!confirm(this.getAttribute('data-activate-event'))) return false"/>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{/customer-details/event-details}" method="get">
+                                                <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -659,5 +813,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
 </body>
 </html>
