@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -51,6 +48,10 @@ public class UserService implements UserDetailsService {
         user.setEnabled(true);
         roleService.assignUserRole(user);
         userRepository.save(user);
+    }
+
+    public List<User> getActiveUsers(){
+        return userRepository.getAllByEnabledTrue();
     }
 
     public void deleteUserById(Long id){

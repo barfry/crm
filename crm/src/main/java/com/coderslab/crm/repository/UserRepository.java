@@ -34,4 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Query(value = "SELECT u FROM User u JOIN Role r WHERE r.id = ?1")
     List<User> getUsersByRoleId(Long id);
 
+    List<User> getAllByEnabledTrue();
+
 }

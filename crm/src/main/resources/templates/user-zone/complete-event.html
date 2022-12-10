@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add new event form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <div th:replace="user-zone/fragments/header :: header">
+  </div>
+</header>
+<form action="#" th:action="@{/customers/customer-details/complete-event}" th:object="${event}" method="post">
+  <div class="row g-3 mx-5 my-2">
+    <input type="hidden" th:field="*{id}" id="id">
+    <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
+    <div class="col-md-auto">
+      <label>Type</label>
+      <span th:text="*{type}"></span>
+      <input type="hidden" th:field="*{type}">
+    </div>
+    <div class="col-md-auto">
+      <label>Main user</label>
+      <span th:text="*{mainUser.firstName + ' ' + mainUser.lastName}"></span>
+      <input type="hidden" th:field="*{mainUser}">
+    </div>
+    <div class="col-md-auto">
+      <label>Assisting user</label>
+      <span th:text="*{assistingUser.firstName + ' ' + assistingUser.lastName}"></span>
+      <input type="hidden" th:field="*{assistingUser}">
+    </div>
+  </div>
+  <div class="row g-3 mx-5 my-2">
+    <div class="col-md-auto">
+      <label>Event start</label>
+      <span th:text="${#temporals.format(event.start, 'dd-MM-yyyy HH:mm')}"></span>
+      <input type="hidden" th:field="*{start}">
+    </div>
+    <div class="col-md-auto">
+      <label>Event end</label>
+      <span th:text="${#temporals.format(event.end, 'dd-MM-yyyy HH:mm')}"></span>
+      <input type="hidden" th:field="*{end}">
+    </div>
+    <div class="col-md-a">
+      <label>Title</label>
+      <span th:text="*{title}"></span>
+      <input type="hidden" th:field="*{title}">
+    </div>
+    <div class="col-md-auto">
+      <label>Description</label>
+      <span th:text="*{description}"></span>
+      <input type="hidden" th:field="*{description}">
+    </div>
+    <div class="col-md-auto">
+      <label for="commentAfterEvent" class="form-label">Comment after event</label>
+      <textarea type="text" rows="5" cols="50" th:field="*{commentAfterEvent}" class="form-control" id="commentAfterEvent"
+                placeholder="Comment after event"></textarea>
+      <span th:if="${#fields.hasErrors('commentAfterEvent')}" th:errors="*{commentAfterEvent}"></span>
+    </div>
+    <div class="col-md-a">
+      <button type="submit" class="btn btn-danger">Save</button>
+    </div>
+  </div>
+</form>
+</body>
+</html>
