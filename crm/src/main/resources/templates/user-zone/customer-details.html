@@ -327,8 +327,90 @@
                                     </button>
                                 </div>
                                 <div class="col-auto">
-                                    <a th:text="'All inquiries: ?????'"></a>
+                                    <a th:text="'All inquiries: ' + ${countInquiries}"></a>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="inquiryModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="inquiryModalLabel">All inquiries</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Machine</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Status</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Inquiry date</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Description</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Active</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody th:each="machine : ${customer.machineList}">
+                                    <tr th:each="inquiry : ${machine.inquiryList}"
+                                        th:style="${inquiry.active} == false ? 'color: grey' : ''">
+                                        <td th:text="${inquiry.id}"></td>
+                                        <td th:text="${machine.type.name}"></td>
+                                        <td th:text="${machine.serialNumber}"></td>
+                                        <td th:text="${inquiry.machineStatus}"></td>
+                                        <td th:text="${inquiry.inquiryType}"></td>
+                                        <td th:text="${inquiry.inquiryDate}"></td>
+                                        <td th:text="${inquiry.description}"
+                                            style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                            th:title="${inquiry.description}"></td>
+                                        <td th:text="${inquiry.active}"></td>
+                                        <td>
+                                            <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">
+                                                <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{/customers/customer-details/inquiry-details}"
+                                                  method="get">
+                                                <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
+                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -345,85 +427,6 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h6 class="d-flex align-items-center mb-3">Map</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="inquiryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                 aria-labelledby="inquiryModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="inquiryModalLabel">All inquiries</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
-                                <thead>
-                                <tr>
-                                    <th scope="col">
-                                        <a>Id</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Machine</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Serial number</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Status</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Type</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Inquiry date</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Description</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Active</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Edit</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Details</a>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tbody th:each="machine : ${customer.machineList}">
-                                <tr th:each="inquiry : ${machine.inquiryList}"
-                                    th:style="${inquiry.active} == false ? 'color: grey' : ''">
-                                    <td th:text="${inquiry.id}"></td>
-                                    <td th:text="${machine.type.name}"></td>
-                                    <td th:text="${machine.serialNumber}"></td>
-                                    <td th:text="${inquiry.machineStatus}"></td>
-                                    <td th:text="${inquiry.inquiryType}"></td>
-                                    <td th:text="${inquiry.inquiryDate}"></td>
-                                    <td th:text="${inquiry.description}"
-                                        style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
-                                        th:title="${inquiry.description}"></td>
-                                    <td th:text="${inquiry.active}"></td>
-                                    <td>
-                                        <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">
-                                            <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
-                                            <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                            <input type="submit" value="Edit" class="btn btn-danger btn-sm">
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form th:action="@{/customers/customer-details/inquiry-details}" method="get">
-                                            <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
-                                            <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                            <input type="submit" value="Details" class="btn btn-danger btn-sm">
-                                        </form>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -484,6 +487,9 @@
                                     data-bs-target="#machineModal">
                                 More
                             </button>
+                            <div class="col-auto">
+                                <a th:text="'All machines: ' + ${#lists.size(customer.machineList)}"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -493,7 +499,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="machineModalLabel">All contacts</h5>
+                                <h5 class="modal-title" id="machineModalLabel">All machines</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
@@ -537,7 +543,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
                                     <tr th:each="machine : ${customer.machineList}"
                                         th:style="${machine.active} == false ? 'color: grey' : ''">
                                         <td th:text="${machine.type.name}"></td>
@@ -643,6 +648,9 @@
                                         More
                                     </button>
                                 </div>
+                                <div class="col-auto">
+                                    <a th:text="'All events: ' + ${#lists.size(customer.eventList)}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -653,7 +661,7 @@
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="eventModalLabel">All contacts</h5>
+                                <h5 class="modal-title" id="eventModalLabel">All events</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
@@ -694,7 +702,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
                                     <tr th:each="event : ${customer.eventList}"
                                         th:style="${event.active} == false ? 'color: grey' : ''">
                                         <td th:text="${event.type}"></td>
@@ -711,8 +718,12 @@
                                                 <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                 <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                 <div th:switch="${event.mainUser.id == currentUserId}">
-                                                    <input th:case="true" type="submit" value="Edit" class="btn btn-danger btn-sm">
-                                                    <input th:case="false" rel="tooltip" title="The event can be only edited by its creator" type="button" value="Edit" class="btn btn-secondary btn-sm disabled tooltip-button">
+                                                    <input th:case="true" type="submit" value="Edit"
+                                                           class="btn btn-danger btn-sm">
+                                                    <input th:case="false" rel="tooltip"
+                                                           title="The event can be only edited by its creator"
+                                                           type="button" value="Edit"
+                                                           class="btn btn-secondary btn-sm disabled tooltip-button">
                                                 </div>
                                             </form>
                                         </td>
@@ -727,20 +738,27 @@
                                                                class="btn btn-danger btn-sm"
                                                                th:data-complete-event="|Please confirm completing event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}. Comment after the vent is required, fill the next form.|"
                                                                onclick="if (!confirm(this.getAttribute('data-complete-event'))) return false"/>
-                                                        <input th:case="false" type="button" value="Disable" rel="tooltip"
+                                                        <input th:case="false" type="button" value="Disable"
+                                                               rel="tooltip"
                                                                class="btn btn-secondary btn-sm tooltip-button disabled"
                                                                title="Only creator of the event can complete it"/>
                                                     </div>
                                                 </form>
                                             </div>
                                             <div th:if="${event.active eq false}">
-                                                <form th:action="@{/customers/customer-details/complete-event}"
+                                                <form th:action="@{/customers/customer-details/activate-event}"
                                                       method="post">
                                                     <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                     <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                    <input type="submit" value="Activate" class="btn btn-danger btn-sm"
+                                                    <div th:switch="${event.mainUser.id == currentUserId}">
+                                                    <input th:case="true" type="submit" value="Activate" class="btn btn-danger btn-sm"
                                                            th:data-activate-event="|Please confirm activating event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}|"
                                                            onclick="if (!confirm(this.getAttribute('data-activate-event'))) return false"/>
+                                                        <input th:case="false" type="button" value="Disable"
+                                                               rel="tooltip"
+                                                               class="btn btn-secondary btn-sm tooltip-button disabled"
+                                                               title="Only creator of the event can activate it"/>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </td>
@@ -787,24 +805,126 @@
                                     <th scope="col">
                                         <a>Date</a>
                                     </th>
-                                    <th scope="col">
-                                        <a>Main technician</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Confirmed</a>
-                                    </th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-
-                                </tr>
+                                <tbody th:each="machine : ${customer.machineList}">
+                                <th:block th:each="inquiry : ${machine.inquiryList}">
+                                    <tr th:each="intervention : ${inquiry.interventionList}"
+                                        th:style="${intervention.active} == false ? 'color: grey' : ''">
+                                        <td th:text="${intervention.id}"></td>
+                                        <td th:text="${inquiry.machine.type.name}"></td>
+                                        <td th:text="${inquiry.machine.serialNumber}"></td>
+                                        <td th:text="${#temporals.format(intervention.start, 'dd-MM-yyyy')}"></td>
+                                    </tr>
+                                </th:block>
                                 </tbody>
                             </table>
                             <div class="row mt-3">
                                 <div class="col-auto">
-                                    <a class="btn btn-danger btn-sm">More</a>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#interventionModal">
+                                        More
+                                    </button>
                                 </div>
+                                <div class="col-auto">
+                                    <a th:text="'All interventions: ???????????? ' + ${#lists.size(customer.contactPersonList)}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="interventionModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="interventionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="interventionModalLabel">All interventions</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Machine</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Technician</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Assistant</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Assistant2</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Start date</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>End date</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Confirmed</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Spare parts</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody th:each="machine : ${customer.machineList}">
+                                    <th:block th:each="inquiry : ${machine.inquiryList}">
+                                        <tr th:each="intervention : ${inquiry.interventionList}"
+                                            th:style="${intervention.active} == false ? 'color: grey' : ''">
+                                            <td th:text="${intervention.id}"></td>
+                                            <td th:text="${inquiry.machine.type.name}"></td>
+                                            <td th:text="${inquiry.machine.serialNumber}"></td>
+                                            <td th:text="${intervention.technician.firstName + ' ' + intervention.technician.lastName}"></td>
+                                            <td th:text="${intervention.assistant ne null} ? ${intervention.assistant.firstName + ' ' + intervention.assistant.lastName} : '----'"></td>
+                                            <td th:text="${intervention.assistant2 ne null} ? ${intervention.assistant2.firstName + ' ' + intervention.assistant2.lastName} : '----'"></td>
+                                            <td th:text="${#temporals.format(intervention.start, 'dd-MM-yyyy')}"></td>
+                                            <td th:text="${#temporals.format(intervention.end, 'dd-MM-yyyy')}"></td>
+                                            <td th:text="${intervention.confirmed}"></td>
+                                            <td th:text="${intervention.spareParts}"></td>
+                                            <td>
+                                                <form th:action="@{/customers/customer-details/edit-intervention}" method="get">
+                                                    <input type="hidden" name="interventionId" th:value="${intervention.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <div th:switch="${currentUserPrivileges.service == true}">
+                                                        <input th:case="true" type="submit" value="Edit"
+                                                               class="btn btn-danger btn-sm">
+                                                        <input th:case="false" rel="tooltip"
+                                                               title="Interventions can be only edited by authorized users"
+                                                               type="button" value="Edit"
+                                                               class="btn btn-secondary btn-sm disabled tooltip-button">
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form th:action="@{/customer-details/intervention-details}" method="get">
+                                                    <input type="hidden" name="interventionId" th:value="${intervention.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                                                    <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

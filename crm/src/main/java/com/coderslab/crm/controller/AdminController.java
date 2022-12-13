@@ -43,7 +43,7 @@ public class AdminController {
         this.privilegeRepository = privilegeRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showAdminIndex(){
         return "admin-zone/admin-index";
     }

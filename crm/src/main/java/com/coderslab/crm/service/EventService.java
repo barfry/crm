@@ -55,4 +55,12 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    public void activateEvent(Long eventId){
+        Event event = eventRepository.getById(eventId);
+        event.setActive(true);
+        event.setModifier(userService.getCurrentUser());
+        event.setUpdateDate(LocalDate.now());
+        eventRepository.save(event);
+    }
+
 }
