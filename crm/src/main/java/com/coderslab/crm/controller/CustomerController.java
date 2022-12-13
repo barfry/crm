@@ -29,9 +29,9 @@ public class CustomerController {
     UserService userService;
     EventService eventService;
     RoleService roleService;
-    RoleRepository roleRepository;
+    InterventionService interventionService;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService, UserService userService, EventService eventService, RoleService roleService, RoleRepository roleRepository) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService, UserService userService, EventService eventService, RoleService roleService, InterventionService interventionService) {
         this.customerService = customerService;
         this.categoryService = categoryService;
         this.contactPersonService = contactPersonService;
@@ -41,7 +41,7 @@ public class CustomerController {
         this.userService = userService;
         this.eventService = eventService;
         this.roleService = roleService;
-        this.roleRepository = roleRepository;
+        this.interventionService = interventionService;
     }
 
     @GetMapping("")
@@ -102,7 +102,9 @@ public class CustomerController {
     public String customerDetailsPage(@RequestParam(value = "customerId") Long customerId, Model model){
 
         model.addAttribute("customer", customerService.getCustomerById(customerId));
+        model.addAttribute("countInquiries", inquiryService.countInquiriesByCustomerId(customerId));
         model.addAttribute("currentUserId", userService.getCurrentUser().getId());
+        model.addAttribute("currentUserPrivileges", userService.getCurrentUser().getDepartment().getPrivilege());
 
         return "user-zone/customer-details";
     }
@@ -368,4 +370,37 @@ public class CustomerController {
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }
 
+    @PostMapping("/customer-details/activate-event")
+    public String activateEvent(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "eventId") Long eventId, Model model) {
+
+        eventService.activateEvent(eventId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/add-new-intervention")
+    public String initAddNewInterventionPage(@RequestParam(name = "customerId") Long customerId, Model model){
+        model.addAttribute("intervention", new Intervention());
+        model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("service", userService.usersWithServicePrivilege());
+
+        return "/user-zone/add-new-intervention";
+    }
+
+    @PostMapping("/customer-details/add-new-intervention")
+    public String addNewIntervention(@RequestParam(name = "customerId") Long customerId, @RequestParam(name = "inquiryId") String inquiryId , @Valid Intervention intervention, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("intervention", new Intervention());
+            model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("service", userService.usersWithServicePrivilege());
+
+            return "/user-zone/add-new-intervention";
+        }
+
+        interventionService.addNewIntervention(intervention, inquiryId);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
 }

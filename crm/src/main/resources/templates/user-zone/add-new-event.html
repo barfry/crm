@@ -54,11 +54,11 @@
                placeholder="Event end">
         <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
       </div>
-      <div class="col-md-a">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
-        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
-      </div>
+        <div class="col-md-a">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+        </div>
         <div class="col-md-auto">
             <label for="description" class="form-label">Description</label>
             <textarea type="text" rows="5" cols="50" th:field="*{description}" class="form-control" id="description"
