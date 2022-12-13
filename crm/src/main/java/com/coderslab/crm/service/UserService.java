@@ -50,6 +50,10 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public List<User> usersWithServicePrivilege(){
+        return userRepository.getUsersByDepartmentServicePrivilege();
+    }
+
     public List<User> getActiveUsers(){
         return userRepository.getAllByEnabledTrue();
     }

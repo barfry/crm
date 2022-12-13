@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new inquiry form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<header>
+    <div th:replace="user-zone/fragments/header :: header">
+    </div>
+</header>
+<form action="#" th:action="@{/customers/customer-details/add-new-intervention}" th:object="${intervention}"
+      method="post">
+    <div class="row g-3 mx-5 my-2">
+        <input type="hidden" th:field="*{id}" id="id">
+        <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
+        <div class="col-md-auto">
+            <label>Machine</label>
+            <select data-child="inquiryId" class="selectdata form-control custom-select">
+                <option value="" disabled selected>Select your option</option>
+                <option th:each="m : ${machines}" th:value="${m.id}"
+                        th:text="${m.type.name + ' s/n: ' + m.serialNumber}"></option>
+            </select>
+        </div>
+        <div class="col-md-auto">
+            <label class="form-label" >Inquiry</label>
+            <select data-child="niv2" class="selectdata form-control custom-select" id="inquiryId" name="inquiryId">
+                <th:block th:each="m : ${machines}">
+                    <option value="" disabled selected>Select your option</option>
+                    <option th:each="i : ${m.inquiryList}" th:if="${i.active == true}" th:value="${m.id + '-' + i.id}"
+                            th:text="${i.id + ' ' + i.inquiryType}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="col-md-auto">
+            <label>Main technician</label>
+            <select th:field="*{technician}">
+                <option value="" disabled selected>Select your option</option>
+                <option th:each="s : ${service}" th:value="${s.id}"
+                        th:text="${s.firstName + ' ' + s.lastName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('technician')}" th:errors="*{techncian}"></span>
+        </div>
+        <div class="col-md-auto">
+            <label>Assisting user</label>
+            <select th:field="*{assistant}">
+                <option value="" selected>Select your option</option>
+                <option th:each="s : ${service}" th:value="${s.id}"
+                        th:text="${s.firstName + ' ' + s.lastName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}"></span>
+        </div>
+        <div class="col-md-auto">
+            <label>Assisting user</label>
+            <select th:field="*{assistant2}">
+                <option value="" selected>Select your option</option>
+                <option th:each="s : ${service}" th:value="${s.id}"
+                        th:text="${s.firstName + ' ' + s.lastName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('assistant2')}" th:errors="*{assistant2}"></span>
+        </div>
+        <div class="col-md-auto">
+            <label for="start" class="form-label">Intervention start</label>
+            <input type="datetime-local" th:field="*{start}" class="form-control" id="start"
+                   placeholder="Event start">
+            <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
+        </div>
+        <div class="col-md-auto">
+            <label for="end" class="form-label">Intervention end</label>
+            <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
+                   placeholder="Event end">
+            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+        </div>
+        <div class="col-md-auto">
+            <label>Confirmed</label>
+            <select th:field="*{confirmed}">
+                <option th:value="true">YES</option>
+                <option th:value="false">NO</option>
+            </select>
+        </div>
+        <div class="col-md-auto">
+            <label>Spare parts</label>
+            <select th:field="*{spareParts}">
+                <option th:value="true">YES</option>
+                <option th:value="false">NO</option>
+            </select>
+        </div>
+        <div class="col-md-a">
+            <button type="submit" class="btn btn-danger">Save</button>
+        </div>
+    </div>
+</form>
+<script>
+    $("[data-child]").change(function () {
+        const selectedGroup = $(this).val();
+        var $childSelect = $("#" + $(this).attr("data-child"));
+        value = $childSelect.find('option').hide()
+            .filter(function (i, e) {
+                return $(e).val().startsWith(selectedGroup)
+            }).show().eq(0).val();
+        $childSelect.val(value);
+        $childSelect.trigger('change');
+    });
+
+    $("[data-child]").eq(0).trigger('change');
+</script>
+</body>
+</html>

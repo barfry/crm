@@ -36,4 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     List<User> getAllByEnabledTrue();
 
+    @Query(value = "SELECT * FROM users JOIN departments d on users.department_id = d.id JOIN privileges p on d.privilege_id = p.id WHERE service=true", nativeQuery = true)
+    List<User> getUsersByDepartmentServicePrivilege();
+
 }

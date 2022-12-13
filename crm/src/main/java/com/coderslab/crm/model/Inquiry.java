@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "service_inquiries")
+@Table(name = "inquiries")
 public class Inquiry {
 
     @Id
@@ -46,9 +46,6 @@ public class Inquiry {
     private String comment;
 
     @OneToMany
-    @JoinTable(name = "inquiry_interventions", joinColumns =
-        @JoinColumn(name = "inquiry_id"), inverseJoinColumns =
-            @JoinColumn(name = "intervention_id"))
     private Set<Intervention> interventionList;
 
     public Long getId() {

@@ -2,11 +2,13 @@ package com.coderslab.crm.model;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,29 +20,30 @@ public class Intervention {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    private Inquiry inquiry;
+
+    @ManyToOne
+    @NotNull
     @JoinColumn(name = "technician_id")
     private User technician;
 
-    @OneToOne
-    @JoinColumn(name = "assistant_id")
+    @ManyToOne
+    @JoinColumn(name = "assistant_id", nullable = true)
     private User assistant;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "assistant2_id")
     private User assistant2;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime start;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime end;
 
     private Boolean confirmed = false;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
-    @Length(min = 2, max = 300, message = "This field should contain from 2 up to 300 characters")
     private String notice;
 
     private Boolean spareParts = false;
@@ -53,6 +56,14 @@ public class Intervention {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Inquiry getInquiry() {
+        return inquiry;
+    }
+
+    public void setInquiry(Inquiry inquiry) {
+        this.inquiry = inquiry;
     }
 
     public User getTechnician() {
@@ -79,20 +90,20 @@ public class Intervention {
         this.assistant2 = assistant2;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
     public Boolean getConfirmed() {
@@ -127,13 +138,13 @@ public class Intervention {
         this.active = active;
     }
 
-    public Intervention(Long id, User technician, User assistant, User assistant2, LocalDate startDate, LocalDate endDate, Boolean confirmed, String notice, Boolean spareParts, Boolean active) {
+    public Intervention(Long id, User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, String notice, Boolean spareParts, Boolean active) {
         this.id = id;
         this.technician = technician;
         this.assistant = assistant;
         this.assistant2 = assistant2;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.start = start;
+        this.end = end;
         this.confirmed = confirmed;
         this.notice = notice;
         this.spareParts = spareParts;
@@ -143,19 +154,4 @@ public class Intervention {
     public Intervention() {
     }
 
-    @Override
-    public String toString() {
-        return "Intervention{" +
-                "id=" + id +
-                ", technician=" + technician +
-                ", assistant=" + assistant +
-                ", assistant2=" + assistant2 +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", confirmed=" + confirmed +
-                ", notice='" + notice + '\'' +
-                ", spareParts=" + spareParts +
-                ", active=" + active +
-                '}';
-    }
 }
