@@ -397,7 +397,14 @@
                                             <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">
                                                 <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
                                                 <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                                <div th:switch="${currentUserPrivileges.service == true}">
+                                                    <input th:case="true" type="submit" value="Edit"
+                                                           class="btn btn-danger btn-sm">
+                                                    <input th:case="false" rel="tooltip"
+                                                           title="Inquiries can be only edited by authorized users"
+                                                           type="button" value="Edit"
+                                                           class="btn btn-secondary btn-sm disabled tooltip-button">
+                                                </div>
                                             </form>
                                         </td>
                                         <td>
@@ -483,12 +490,16 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#machineModal">
-                                More
-                            </button>
-                            <div class="col-auto">
-                                <a th:text="'All machines: ' + ${#lists.size(customer.machineList)}"></a>
+                            <div class="row mt-3">
+                                <div class="col-auto me-auto">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#machineModal">
+                                        More
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:text="'All machines: ' + ${#lists.size(customer.machineList)}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -636,13 +647,13 @@
                                     <td th:text="${event.type}"></td>
                                     <td th:text="${event.title}"></td>
                                     <td th:text="${event.mainUser.nickname}"></td>
-                                    <td th:text="${event.assistingUser.nickname}"></td>
+                                    <td th:text="${event.assistingUser ne null} ? ${event.assistingUser.nickname} : '----'"></td>
                                     <td th:text="${#temporals.format(event.start, 'dd-MM-yyyy')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="row mt-3">
-                                <div class="col-auto">
+                                <div class="col-auto me-auto">
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#eventModal">
                                         More
@@ -710,7 +721,7 @@
                                             style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                             th:title="${event.description}"></td>
                                         <td th:text="${event.mainUser.firstName + ' ' + event.mainUser.lastName}"></td>
-                                        <td th:text="${event.assistingUser.firstName + ' ' + event.assistingUser.lastName}"></td>
+                                        <td th:text="${event.assistingUser ne null} ? ${event.assistingUser.firstName + ' ' + event.assistingUser.lastName} : '----------'"></td>
                                         <td th:text="${#temporals.format(event.start, 'dd-MM-yyyy')}"></td>
                                         <td th:text="${#temporals.format(event.end, 'dd-MM-yyyy')}"></td>
                                         <td>
@@ -738,7 +749,7 @@
                                                                class="btn btn-danger btn-sm"
                                                                th:data-complete-event="|Please confirm completing event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}. Comment after the vent is required, fill the next form.|"
                                                                onclick="if (!confirm(this.getAttribute('data-complete-event'))) return false"/>
-                                                        <input th:case="false" type="button" value="Disable"
+                                                        <input th:case="false" type="button" value="Complete"
                                                                rel="tooltip"
                                                                class="btn btn-secondary btn-sm tooltip-button disabled"
                                                                title="Only creator of the event can complete it"/>
@@ -751,10 +762,11 @@
                                                     <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                     <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                     <div th:switch="${event.mainUser.id == currentUserId}">
-                                                    <input th:case="true" type="submit" value="Activate" class="btn btn-danger btn-sm"
-                                                           th:data-activate-event="|Please confirm activating event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}|"
-                                                           onclick="if (!confirm(this.getAttribute('data-activate-event'))) return false"/>
-                                                        <input th:case="false" type="button" value="Disable"
+                                                        <input th:case="true" type="submit" value="Activate"
+                                                               class="btn btn-danger btn-sm"
+                                                               th:data-activate-event="|Please confirm activating event: ${event.title} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}|"
+                                                               onclick="if (!confirm(this.getAttribute('data-activate-event'))) return false"/>
+                                                        <input th:case="false" type="button" value="Activate"
                                                                rel="tooltip"
                                                                class="btn btn-secondary btn-sm tooltip-button disabled"
                                                                title="Only creator of the event can activate it"/>
@@ -809,7 +821,7 @@
                                 </thead>
                                 <tbody th:each="machine : ${customer.machineList}">
                                 <th:block th:each="inquiry : ${machine.inquiryList}">
-                                    <tr th:each="intervention : ${inquiry.interventionList}"
+                                    <tr th:each="intervention, i : ${inquiry.interventionList}" th:if="${i.index}<6"
                                         th:style="${intervention.active} == false ? 'color: grey' : ''">
                                         <td th:text="${intervention.id}"></td>
                                         <td th:text="${inquiry.machine.type.name}"></td>
@@ -820,14 +832,14 @@
                                 </tbody>
                             </table>
                             <div class="row mt-3">
-                                <div class="col-auto">
+                                <div class="col-auto me-auto">
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#interventionModal">
                                         More
                                     </button>
                                 </div>
                                 <div class="col-auto">
-                                    <a th:text="'All interventions: ???????????? ' + ${#lists.size(customer.contactPersonList)}"></a>
+                                    <a th:text="'All interventions: ' + ${countInterventions}"></a>
                                 </div>
                             </div>
                         </div>
@@ -855,6 +867,12 @@
                                         </th>
                                         <th scope="col">
                                             <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Inquiry ID</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Inquiry type</a>
                                         </th>
                                         <th scope="col">
                                             <a>Technician</a>
@@ -893,6 +911,8 @@
                                             <td th:text="${intervention.id}"></td>
                                             <td th:text="${inquiry.machine.type.name}"></td>
                                             <td th:text="${inquiry.machine.serialNumber}"></td>
+                                            <td th:text="${inquiry.id}"></td>
+                                            <td th:text="${inquiry.inquiryType}"></td>
                                             <td th:text="${intervention.technician.firstName + ' ' + intervention.technician.lastName}"></td>
                                             <td th:text="${intervention.assistant ne null} ? ${intervention.assistant.firstName + ' ' + intervention.assistant.lastName} : '----'"></td>
                                             <td th:text="${intervention.assistant2 ne null} ? ${intervention.assistant2.firstName + ' ' + intervention.assistant2.lastName} : '----'"></td>
@@ -901,8 +921,10 @@
                                             <td th:text="${intervention.confirmed}"></td>
                                             <td th:text="${intervention.spareParts}"></td>
                                             <td>
-                                                <form th:action="@{/customers/customer-details/edit-intervention}" method="get">
-                                                    <input type="hidden" name="interventionId" th:value="${intervention.id}"/>
+                                                <form th:action="@{/customers/customer-details/edit-intervention}"
+                                                      method="get">
+                                                    <input type="hidden" name="interventionId"
+                                                           th:value="${intervention.id}"/>
                                                     <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                     <div th:switch="${currentUserPrivileges.service == true}">
                                                         <input th:case="true" type="submit" value="Edit"
@@ -915,8 +937,10 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                <form th:action="@{/customer-details/intervention-details}" method="get">
-                                                    <input type="hidden" name="interventionId" th:value="${intervention.id}"/>
+                                                <form th:action="@{/customer-details/intervention-details}"
+                                                      method="get">
+                                                    <input type="hidden" name="interventionId"
+                                                           th:value="${intervention.id}"/>
                                                     <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                     <input type="submit" value="Details" class="btn btn-danger btn-sm">
                                                 </form>

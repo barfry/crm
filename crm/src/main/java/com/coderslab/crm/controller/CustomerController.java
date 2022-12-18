@@ -103,6 +103,7 @@ public class CustomerController {
 
         model.addAttribute("customer", customerService.getCustomerById(customerId));
         model.addAttribute("countInquiries", inquiryService.countInquiriesByCustomerId(customerId));
+        model.addAttribute("countInterventions", interventionService.countInterventionByCustomerId(customerId));
         model.addAttribute("currentUserId", userService.getCurrentUser().getId());
         model.addAttribute("currentUserPrivileges", userService.getCurrentUser().getDepartment().getPrivilege());
 
@@ -389,9 +390,33 @@ public class CustomerController {
     }
 
     @PostMapping("/customer-details/add-new-intervention")
-    public String addNewIntervention(@RequestParam(name = "customerId") Long customerId, @RequestParam(name = "inquiryId") String inquiryId , @Valid Intervention intervention, BindingResult result, Model model){
+    public String addNewIntervention(@RequestParam(name = "customerId") Long customerId, @Valid Intervention intervention, BindingResult result, Model model){
         if(result.hasErrors()){
-            model.addAttribute("intervention", new Intervention());
+            model.addAttribute("intervention", intervention);
+            model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("service", userService.usersWithServicePrivilege());
+            return "/user-zone/add-new-intervention";
+        }
+
+        interventionService.addNewIntervention(intervention);
+
+        return "redirect:/customers/customer-details?customerId=" + customerId;
+    }
+
+    @GetMapping("/customer-details/edit-intervention")
+    public String initEditInterventionPage(@RequestParam(name = "customerId") Long customerId, @RequestParam(name = "interventionId") Long interventionId, Model model){
+        model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("service", userService.usersWithServicePrivilege());
+
+        return "/user-zone/edit-intervention";
+    }
+
+    @PostMapping("/customer-details/edit-intervention")
+    public String editIntervention(@RequestParam(name = "customerId") Long customerId, @Valid Intervention intervention, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("intervention", intervention);
             model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
             model.addAttribute("customerId", customerId);
             model.addAttribute("service", userService.usersWithServicePrivilege());
@@ -399,7 +424,7 @@ public class CustomerController {
             return "/user-zone/add-new-intervention";
         }
 
-        interventionService.addNewIntervention(intervention, inquiryId);
+        interventionService.editIntervention(intervention);
 
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }

@@ -12,4 +12,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     List<Inquiry> getInquiriesByMachineId(Long machineId);
 
     Integer countInquiriesByCustomerId(Long customerId);
+
+
 }

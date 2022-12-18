@@ -21,24 +21,25 @@
         <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
         <div class="col-md-auto">
             <label>Type</label>
-          <select th:field="*{type}">
-            <option th:value="'CALL'">CALL</option>
-            <option th:value="'CONSULTATIVE VISIT'">CONSULTATIVE VISIT</option>
-            <option th:value="'COURTESY VISIT'">COURTESY VISIT</option>
-            <option th:value="'PREVENTIVE VISIT'">PREVENTIVE VISIT</option>
-            <option th:value="'NEGOTIATIONS'">NEGOTIATIONS</option>
-          </select>
+            <select th:field="*{type}">
+                <option th:value="'CALL'">CALL</option>
+                <option th:value="'CONSULTATIVE VISIT'">CONSULTATIVE VISIT</option>
+                <option th:value="'COURTESY VISIT'">COURTESY VISIT</option>
+                <option th:value="'PREVENTIVE VISIT'">PREVENTIVE VISIT</option>
+                <option th:value="'NEGOTIATIONS'">NEGOTIATIONS</option>
+            </select>
         </div>
         <div class="col-md-auto">
             <label>Main user</label>
             <span th:text="${mainUser.firstName + ' ' + mainUser.lastName}"></span>
         </div>
         <div class="col-md-auto">
-          <label>Assisting user</label>
-          <select th:field="*{assistingUser}">
-            <option th:each="u : ${users}" th:value="${u.id}"
-                    th:text="${u.firstName + ' ' + u.lastName}"></option>
-          </select>
+            <label>Assisting user</label>
+            <select th:field="*{assistingUser}">
+                <option value="" selected>----------</option>
+                <option th:each="u : ${users}" th:value="${u.id}"
+                        th:text="${u.firstName + ' ' + u.lastName}"></option>
+            </select>
         </div>
     </div>
     <div class="row g-3 mx-5 my-2">
@@ -48,12 +49,12 @@
                    placeholder="Event start">
             <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
         </div>
-      <div class="col-md-auto">
-        <label for="end" class="form-label">Event end</label>
-        <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
-               placeholder="Event end">
-        <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
-      </div>
+        <div class="col-md-auto">
+            <label for="end" class="form-label">Event end</label>
+            <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
+                   placeholder="Event end">
+            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+        </div>
         <div class="col-md-a">
             <label for="title" class="form-label">Title</label>
             <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title">

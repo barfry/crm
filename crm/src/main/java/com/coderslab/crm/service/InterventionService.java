@@ -19,14 +19,23 @@ public class InterventionService {
         this.inquiryRepository = inquiryRepository;
     }
 
-    public void addNewIntervention(Intervention intervention, String inquiryId){
-        Long id = Long.parseLong(inquiryId.substring(inquiryId.lastIndexOf('-') + 1));
+    public void addNewIntervention(Intervention intervention){
 
-        Inquiry inquiry = inquiryRepository.getById(id);
+        Inquiry inquiry = inquiryRepository.getById(intervention.getInquiry().getId());
         inquiry.getInterventionList().add(intervention);
-
-        intervention.setInquiry(inquiry);
         interventionRepository.save(intervention);
         inquiryRepository.save(inquiry);
+    }
+
+    public Intervention getInterventionById(Long interventionId){
+        return interventionRepository.getById(interventionId);
+    }
+
+    public void editIntervention(Intervention intervention){
+        interventionRepository.updateIntervention(intervention.getTechnician(), intervention.getAssistant(), intervention.getAssistant2(), intervention.getStart(), intervention.getEnd(), intervention.getConfirmed(), intervention.getSpareParts(), intervention.getId());
+    }
+
+    public Integer countInterventionByCustomerId(Long customerId){
+        return interventionRepository.countInterventionsByInquiry_CustomerId(customerId);
     }
 }
