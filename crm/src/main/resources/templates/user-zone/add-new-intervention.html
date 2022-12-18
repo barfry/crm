@@ -22,21 +22,22 @@
         <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
         <div class="col-md-auto">
             <label>Machine</label>
-            <select data-child="inquiryId" class="selectdata form-control custom-select">
+            <select name="machine">
                 <option value="" disabled selected>Select your option</option>
-                <option th:each="m : ${machines}" th:value="${m.id}"
-                        th:text="${m.type.name + ' s/n: ' + m.serialNumber}"></option>
+                <option th:each="m : ${machines}" th:value="${m.serialNumber}"
+                        th:text="${m.type.name}+' '+${m.serialNumber}"></option>
             </select>
         </div>
         <div class="col-md-auto">
-            <label class="form-label" >Inquiry</label>
-            <select data-child="niv2" class="selectdata form-control custom-select" id="inquiryId" name="inquiryId">
+            <label class="form-label">Inquiry</label>
+            <select name="inquiry" th:field="*{inquiry}">
                 <th:block th:each="m : ${machines}">
                     <option value="" disabled selected>Select your option</option>
-                    <option th:each="i : ${m.inquiryList}" th:if="${i.active == true}" th:value="${m.id + '-' + i.id}"
-                            th:text="${i.id + ' ' + i.inquiryType}"></option>
+                    <option th:each="i : ${m.inquiryList}" th:if="${i.active == true}" th:value="${i.id}"
+                            th:text="${i.id + ' ' + i.inquiryType}" th:class="${m.serialNumber}"></option>
                 </th:block>
             </select>
+            <span th:if="${#fields.hasErrors('inquiry')}" th:errors="*{inquiry}"></span>
         </div>
         <div class="col-md-auto">
             <label>Main technician</label>
@@ -97,18 +98,12 @@
     </div>
 </form>
 <script>
-    $("[data-child]").change(function () {
-        const selectedGroup = $(this).val();
-        var $childSelect = $("#" + $(this).attr("data-child"));
-        value = $childSelect.find('option').hide()
-            .filter(function (i, e) {
-                return $(e).val().startsWith(selectedGroup)
-            }).show().eq(0).val();
-        $childSelect.val(value);
-        $childSelect.trigger('change');
-    });
-
-    $("[data-child]").eq(0).trigger('change');
+    var inquiry = $("[name=inquiry] option").detach()
+    $("[name=machine]").change(function() {
+        var val = $(this).val()
+        $("[name=inquiry] option").detach()
+        inquiry.filter("." + val).clone().appendTo("[name=inquiry]")
+    }).change()
 </script>
 </body>
 </html>

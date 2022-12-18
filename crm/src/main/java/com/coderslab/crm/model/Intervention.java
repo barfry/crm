@@ -21,6 +21,7 @@ public class Intervention {
     private Long id;
 
     @ManyToOne
+    @NotNull(message = "You must select an inquiry")
     private Inquiry inquiry;
 
     @ManyToOne
@@ -36,10 +37,12 @@ public class Intervention {
     @JoinColumn(name = "assistant2_id")
     private User assistant2;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd' 'HH:mm")
+    @NotNull(message = "Start date must be selected")
     private LocalDateTime start;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd' 'HH:mm")
+    @NotNull(message = "End date must be selected")
     private LocalDateTime end;
 
     private Boolean confirmed = false;

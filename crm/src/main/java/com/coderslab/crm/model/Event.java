@@ -42,10 +42,12 @@ public class Event {
     @JoinColumn(name = "assisting_user_id", referencedColumnName = "id")
     private User assistingUser;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm")
+    @NotNull(message = "Start date must be selected")
     private LocalDateTime start;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm")
+    @NotNull(message = "End date must be selected")
     private LocalDateTime end;
 
     @NotNull
