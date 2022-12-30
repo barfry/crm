@@ -44,7 +44,7 @@ public class EventService {
     public void editEvent(Event event){
         event.setModifier(userService.getCurrentUser());
         event.setUpdateDate(LocalDate.now());
-        eventRepository.updateEvent(event.getType(), event.getAssistingUser(), event.getStart(), event.getEnd(), event.getTitle(), event.getDescription(), event.getId());
+        eventRepository.updateEvent(event.getType(), event.getAssistingUser(), event.getStart(), event.getEnd(), event.getDescription(), event.getId());
     }
 
     public void completeEvent(Event event){
@@ -61,6 +61,14 @@ public class EventService {
         event.setModifier(userService.getCurrentUser());
         event.setUpdateDate(LocalDate.now());
         eventRepository.save(event);
+    }
+
+    public List<Event> getActiveEventsByCustomerId(Long customerId){
+        return eventRepository.getEventsByCustomerIdAndActiveIsTrue(customerId);
+    }
+
+    public List<Event> getInactiveEventsByCustomerId(Long customerId){
+        return eventRepository.getEventsByCustomerIdAndActiveIsFalse(customerId);
     }
 
 }

@@ -10,3 +10,19 @@
 .tooltip-button{
     pointer-events: auto !important;
 }
+
+.fc-event-main{
+    font-size: .63vw !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+a.fc-daygrid-day-number {
+    text-decoration: none;
+}
+
+a.fc-col-header-cell-cushion {
+    text-decoration: none;
+}
+

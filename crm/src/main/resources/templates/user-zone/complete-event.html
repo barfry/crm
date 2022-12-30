@@ -30,7 +30,7 @@
     </div>
     <div class="col-md-auto">
       <label>Assisting user</label>
-      <span th:text="*{assistingUser.firstName + ' ' + assistingUser.lastName}"></span>
+      <span th:text="${event.assistingUser ne null} ? ${event.assistingUser.firstName + ' ' + event.assistingUser.lastName} : '----------'"></span>
       <input type="hidden" th:field="*{assistingUser}">
     </div>
   </div>
@@ -44,11 +44,6 @@
       <label>Event end</label>
       <span th:text="${#temporals.format(event.end, 'dd-MM-yyyy HH:mm')}"></span>
       <input type="hidden" th:field="*{end}">
-    </div>
-    <div class="col-md-a">
-      <label>Title</label>
-      <span th:text="*{title}"></span>
-      <input type="hidden" th:field="*{title}">
     </div>
     <div class="col-md-auto">
       <label>Description</label>

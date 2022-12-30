@@ -1,5 +1,7 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -20,8 +22,8 @@ public class Intervention {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @NotNull(message = "You must select an inquiry")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Inquiry inquiry;
 
     @ManyToOne
@@ -37,11 +39,11 @@ public class Intervention {
     @JoinColumn(name = "assistant2_id")
     private User assistant2;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd' 'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "Start date must be selected")
     private LocalDateTime start;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd' 'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "End date must be selected")
     private LocalDateTime end;
 
@@ -141,8 +143,9 @@ public class Intervention {
         this.active = active;
     }
 
-    public Intervention(Long id, User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, String notice, Boolean spareParts, Boolean active) {
+    public Intervention(Long id, Inquiry inquiry, User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, String notice, Boolean spareParts, Boolean active) {
         this.id = id;
+        this.inquiry = inquiry;
         this.technician = technician;
         this.assistant = assistant;
         this.assistant2 = assistant2;

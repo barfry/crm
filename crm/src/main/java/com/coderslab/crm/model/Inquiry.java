@@ -1,5 +1,7 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -46,6 +48,7 @@ public class Inquiry {
     private String comment;
 
     @OneToMany
+    @JsonBackReference
     private Set<Intervention> interventionList;
 
     public Long getId() {

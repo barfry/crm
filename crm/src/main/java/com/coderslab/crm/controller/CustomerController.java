@@ -340,6 +340,7 @@ public class CustomerController {
     public String editEvent(@RequestParam(name = "customerId") Long customerId, @Valid Event event, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("event", event);
+            model.addAttribute("mainUser", userService.getCurrentUser());
             model.addAttribute("customerId", customerId);
             model.addAttribute("users", userService.getActiveUsers());
 
