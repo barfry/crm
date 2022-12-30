@@ -1,5 +1,6 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "machines")
+@JsonIgnoreProperties(value = {"inquiryList"})
 public class Machine {
 
     @Id
@@ -20,9 +22,10 @@ public class Machine {
 
     @ManyToOne()
     @JoinColumn(name = "customer_id", updatable = false)
+    @JsonManagedReference
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
     private Type type;
 
@@ -68,6 +71,7 @@ public class Machine {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contract_id", referencedColumnName = "id")
+    @JsonBackReference
     private Contract contract;
 
     @NotNull
@@ -271,14 +275,6 @@ public class Machine {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public Set<Inquiry> getServiceInquiryList() {
-        return inquiryList;
-    }
-
-    public void setServiceInquiryList(Set<Inquiry> inquiryList) {
-        this.inquiryList = inquiryList;
     }
 
     public Set<Task> getTaskList() {

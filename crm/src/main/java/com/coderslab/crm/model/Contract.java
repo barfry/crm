@@ -1,5 +1,6 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -68,6 +69,7 @@ public class Contract {
 
     @OneToOne(mappedBy = "contract")
     @JoinColumn(name = "machine_id")
+    @JsonManagedReference
     private Machine machine;
 
     @OneToOne

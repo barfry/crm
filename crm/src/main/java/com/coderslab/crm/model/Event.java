@@ -42,18 +42,13 @@ public class Event {
     @JoinColumn(name = "assisting_user_id", referencedColumnName = "id")
     private User assistingUser;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm")
+    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "Start date must be selected")
     private LocalDateTime start;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm")
+    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "End date must be selected")
     private LocalDateTime end;
-
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
-    @Length(min = 2, max = 20, message = "This field should contain from 2 up to 20 characters")
-    private String title;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -135,14 +130,6 @@ public class Event {
         this.end = end;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -199,7 +186,7 @@ public class Event {
         this.active = active;
     }
 
-    public Event(Long id, Customer customer, String type, User mainUser, User assistingUser, LocalDateTime start, LocalDateTime end, String title, String description, LocalDate reminderDate, String commentAfterEvent, LocalDate creationDate, User modifier, LocalDate updateDate, Boolean active) {
+    public Event(Long id, Customer customer, String type, User mainUser, User assistingUser, LocalDateTime start, LocalDateTime end, String description, LocalDate reminderDate, String commentAfterEvent, LocalDate creationDate, User modifier, LocalDate updateDate, Boolean active) {
         this.id = id;
         this.customer = customer;
         this.type = type;
@@ -207,7 +194,6 @@ public class Event {
         this.assistingUser = assistingUser;
         this.start = start;
         this.end = end;
-        this.title = title;
         this.description = description;
         this.reminderDate = reminderDate;
         this.commentAfterEvent = commentAfterEvent;

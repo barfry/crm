@@ -19,14 +19,18 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Event e set e.type = ?1, e.assistingUser = ?2, e.start = ?3, e.end = ?4, e.title = ?5, e.description = ?6 " +
-            "where e.id = ?7")
-    void updateEvent(String type, User assistingUser, LocalDateTime start, LocalDateTime end, String title, String description, Long id);
+    @Query("update Event e set e.type = ?1, e.assistingUser = ?2, e.start = ?3, e.end = ?4, e.description = ?5 " +
+            "where e.id = ?6")
+    void updateEvent(String type, User assistingUser, LocalDateTime start, LocalDateTime end, String description, Long id);
 
     @Transactional
     @Modifying
     @Query("update Event e set e.commentAfterEvent = ?1 " +
             "where e.id = ?2")
     void addCommentToEvent(String commentAfterEvent, Long eventId);
+
+    List<Event> getEventsByCustomerIdAndActiveIsTrue(Long customerId);
+
+    List<Event> getEventsByCustomerIdAndActiveIsFalse(Long customerId);
 
 }

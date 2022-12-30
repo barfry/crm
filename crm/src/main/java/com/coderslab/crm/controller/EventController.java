@@ -26,4 +26,16 @@ public class EventController {
     public List<Event> events(@RequestParam(name = "customerId") Long customerId){
         return eventService.getEventsByCustomerId(customerId);
     }
+
+    @GetMapping("/active-events")
+    public List<Event> activeEventsByCustomerId(@RequestParam(value = "customerId") Long customerId){
+        return eventService.getActiveEventsByCustomerId(customerId);
+    }
+
+    @GetMapping("/inactive-events")
+    public List<Event> inactiveEventsByCustomerId(@RequestParam(value = "customerId") Long customerId){
+        return eventService.getInactiveEventsByCustomerId(customerId);
+    }
+
+
 }

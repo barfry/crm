@@ -7,6 +7,8 @@ import com.coderslab.crm.repository.InquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InterventionService {
 
@@ -37,5 +39,21 @@ public class InterventionService {
 
     public Integer countInterventionByCustomerId(Long customerId){
         return interventionRepository.countInterventionsByInquiry_CustomerId(customerId);
+    }
+
+    public List<Intervention> getInterventionsByCustomerId(Long customerId){
+        return interventionRepository.getInterventionsByInquiry_CustomerId(customerId);
+    }
+
+    public List<Intervention> getInterventionsByTypeAndCustomerId(String type, Long customerId){
+        return interventionRepository.getInterventionsByInquiry_InquiryTypeAndInquiry_CustomerId(type, customerId);
+    }
+
+    public List<Intervention> getInterventionsByCustomerIdWhereConfirmedIsFalse(Long customerId){
+        return interventionRepository.getInterventionsByInquiry_CustomerIdAndConfirmedIsFalse(customerId);
+    }
+
+    public List<Intervention> getInterventionsByCustomerIdWhereConfirmedIsTrue(Long customerId){
+        return interventionRepository.getInterventionsByInquiry_CustomerIdAndConfirmedIsTrue(customerId);
     }
 }

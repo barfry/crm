@@ -1,5 +1,7 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -80,6 +82,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @OrderBy("active desc, id asc")
+    @JsonIgnore
     private Set<Machine> machineList;
 
     @NotNull(message = "This field can't be empty")

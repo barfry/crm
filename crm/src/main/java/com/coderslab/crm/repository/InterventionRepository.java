@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface InterventionRepository extends JpaRepository<Intervention, Long> {
@@ -20,4 +21,11 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     void updateIntervention(User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, Boolean spareParts, Long interventionId);
 
     Integer countInterventionsByInquiry_CustomerId(Long customerId);
+
+    public List<Intervention> getInterventionsByInquiry_CustomerId(Long customerId);
+
+    List<Intervention> getInterventionsByInquiry_CustomerIdAndConfirmedIsFalse(Long customerId);
+    List<Intervention> getInterventionsByInquiry_CustomerIdAndConfirmedIsTrue(Long customerId);
+
+    public List<Intervention> getInterventionsByInquiry_InquiryTypeAndInquiry_CustomerId(String inquiryType, Long customerId);
 }
