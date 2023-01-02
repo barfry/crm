@@ -2,17 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
 <div th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">CRM</a>
+            <a class="navbar-brand" href="/user-zone">CRM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -23,31 +20,45 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/user-zone">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/customers">Customers</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarGeneralLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(0,0,0,.9)">
+                            General
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarGeneralLink">
+                            <li><a class="dropdown-item" href="/customers">Customers</a></li>
+                            <li><a class="dropdown-item" href="/manufacturers">Manufacturers</a></li>
+                            <li><a class="dropdown-item" href="/machines">Machines</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Contracts</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarServiceLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(0,0,0,.9)">
+                            Service
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarServiceLink">
+                            <li><a class="dropdown-item" href="/schedule">Schedule</a></li>
+                            <li><a class="dropdown-item" href="/inquiries">Inquiries</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Departments</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarSalesLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(0,0,0,.9)">
+                            Sales
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarSakesLink">
+                            <li><a class="dropdown-item" href="/contracts">Contracts</a></li>
+                            <li><a class="dropdown-item" href="/offers">Offers</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Events</a>
+                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarAdminLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(0,0,0,.9)">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarAdminLink">
+                            <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                            <li><a class="dropdown-item" href="/admin/roles">Roles</a></li>
+                            <li><a class="dropdown-item" href="/admin/privileges">Privileges</a></li>
+                            <li><a class="dropdown-item" href="/admin/departments">Departments</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Inquiries</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Machines</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Manufacturers</a>
-                    </li>
-                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
-                    </li>
-
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
                     </li>
