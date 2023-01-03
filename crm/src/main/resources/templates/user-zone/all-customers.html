@@ -15,7 +15,8 @@
     </div>
 </header>
 <p><a href="/customers/add-new-customer">Create new customer</a></p>
-<table class="table table-sm table-hover table-dark table-bordered text-center">
+<div style="overflow-x:auto;">
+<table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
     <thead>
     <tr>
         <th scope="col">
@@ -37,9 +38,6 @@
         <th scope="col">
             <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=zipCode&sortDir=' + ${reverseSortDir}}">Zip
                 code</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=province&sortDir=' + ${reverseSortDir}}">Province</a>
         </th>
         <th scope="col">
             <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=taxCode&sortDir=' + ${reverseSortDir}}">Tax
@@ -109,6 +107,7 @@
     </tr>
     </tfoot>
 </table>
+</div>
 <div th:if="${totalPages > 1}">
     <div class="row col-sm-10">
         <div class="col-sm-2">

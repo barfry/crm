@@ -33,8 +33,7 @@ public class Manufacturer {
     @Length(min = 2, max = 20, message = "This field should contain from 2 up to 30 characters")
     private String street;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
+    @NotNull(message = "This field can't be empty")
     @Min(1)
     @Max(1000)
     private Integer streetNumber;
@@ -71,6 +70,10 @@ public class Manufacturer {
         @JoinColumn(name = "manufacturer_id"), inverseJoinColumns =
             @JoinColumn(name = "category_id"))
     private Set<Category> categoryList;
+
+
+    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
+    private List<Type> types;
 
     @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -178,6 +181,14 @@ public class Manufacturer {
         this.categoryList = categoryList;
     }
 
+    public List<Type> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Type> types) {
+        this.types = types;
+    }
+
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -202,7 +213,7 @@ public class Manufacturer {
         this.active = active;
     }
 
-    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, Date updateDate, User modifier, Boolean active) {
+    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, List<Type> types, Date updateDate, User modifier, Boolean active) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -215,6 +226,7 @@ public class Manufacturer {
         this.taxCode = taxCode;
         this.contactPersonList = contactPersonList;
         this.categoryList = categoryList;
+        this.types = types;
         this.updateDate = updateDate;
         this.modifier = modifier;
         this.active = active;
