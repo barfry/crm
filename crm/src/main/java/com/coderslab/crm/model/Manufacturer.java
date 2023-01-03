@@ -65,7 +65,7 @@ public class Manufacturer {
     @OneToMany
     private Set<ContactPerson> contactPersonList;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "manufacturer_category", joinColumns =
         @JoinColumn(name = "manufacturer_id"), inverseJoinColumns =
             @JoinColumn(name = "category_id"))

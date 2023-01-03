@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="../static/css/tooltip.css" th:href="@{/css/tooltip.css}" rel="stylesheet"/>
+    <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+</head>
+<body>
+<header>
+    <div th:replace="user-zone/fragments/header :: header">
+    </div>
+</header>
+<div class="container-fluid mt-2">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-3 mb-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Name</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${manufacturer.name}">
+                            </div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Tax code</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${manufacturer.taxCode}"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"
+                                 th:text="${manufacturer.zipCode + ' ' + manufacturer.city + ', ' + manufacturer.street + ' ' + manufacturer.streetNumber}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">E-mail</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${manufacturer.email}"></div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Web page</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${manufacturer.webPage}"></div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Phone number</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${manufacturer.phoneNumber}"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Categories</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">
+                                <ul th:each="category : ${manufacturer.categoryList}">
+                                    <li th:text="${category.name}">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <form th:action="@{/manufacturers/manufacturer-details/edit-manufacturer}" method="get">
+                                    <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                    <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                        <div class="row mb-3">
+                            <div class="col-auto me-auto">
+                                <h6>Contacts</h6>
+                            </div>
+                            <div class="col-auto">
+                                <form th:action="@{/manufacturers/manufacturer-details/add-new-contact}" method="get">
+                                    <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                    <input type="submit" value="Add new contact" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-hover table-dark table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <a>Name</a>
+                                </th>
+                                <th scope="col">
+                                    <a>E-mail</a>
+                                </th>
+                                <th scope="col">
+                                    <a>Mobile</a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="contact, i : ${manufacturer.contactPersonList}"
+                                th:if="${i.index}<6" th:style="${contact.active} == false ? 'color: grey' : ''">
+                                <td th:text="${contact.firstName + ' ' + contact.lastName}"></td>
+                                <td th:text="${contact.email}"></td>
+                                <td th:text="${contact.mobilePhoneNumber}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-3">
+                            <div class="col-auto me-auto">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#contactModal">
+                                    More
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <a th:text="'All contacts: ' + ${#lists.size(manufacturer.contactPersonList)}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="contactModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="contactModalLabel">All contacts</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>First name</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Last name</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Position</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Stationary phone number</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Mobile</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>E-mail</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Profile</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Update date</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Modifier</a>
+                                    </th>
+                                    <th scope="col">
+                                        Active
+                                    </th>
+                                    <th scope="col">
+                                        Edit
+                                    </th>
+                                    <th scope="col">
+                                        Disable
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="contact : ${manufacturer.contactPersonList}"
+                                    th:style="${contact.active} == false ? 'color: grey' : ''">
+                                    <td th:text="${contact.firstName}"></td>
+                                    <td th:text="${contact.lastName}"></td>
+                                    <td th:text="${contact.position}"></td>
+                                    <td th:text="${contact.stationaryPhoneNumber}"></td>
+                                    <td th:text="${contact.mobilePhoneNumber}"></td>
+                                    <td th:text="${contact.email}"></td>
+                                    <td th:text="${contact.profile}"></td>
+                                    <td th:text="${contact.updateDate}"></td>
+                                    <td th:text="${contact.modifier.nickname}"></td>
+                                    <td th:text="${contact.active}"></td>
+                                    <td>
+                                        <form th:action="@{/manufacturers/manufacturer-details/edit-contact}" method="get">
+                                            <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                            <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                            <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <div th:if="${contact.active eq true}">
+                                            <form th:action="@{/manufacturers/manufacturer-details/disable-contact}"
+                                                  method="post">
+                                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                                <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                                <input type="submit" value="Disable" class="btn btn-danger btn-sm"
+                                                       th:data-disable-contact="|Please confirm disabling contact: ${contact.firstName} ${contact.lastName} ${contact.email}|"
+                                                       onclick="if (!confirm(this.getAttribute('data-disable-contact'))) return false"/>
+                                            </form>
+                                        </div>
+                                        <div th:if="${contact.active eq false}">
+                                            <form th:action="@{/manufacturers/manufacturer-details/activate-contact}"
+                                                  method="post">
+                                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                                <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                                <input type="submit" value="Activate" class="btn btn-danger btn-sm"
+                                                       th:data-activate-contact="|Please confirm activating contact: ${contact.firstName} ${contact.lastName} ${contact.email}|"
+                                                       onclick="if (!confirm(this.getAttribute('data-activate-contact'))) return false"/>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Machine types</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/manufacturers/manufacturer-details/add-new-type}" method="get">
+                                        <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                        <input type="submit" value="Add new type" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Id</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Type</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="type : ${manufacturer.types}">
+                                    <td th:text="${type.id}"></td>
+                                    <td th:text="${type.name}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-auto me-auto">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#inquiryModal">
+                                        More
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:text="'All inquiries: ??????????'"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="inquiryModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="inquiryModalLabel">All inquiries</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Machine</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Status</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Inquiry date</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Description</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Active</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row gutters-sm mb-3 me-0">
+                    <div class="card h-100">
+                        <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                            <div class="row mb-3">
+                                <div class="col-auto me-auto">
+                                    <h6>Upcoming installations</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <form th:action="@{/manufacturers/manufacturer-details/add-new-type}" method="get">
+                                        <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                        <input type="submit" value="Add new type" class="btn btn-danger btn-sm">
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-dark table-bordered text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a>Id</a>
+                                    </th>
+                                    <th scope="col">
+                                        <a>Type</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="type : ${manufacturer.types}">
+                                    <td th:text="${type.id}"></td>
+                                    <td th:text="${type.name}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-auto me-auto">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#inquiryModal">
+                                        More
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:text="'All inquiries: ??????????'"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="installationModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="installationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="installationModalLabel">All inquiries</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Machine</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Serial number</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Status</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Inquiry date</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Description</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Active</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
+</body>
+</html>

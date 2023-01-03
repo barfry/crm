@@ -84,4 +84,11 @@ public class ManufacturerController {
 
         return "redirect:/manufacturers";
     }
+
+    @GetMapping("/manufacturer-details")
+    public String manufacturerDetailsPage(@RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+        model.addAttribute("manufacturer", manufacturerService.getManufacturerById(manufacturerId));
+
+        return "user-zone/manufacturer-details";
+    }
 }
