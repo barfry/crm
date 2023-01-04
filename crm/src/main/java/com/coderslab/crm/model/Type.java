@@ -27,6 +27,8 @@ public class Type {
     @OneToMany
     private Set<Category> categoryList;
 
+    private Boolean active = true;
+
     public Long getId() {
         return id;
     }
@@ -59,22 +61,23 @@ public class Type {
         this.manufacturer = manufacturer;
     }
 
-    public Type(Long id, String name, Manufacturer manufacturer, Set<Category> categoryList) {
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Type(Long id, String name, Manufacturer manufacturer, Set<Category> categoryList, Boolean active) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.categoryList = categoryList;
+        this.active = active;
     }
 
     public Type() {
     }
 
-    @Override
-    public String toString() {
-        return "Type{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", categoryList=" + categoryList +
-                '}';
-    }
 }

@@ -16,97 +16,100 @@
 </header>
 <p><a href="/customers/add-new-customer">Create new customer</a></p>
 <div style="overflow-x:auto;">
-<table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
-    <thead>
-    <tr>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Name</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=city&sortDir=' + ${reverseSortDir}}">City</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=street&sortDir=' + ${reverseSortDir}}">Street</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=streetNumber&sortDir=' + ${reverseSortDir}}">Street
-                number</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=zipCode&sortDir=' + ${reverseSortDir}}">Zip
-                code</a>
-        </th>
-        <th scope="col">
-            <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=taxCode&sortDir=' + ${reverseSortDir}}">Tax
-                code</a>
-        </th>
-        <th scope="col">Functions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <form action="#" th:action="@{/customers/page/1}" method="get" th:object="${customerFilter}">
-            <th scope="col">Search:</th>
+    <table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
+        <thead>
+        <tr>
             <th scope="col">
-                <input type="text" name="name" th:value="*{name}" placeholder="Name">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a>
             </th>
             <th scope="col">
-                <input type="text" name="city" th:value="*{city}" placeholder="City">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Name</a>
             </th>
             <th scope="col">
-                <input type="text" name="street" th:value="*{street}" placeholder="Street">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=city&sortDir=' + ${reverseSortDir}}">City</a>
             </th>
             <th scope="col">
-                <input type="text" name="streetNumber" th:value="*{streetNumber}" placeholder="Street no.">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=street&sortDir=' + ${reverseSortDir}}">Street</a>
             </th>
             <th scope="col">
-                <input type="text" name="zipCode" th:value="*{zipCode}" placeholder="Zip code">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=streetNumber&sortDir=' + ${reverseSortDir}}">Street
+                    number</a>
             </th>
             <th scope="col">
-                <input type="text" name="province" th:value="*{province}" placeholder="Province">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=zipCode&sortDir=' + ${reverseSortDir}}">Zip
+                    code</a>
             </th>
             <th scope="col">
-                <input type="text" name="taxCode" th:value="*{taxCode}" placeholder="Tax code">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=province&sortDir=' + ${reverseSortDir}}">Province</a>
             </th>
             <th scope="col">
-                <input type="submit" class="btn btn-danger btn-sm" value="Search">
+                <a th:href="@{'/customers/page/' + ${currentPage} + '?sortField=taxCode&sortDir=' + ${reverseSortDir}}">Tax
+                    code</a>
             </th>
-        </form>
-    </tr>
-    <tr th:each="customer: ${customers}">
-        <td th:text="${customer.id}"/>
-        <td th:text="${customer.name}"/>
-        <td th:text="${customer.city}"/>
-        <td th:text="${customer.street}"/>
-        <td th:text="${customer.streetNumber}"/>
-        <td th:text="${customer.zipCode}"/>
-        <td th:text="${customer.province}"/>
-        <td th:text="${customer.taxCode}"/>
-        <td>
-            <form th:action="@{/customers/customer-details}" method="get">
-                <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                <input type="submit" value="Details" class="btn btn-danger btn-sm">
+            <th scope="col">Functions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <form action="#" th:action="@{/customers/page/1}" method="get" th:object="${customerFilter}">
+                <th scope="col">Search:</th>
+                <th scope="col">
+                    <input type="text" name="name" th:value="*{name}" placeholder="Name">
+                </th>
+                <th scope="col">
+                    <input type="text" name="city" th:value="*{city}" placeholder="City">
+                </th>
+                <th scope="col">
+                    <input type="text" name="street" th:value="*{street}" placeholder="Street">
+                </th>
+                <th scope="col">
+                    <input type="text" name="streetNumber" th:value="*{streetNumber}" placeholder="Street no.">
+                </th>
+                <th scope="col">
+                    <input type="text" name="zipCode" th:value="*{zipCode}" placeholder="Zip code">
+                </th>
+                <th scope="col">
+                    <input type="text" name="province" th:value="*{province}" placeholder="Province">
+                </th>
+                <th scope="col">
+                    <input type="text" name="taxCode" th:value="*{taxCode}" placeholder="Tax code">
+                </th>
+                <th scope="col">
+                    <input type="submit" class="btn btn-danger btn-sm" value="Search">
+                </th>
             </form>
-        </td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">City</th>
-        <th scope="col">Street</th>
-        <th scope="col">Street no.</th>
-        <th scope="col">ZipCode</th>
-        <th scope="col">Province</th>
-        <th scope="col">Tax code</th>
-        <th scope="col">Functions</th>
-    </tr>
-    </tfoot>
-</table>
+        </tr>
+        <tr th:each="customer: ${customers}" th:ondblclick="|window.location.href='/customers/customer-details?customerId=${customer.id}'|">
+            <td th:text="${customer.id}"/>
+            <td th:text="${customer.name}"/>
+            <td th:text="${customer.city}"/>
+            <td th:text="${customer.street}"/>
+            <td th:text="${customer.streetNumber}"/>
+            <td th:text="${customer.zipCode}"/>
+            <td th:text="${customer.province}"/>
+            <td th:text="${customer.taxCode}"/>
+            <td>
+                <form th:action="@{/customers/customer-details}" method="get">
+                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
+                    <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">City</th>
+            <th scope="col">Street</th>
+            <th scope="col">Street no.</th>
+            <th scope="col">ZipCode</th>
+            <th scope="col">Province</th>
+            <th scope="col">Tax code</th>
+            <th scope="col">Functions</th>
+        </tr>
+        </tfoot>
+    </table>
 </div>
 <div th:if="${totalPages > 1}">
     <div class="row col-sm-10">
