@@ -119,4 +119,24 @@ public class ManufacturerController {
         return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
     }
 
+    @GetMapping("/manufacturer-details/edit-type")
+    public String initEditTypePage(@RequestParam(name = "typeId") Long typeId, Model model){
+        model.addAttribute("type", typeService.getTypeById(typeId));
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "user-zone/edit-type";
+    }
+
+    @PostMapping("/manufacturer-details/edit-type")
+    public String editType(@Valid Type type, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("type", type);
+            model.addAttribute("categories", categoryService.getAllCategories());
+        }
+
+        typeService.editType(type);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + type.getManufacturer().getId();
+    }
+
 }

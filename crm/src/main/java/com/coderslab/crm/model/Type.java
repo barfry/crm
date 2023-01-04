@@ -1,5 +1,6 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -22,9 +23,13 @@ public class Type {
 
     @ManyToOne
     @JoinColumn(name = "manufacturer_id")
+    @JsonBackReference
     private Manufacturer manufacturer;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "types_category_list", joinColumns =
+        @JoinColumn(name = "type_id"), inverseJoinColumns =
+            @JoinColumn(name = "category_list_id"))
     private Set<Category> categoryList;
 
     private Boolean active = true;

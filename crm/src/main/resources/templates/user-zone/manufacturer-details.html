@@ -321,14 +321,16 @@
                                         <td th:text="${type.id}"></td>
                                         <td th:text="${type.name}"></td>
                                         <td>
-                                            <span th:each="category : ${manufacturer.categoryList}"><span
+                                            <span th:each="category : ${type.categoryList}"><span
                                                     th:text="${category.name} + ' '"/></span>
                                         </td>
                                         <td th:text="${type.active}"></td>
                                         <td>
-                                            <form th:action="@{/manufacturers/manufacturer-details/edit-type}" method="get">
+                                            <form th:action="@{/manufacturers/manufacturer-details/edit-type}"
+                                                  method="get">
                                                 <input type="hidden" name="typeId" th:value="${type.id}"/>
-                                                <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                                <input type="hidden" name="manufacturerId"
+                                                       th:value="${manufacturer.id}"/>
                                                 <input type="submit" value="Edit" class="btn btn-danger btn-sm">
                                             </form>
                                         </td>

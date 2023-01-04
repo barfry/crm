@@ -21,8 +21,15 @@ public class TypeService {
         return typeRepository.findAll();
     }
 
-
     public Type addNewType(Type type){
+        return typeRepository.save(type);
+    }
+
+    public Type getTypeById(Long typeId){
+        return typeRepository.getById(typeId);
+    }
+
+    public Type editType(Type type){
         return typeRepository.save(type);
     }
 }

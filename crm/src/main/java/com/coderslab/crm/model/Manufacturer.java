@@ -1,5 +1,6 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -73,6 +74,7 @@ public class Manufacturer {
 
 
     @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Type> types;
 
     @UpdateTimestamp
