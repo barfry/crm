@@ -196,7 +196,8 @@
                                     <td th:text="${contact.modifier.nickname}"></td>
                                     <td th:text="${contact.active}"></td>
                                     <td>
-                                        <form th:action="@{/manufacturers/manufacturer-details/edit-contact}" method="get">
+                                        <form th:action="@{/manufacturers/manufacturer-details/edit-contact}"
+                                              method="get">
                                             <input type="hidden" name="contactId" th:value="${contact.id}"/>
                                             <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
                                             <input type="submit" value="Edit" class="btn btn-danger btn-sm">
@@ -207,7 +208,8 @@
                                             <form th:action="@{/manufacturers/manufacturer-details/disable-contact}"
                                                   method="post">
                                                 <input type="hidden" name="contactId" th:value="${contact.id}"/>
-                                                <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                                <input type="hidden" name="manufacturerId"
+                                                       th:value="${manufacturer.id}"/>
                                                 <input type="submit" value="Disable" class="btn btn-danger btn-sm"
                                                        th:data-disable-contact="|Please confirm disabling contact: ${contact.firstName} ${contact.lastName} ${contact.email}|"
                                                        onclick="if (!confirm(this.getAttribute('data-disable-contact'))) return false"/>
@@ -217,7 +219,8 @@
                                             <form th:action="@{/manufacturers/manufacturer-details/activate-contact}"
                                                   method="post">
                                                 <input type="hidden" name="contactId" th:value="${contact.id}"/>
-                                                <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
+                                                <input type="hidden" name="manufacturerId"
+                                                       th:value="${manufacturer.id}"/>
                                                 <input type="submit" value="Activate" class="btn btn-danger btn-sm"
                                                        th:data-activate-contact="|Please confirm activating contact: ${contact.firstName} ${contact.lastName} ${contact.email}|"
                                                        onclick="if (!confirm(this.getAttribute('data-activate-contact'))) return false"/>
@@ -267,24 +270,24 @@
                             <div class="row mt-3">
                                 <div class="col-auto me-auto">
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#inquiryModal">
+                                            data-bs-target="#typeModal">
                                         More
                                     </button>
                                 </div>
                                 <div class="col-auto">
-                                    <a th:text="'All inquiries: ??????????'"></a>
+                                    <a th:text="'All types: ' + ${#lists.size(manufacturer.types)}"></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="inquiryModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                <div class="modal fade" id="typeModal" data-bs-backdrop="static" data-bs-keyboard="false"
                      tabindex="-1"
-                     aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                     aria-labelledby="typeModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="inquiryModalLabel">All inquiries</h5>
+                                <h5 class="modal-title" id="typeModalLabel">All machine types</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
@@ -296,22 +299,10 @@
                                             <a>Id</a>
                                         </th>
                                         <th scope="col">
-                                            <a>Machine</a>
-                                        </th>
-                                        <th scope="col">
-                                            <a>Serial number</a>
-                                        </th>
-                                        <th scope="col">
-                                            <a>Status</a>
-                                        </th>
-                                        <th scope="col">
                                             <a>Type</a>
                                         </th>
                                         <th scope="col">
-                                            <a>Inquiry date</a>
-                                        </th>
-                                        <th scope="col">
-                                            <a>Description</a>
+                                            <a>Categories</a>
                                         </th>
                                         <th scope="col">
                                             <a>Active</a>
@@ -320,14 +311,38 @@
                                             <a>Edit</a>
                                         </th>
                                         <th scope="col">
-                                            <a>Details</a>
+                                            <a>Show machines</a>
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tbody>
-                                    <tr>
-                                        <td></td>
+                                    <tr th:each="type : ${manufacturer.types}">
+                                        <td th:text="${type.id}"></td>
+                                        <td th:text="${type.name}"></td>
+                                        <td>
+                                            <span th:each="category : ${type.categoryList}"><span
+                                                    th:text="${category.name} + ' '"/></span>
+                                        </td>
+                                        <td th:text="${type.active}"></td>
+                                        <td>
+                                            <form th:action="@{/manufacturers/manufacturer-details/edit-type}"
+                                                  method="get">
+                                                <input type="hidden" name="typeId" th:value="${type.id}"/>
+                                                <input type="hidden" name="manufacturerId"
+                                                       th:value="${manufacturer.id}"/>
+                                                <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{'/machines/show-machines-by-type/' + ${type.name}}"
+                                                  method="get">
+                                                <input type="hidden" name="typeId" th:value="${type.id}"/>
+                                                <input type="submit"
+                                                       th:value="'Show machines'"
+                                                       class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>

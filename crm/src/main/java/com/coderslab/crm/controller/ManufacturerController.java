@@ -4,8 +4,10 @@ import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.filter.ManufacturerFilter;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Manufacturer;
+import com.coderslab.crm.model.Type;
 import com.coderslab.crm.service.CategoryService;
 import com.coderslab.crm.service.ManufacturerService;
+import com.coderslab.crm.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -24,10 +26,12 @@ public class ManufacturerController {
     @Autowired
     ManufacturerService manufacturerService;
     CategoryService categoryService;
+    TypeService typeService;
 
-    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService) {
+    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService, TypeService typeService) {
         this.manufacturerService = manufacturerService;
         this.categoryService = categoryService;
+        this.typeService = typeService;
     }
 
     @GetMapping("")
@@ -91,4 +95,48 @@ public class ManufacturerController {
 
         return "user-zone/manufacturer-details";
     }
+
+    @GetMapping("/manufacturer-details/add-new-type")
+    public String initAddNewTypePage(@RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+        model.addAttribute("type", new Type());
+        model.addAttribute("manufacturerId", manufacturerId);
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "user-zone/add-new-type";
+    }
+
+    @PostMapping("/manufacturer-details/add-new-type")
+    public String addNewType(@RequestParam(name = "manufacturerId") Long manufacturerId ,@Valid Type type, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("type", type);
+            model.addAttribute("manufacturerId", manufacturerId);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "user-zone/add-new-type";
+        }
+        type.setManufacturer(manufacturerService.getManufacturerById(manufacturerId));
+        typeService.addNewType(type);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
+    }
+
+    @GetMapping("/manufacturer-details/edit-type")
+    public String initEditTypePage(@RequestParam(name = "typeId") Long typeId, Model model){
+        model.addAttribute("type", typeService.getTypeById(typeId));
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "user-zone/edit-type";
+    }
+
+    @PostMapping("/manufacturer-details/edit-type")
+    public String editType(@Valid Type type, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("type", type);
+            model.addAttribute("categories", categoryService.getAllCategories());
+        }
+
+        typeService.editType(type);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + type.getManufacturer().getId();
+    }
+
 }
