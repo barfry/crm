@@ -1,6 +1,7 @@
 package com.coderslab.crm.service;
 
 import com.coderslab.crm.filter.CustomerFilter;
+import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.repository.CustomerRepository;
 import com.coderslab.crm.specification.CustomerSpecification;
@@ -67,6 +68,11 @@ public class CustomerService {
         CustomerSpecification spec7 = new CustomerSpecification(new SearchCriteria("taxCode",":",customerFilter.getTaxCode()));
 
         return this.customerRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7), pageable);
+    }
+
+    public Customer addNewContactPersonToCustomer(ContactPerson contactPerson, Customer customer){
+        customer.getContactPersonList().add(contactPerson);
+        return customerRepository.save(customer);
     }
 
 }

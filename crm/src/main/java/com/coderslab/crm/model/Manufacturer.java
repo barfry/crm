@@ -64,6 +64,7 @@ public class Manufacturer {
     private String taxCode;
 
     @OneToMany
+    @OrderBy("active desc, id asc")
     private Set<ContactPerson> contactPersonList;
 
     @ManyToMany(cascade = CascadeType.ALL)

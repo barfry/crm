@@ -2,6 +2,7 @@ package com.coderslab.crm.service;
 
 import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
+import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.repository.ContactPersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,13 @@ public class ContactPersonService {
     ContactPersonRepository contactPersonRepository;
     UserService userService;
     CustomerService customerService;
+    ManufacturerService manufacturerService;
 
-    public ContactPersonService(ContactPersonRepository contactPersonRepository, UserService userService, CustomerService customerService) {
+    public ContactPersonService(ContactPersonRepository contactPersonRepository, UserService userService, CustomerService customerService, ManufacturerService manufacturerService) {
         this.contactPersonRepository = contactPersonRepository;
         this.userService = userService;
         this.customerService = customerService;
+        this.manufacturerService = manufacturerService;
     }
 
     public ContactPerson getContactPersonById(Long id){
@@ -32,9 +35,7 @@ public class ContactPersonService {
 
         contactPersonRepository.save(contactPerson);
 
-        customer.getContactPersonList().add(contactPerson);
-
-        customerService.addNewCustomer(customer);
+       customerService.addNewContactPersonToCustomer(contactPerson, customer);
     }
 
     public void editContactPerson(ContactPerson contactPerson){
@@ -62,5 +63,14 @@ public class ContactPersonService {
         contactPerson.setUpdateDate(new Date());
 
         contactPersonRepository.save(contactPerson);
+    }
+
+    public void addNewContactPersonToManufacturer(ContactPerson contactPerson, Manufacturer manufacturer){
+        contactPerson.setModifier(userService.getCurrentUser());
+        contactPerson.setUpdateDate(new Date());
+
+        contactPersonRepository.save(contactPerson);
+
+        manufacturerService.addNewContactPersonToManufacturer(contactPerson, manufacturer);
     }
 }
