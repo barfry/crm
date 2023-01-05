@@ -198,7 +198,7 @@
                                     <td>
                                         <form th:action="@{/manufacturers/manufacturer-details/edit-contact}"
                                               method="get">
-                                            <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                            <input type="hidden" name="contactPersonId" th:value="${contact.id}"/>
                                             <input type="hidden" name="manufacturerId" th:value="${manufacturer.id}"/>
                                             <input type="submit" value="Edit" class="btn btn-danger btn-sm">
                                         </form>
@@ -207,7 +207,7 @@
                                         <div th:if="${contact.active eq true}">
                                             <form th:action="@{/manufacturers/manufacturer-details/disable-contact}"
                                                   method="post">
-                                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                                <input type="hidden" name="contactPersonId" th:value="${contact.id}"/>
                                                 <input type="hidden" name="manufacturerId"
                                                        th:value="${manufacturer.id}"/>
                                                 <input type="submit" value="Disable" class="btn btn-danger btn-sm"
@@ -218,7 +218,7 @@
                                         <div th:if="${contact.active eq false}">
                                             <form th:action="@{/manufacturers/manufacturer-details/activate-contact}"
                                                   method="post">
-                                                <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                                                <input type="hidden" name="contactPersonId" th:value="${contact.id}"/>
                                                 <input type="hidden" name="manufacturerId"
                                                        th:value="${manufacturer.id}"/>
                                                 <input type="submit" value="Activate" class="btn btn-danger btn-sm"
@@ -261,7 +261,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="type : ${manufacturer.types}">
+                                <tr th:each="type, i : ${manufacturer.types}"
+                                    th:if="${i.index}<10" th:style="${contact.active} == false ? 'color: grey' : ''">
                                     <td th:text="${type.id}"></td>
                                     <td th:text="${type.name}"></td>
                                 </tr>

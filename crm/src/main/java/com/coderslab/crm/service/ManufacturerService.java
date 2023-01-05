@@ -2,6 +2,7 @@ package com.coderslab.crm.service;
 
 import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.filter.ManufacturerFilter;
+import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.repository.ManufacturerRepository;
@@ -54,6 +55,11 @@ public class ManufacturerService {
     }
 
     public Manufacturer addNewManufacturer(Manufacturer manufacturer){
+        return manufacturerRepository.save(manufacturer);
+    }
+
+    public Manufacturer addNewContactPersonToManufacturer(ContactPerson contactPerson, Manufacturer manufacturer){
+        manufacturer.getContactPersonList().add(contactPerson);
         return manufacturerRepository.save(manufacturer);
     }
 }

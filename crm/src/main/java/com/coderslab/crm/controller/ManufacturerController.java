@@ -2,10 +2,12 @@ package com.coderslab.crm.controller;
 
 import com.coderslab.crm.filter.CustomerFilter;
 import com.coderslab.crm.filter.ManufacturerFilter;
+import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.model.Type;
 import com.coderslab.crm.service.CategoryService;
+import com.coderslab.crm.service.ContactPersonService;
 import com.coderslab.crm.service.ManufacturerService;
 import com.coderslab.crm.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +29,13 @@ public class ManufacturerController {
     ManufacturerService manufacturerService;
     CategoryService categoryService;
     TypeService typeService;
+    ContactPersonService contactPersonService;
 
-    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService, TypeService typeService) {
+    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService, TypeService typeService, ContactPersonService contactPersonService) {
         this.manufacturerService = manufacturerService;
         this.categoryService = categoryService;
         this.typeService = typeService;
+        this.contactPersonService = contactPersonService;
     }
 
     @GetMapping("")
@@ -137,6 +141,66 @@ public class ManufacturerController {
         typeService.editType(type);
 
         return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + type.getManufacturer().getId();
+    }
+
+    @GetMapping("/manufacturer-details/add-new-contact")
+    public String initAddNewContact(@RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+        model.addAttribute("contactPerson", new ContactPerson());
+        model.addAttribute("manufacturerId", manufacturerId);
+
+        return "user-zone/add-new-manufacturer-contact";
+    }
+
+    @PostMapping("/manufacturer-details/add-new-contact")
+    public String addNewContact(@RequestParam(name = "manufacturerId") Long manufacturerId, @Valid ContactPerson contactPerson, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("contactPerson", contactPerson);
+            model.addAttribute("manufacturerId", manufacturerId);
+
+            return "user-zone/add-new-manufacturer-contact";
+        }
+
+        contactPersonService.addNewContactPersonToManufacturer(contactPerson, manufacturerService.getManufacturerById(manufacturerId));
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
+    }
+
+    @GetMapping("/manufacturer-details/edit-contact")
+    public String initEditContactPage(@RequestParam(name = "manufacturerId") Long manufacturerId, @RequestParam(name = "contactPersonId") Long contactPersonId, Model model){
+        model.addAttribute("manufacturerId", manufacturerId);
+        model.addAttribute("contactPerson", contactPersonService.getContactPersonById(contactPersonId));
+
+        return "user-zone/edit-manufacturer-contact";
+    }
+
+    @PostMapping("/manufacturer-details/edit-contact")
+    public String editContact(@RequestParam(name = "manufacturerId") Long manufacturerId, @Valid ContactPerson contactPerson, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("manufacturerId", manufacturerId);
+            model.addAttribute("contactPerson", contactPerson);
+
+            return "user-zone/edit-manufacturer-contact";
+        }
+
+        contactPersonService.editContactPerson(contactPerson);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
+    }
+
+    @PostMapping("/manufacturer-details/disable-contact")
+    public String disableContact(@RequestParam(name = "contactPersonId") Long contactPersonId, @RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+
+        contactPersonService.disableContactPerson(contactPersonId);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
+    }
+
+    @PostMapping("/manufacturer-details/activate-contact")
+    public String activateContact(@RequestParam(name = "contactPersonId") Long contactPersonId, @RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+
+        contactPersonService.activateContactPerson(contactPersonId);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
     }
 
 }
