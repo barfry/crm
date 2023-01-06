@@ -262,7 +262,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="type, i : ${manufacturer.types}"
-                                    th:if="${i.index}<10" th:style="${contact.active} == false ? 'color: grey' : ''">
+                                    th:if="${i.index}<10" th:style="${type.active} == false ? 'color: grey' : ''">
                                     <td th:text="${type.id}"></td>
                                     <td th:text="${type.name}"></td>
                                 </tr>
