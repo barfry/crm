@@ -203,4 +203,26 @@ public class ManufacturerController {
         return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturerId;
     }
 
+    @GetMapping("/manufacturer-details/edit-manufacturer")
+    public String initEditManufacturerPage(@RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
+        model.addAttribute("manufacturer", manufacturerService.getManufacturerById(manufacturerId));
+        model.addAttribute("categories", categoryService.getAllCategories());
+
+        return "user-zone/edit-manufacturer";
+    }
+
+    @PostMapping("/manufacturer-details/edit-manufacturer")
+    public String editManufacturer(@Valid Manufacturer manufacturer, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("manufacturer", manufacturer);
+            model. addAttribute("categories", categoryService.getAllCategories());
+
+            return "user-zone/edit-manufacturer";
+        }
+
+        manufacturerService.editManufacturer(manufacturer);
+
+        return "redirect:/manufacturers/manufacturer-details?manufacturerId=" + manufacturer.getId();
+    }
+
 }

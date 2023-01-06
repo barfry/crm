@@ -17,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,9 +26,11 @@ public class ManufacturerService {
 
     @Autowired
     ManufacturerRepository manufacturerRepository;
+    UserService userService;
 
-    public ManufacturerService(ManufacturerRepository manufacturerRepository) {
+    public ManufacturerService(ManufacturerRepository manufacturerRepository, UserService userService) {
         this.manufacturerRepository = manufacturerRepository;
+        this.userService = userService;
     }
 
     public List<Manufacturer> getAllManufacturers(){
@@ -60,6 +64,16 @@ public class ManufacturerService {
 
     public Manufacturer addNewContactPersonToManufacturer(ContactPerson contactPerson, Manufacturer manufacturer){
         manufacturer.getContactPersonList().add(contactPerson);
+        return manufacturerRepository.save(manufacturer);
+    }
+
+    public Manufacturer editManufacturer(Manufacturer manufacturer){
+        Manufacturer temp = manufacturerRepository.getById(manufacturer.getId());
+        manufacturer.setContactPersonList(temp.getContactPersonList());
+        manufacturer.setTypes(temp.getTypes());
+        manufacturer.setModifier(userService.getCurrentUser());
+        manufacturer.setUpdateDate(LocalDateTime.now());
+
         return manufacturerRepository.save(manufacturer);
     }
 }

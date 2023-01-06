@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -78,9 +79,8 @@ public class Manufacturer {
     @JsonManagedReference
     private List<Type> types;
 
-    @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @ManyToOne
     @JoinColumn(name = "modifier_id")
@@ -192,11 +192,11 @@ public class Manufacturer {
         this.types = types;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -216,7 +216,7 @@ public class Manufacturer {
         this.active = active;
     }
 
-    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, List<Type> types, Date updateDate, User modifier, Boolean active) {
+    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, List<Type> types, LocalDateTime updateDate, User modifier, Boolean active) {
         this.id = id;
         this.name = name;
         this.city = city;
