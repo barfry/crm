@@ -63,4 +63,8 @@ public class MachineService {
     public List<Machine> getMachinesByCustomerId(Long customerId){
         return machineRepository.getMachinesByCustomerId(customerId);
     }
+
+    public List<Machine> getMachinesByManufacturerId(Long manufacturerId){
+        return machineRepository.getMachinesByType_ManufacturerId(manufacturerId);
+    }
 }

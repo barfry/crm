@@ -10,4 +10,6 @@ import java.util.List;
 public interface MachineRepository extends JpaRepository<Machine, Long> {
 
     List<Machine> getMachinesByCustomerId(Long customerId);
+
+    List<Machine> getMachinesByType_ManufacturerId(Long manufacturerId);
 }

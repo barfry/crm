@@ -73,7 +73,7 @@
         </th>
       </form>
     </tr>
-    <tr th:each="manufacturer : ${manufacturers}">
+    <tr th:each="manufacturer : ${manufacturers}" th:ondblclick="|window.location.href='/manufacturers/manufacturer-details?manufacturerId=${manufacturer.id}'|">
       <td th:text="${manufacturer.id}"/>
       <td th:text="${manufacturer.name}"/>
       <td th:text="${manufacturer.city}"/>

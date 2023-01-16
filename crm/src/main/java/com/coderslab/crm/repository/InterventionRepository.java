@@ -1,6 +1,7 @@
 package com.coderslab.crm.repository;
 
 import com.coderslab.crm.model.Intervention;
+import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,4 +29,6 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     List<Intervention> getInterventionsByInquiry_CustomerIdAndConfirmedIsTrue(Long customerId);
 
     public List<Intervention> getInterventionsByInquiry_InquiryTypeAndInquiry_CustomerId(String inquiryType, Long customerId);
+
+    List<Intervention> getInterventionsByInquiry_Machine_Type_ManufacturerIdAndInquiry_InquiryTypeAndConfirmedIsFalse(Long manufacturerId, String inquiryType);
 }

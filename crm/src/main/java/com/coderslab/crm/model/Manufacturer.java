@@ -1,11 +1,13 @@
 package com.coderslab.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -63,9 +65,10 @@ public class Manufacturer {
     private String taxCode;
 
     @OneToMany
+    @OrderBy("active desc, id asc")
     private Set<ContactPerson> contactPersonList;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "manufacturer_category", joinColumns =
         @JoinColumn(name = "manufacturer_id"), inverseJoinColumns =
             @JoinColumn(name = "category_id"))
@@ -73,11 +76,11 @@ public class Manufacturer {
 
 
     @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Type> types;
 
-    @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @ManyToOne
     @JoinColumn(name = "modifier_id")
@@ -189,11 +192,11 @@ public class Manufacturer {
         this.types = types;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -213,7 +216,7 @@ public class Manufacturer {
         this.active = active;
     }
 
-    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, List<Type> types, Date updateDate, User modifier, Boolean active) {
+    public Manufacturer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String taxCode, Set<ContactPerson> contactPersonList, Set<Category> categoryList, List<Type> types, LocalDateTime updateDate, User modifier, Boolean active) {
         this.id = id;
         this.name = name;
         this.city = city;
