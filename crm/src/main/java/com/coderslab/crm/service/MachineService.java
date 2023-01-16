@@ -67,4 +67,12 @@ public class MachineService {
     public List<Machine> getMachinesByManufacturerId(Long manufacturerId){
         return machineRepository.getMachinesByType_ManufacturerId(manufacturerId);
     }
+
+    public List<Machine> getAllActiveMachines(){
+        return machineRepository.getMachinesByActiveTrue();
+    }
+
+    public List<Machine> getAllMachines(){
+        return machineRepository.findAll();
+    }
 }

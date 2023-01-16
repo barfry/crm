@@ -81,6 +81,10 @@ public class Machine {
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
+    private String province;
+
+    @NotNull
+    @NotBlank(message = "This field can't be empty")
     @Length(min = 2, max = 30, message = "This field should contain from 2 up to 30 characters")
     private String city;
 
@@ -243,6 +247,14 @@ public class Machine {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCity() {
