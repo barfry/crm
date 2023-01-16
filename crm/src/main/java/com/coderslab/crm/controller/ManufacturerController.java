@@ -6,10 +6,7 @@ import com.coderslab.crm.model.ContactPerson;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.model.Type;
-import com.coderslab.crm.service.CategoryService;
-import com.coderslab.crm.service.ContactPersonService;
-import com.coderslab.crm.service.ManufacturerService;
-import com.coderslab.crm.service.TypeService;
+import com.coderslab.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -30,12 +27,16 @@ public class ManufacturerController {
     CategoryService categoryService;
     TypeService typeService;
     ContactPersonService contactPersonService;
+    InterventionService interventionService;
+    MachineService machineService;
 
-    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService, TypeService typeService, ContactPersonService contactPersonService) {
+    public ManufacturerController(ManufacturerService manufacturerService, CategoryService categoryService, TypeService typeService, ContactPersonService contactPersonService, InterventionService interventionService, MachineService machineService) {
         this.manufacturerService = manufacturerService;
         this.categoryService = categoryService;
         this.typeService = typeService;
         this.contactPersonService = contactPersonService;
+        this.interventionService = interventionService;
+        this.machineService = machineService;
     }
 
     @GetMapping("")
@@ -96,6 +97,8 @@ public class ManufacturerController {
     @GetMapping("/manufacturer-details")
     public String manufacturerDetailsPage(@RequestParam(name = "manufacturerId") Long manufacturerId, Model model){
         model.addAttribute("manufacturer", manufacturerService.getManufacturerById(manufacturerId));
+        model.addAttribute("upcomingInstallations", interventionService.getPlannedInterventionsByManufacturerAndByInquiryType(manufacturerId, "INSTALLATION"));
+        model.addAttribute("machines", machineService.getMachinesByManufacturerId(manufacturerId));
 
         return "user-zone/manufacturer-details";
     }

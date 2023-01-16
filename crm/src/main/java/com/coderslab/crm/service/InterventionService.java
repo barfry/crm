@@ -2,6 +2,7 @@ package com.coderslab.crm.service;
 
 import com.coderslab.crm.model.Inquiry;
 import com.coderslab.crm.model.Intervention;
+import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.repository.InterventionRepository;
 import com.coderslab.crm.repository.InquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,9 @@ public class InterventionService {
 
     public List<Intervention> getInterventionsByCustomerIdWhereConfirmedIsTrue(Long customerId){
         return interventionRepository.getInterventionsByInquiry_CustomerIdAndConfirmedIsTrue(customerId);
+    }
+
+    public List<Intervention> getPlannedInterventionsByManufacturerAndByInquiryType(Long manufacturerId, String inquiryType){
+        return interventionRepository.getInterventionsByInquiry_Machine_Type_ManufacturerIdAndInquiry_InquiryTypeAndConfirmedIsFalse(manufacturerId, inquiryType);
     }
 }
