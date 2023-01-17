@@ -2,21 +2,21 @@ package com.coderslab.crm.filter;
 
 public class MachineFilter {
 
-    private String customerName;
+    private String customerName = "";
 
-    private String typeName;
+    private String typeName = "";
 
-    private String serialNumber;
+    private String serialNumber = "";
 
-    private String productionYear;
+    private String productionYear = "";
 
-    private String servicePriority;
+    private String servicePriority = "";
 
-    private String city;
+    private String city = "";
 
-    private String zipCode;
+    private String zipCode = "";
 
-    private String province;
+    private String province = "";
 
     public String getCustomerName() {
         return customerName;
