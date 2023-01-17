@@ -60,6 +60,27 @@
         <span th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></span>
     </div>
     <div class="col-md-4">
+        <label for="inputState" class="form-label">Province</label>
+        <select id="inputState" class="form-select" th:field="*{province}">
+            <option th:value="'Lower Silesia'">Lower Silesia</option>
+            <option th:value="'Kujawsko-Pomorskie'">Kujawsko-Pomorskie</option>
+            <option th:value="'Łódź Province'">Łódź Province</option>
+            <option th:value="'Lublin Province'">Lublin Province</option>
+            <option th:value="'Lubuskie Province'">Lubuskie Province</option>
+            <option th:value="'Małopolska Province'">Małopolska Province</option>
+            <option th:value="'Masovia Province'">Masovia Province</option>
+            <option th:value="'Opole Province'">Opole Province</option>
+            <option th:value="'Podkarpackie Province'">Podkarpackie Province</option>
+            <option th:value="'Podlasie Province'">Podlasie Province</option>
+            <option th:value="'Pomerania Province'">Pomerania Province</option>
+            <option th:value="'Silesia Province'">Silesia Province</option>
+            <option th:value="'Holy Cross Province'">Holy Cross Province</option>
+            <option th:value="'Warmia-Masuria'">Warmia-Masuria</option>
+            <option th:value="'Wielkopolska Province'">Wielkopolska Province</option>
+            <option th:value="'West Pomerania'">West Pomerania</option>
+        </select>
+    </div>
+    <div class="col-md-4">
         <label for="city" class="form-label">City</label>
         <input type="text" th:field="*{city}" class="form-control" id="city" placeholder="City">
         <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
