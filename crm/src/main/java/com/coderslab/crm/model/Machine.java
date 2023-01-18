@@ -45,7 +45,7 @@ public class Machine {
     private LocalDate warrantyStartDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date warrantyEndDate;
+    private LocalDate warrantyEndDate;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -177,11 +177,11 @@ public class Machine {
         this.warrantyStartDate = warrantyStartDate;
     }
 
-    public Date getWarrantyEndDate() {
+    public LocalDate getWarrantyEndDate() {
         return warrantyEndDate;
     }
 
-    public void setWarrantyEndDate(Date warrantyEndDate) {
+    public void setWarrantyEndDate(LocalDate warrantyEndDate) {
         this.warrantyEndDate = warrantyEndDate;
     }
 
@@ -321,7 +321,7 @@ public class Machine {
         this.updateDate = updateDate;
     }
 
-    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, Date warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, Date updateDate) {
+    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String province, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, Date updateDate) {
         this.id = id;
         this.customer = customer;
         this.type = type;
@@ -337,6 +337,7 @@ public class Machine {
         this.creator = creator;
         this.contract = contract;
         this.zipCode = zipCode;
+        this.province = province;
         this.city = city;
         this.street = street;
         this.streetNumber = streetNumber;

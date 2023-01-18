@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Machine details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+  <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+  <link href="../static/css/tooltip.css" th:href="@{/css/tooltip.css}" rel="stylesheet"/>
+  <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+  <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+</head>
+<body>
+<header>
+  <div th:replace="user-zone/fragments/header :: header">
+  </div>
+</header>
+<div class="container-fluid mt-2">
+  <div class="main-body">
+    <div class="row gutters-sm">
+      <div class="col-md-3 mb-3">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <h6 class="mb-0">Type</h6>
+              </div>
+              <div class="col-sm-8 text-secondary" th:text="${machine.type.name}">
+              </div>
+              <hr>
+              <div class="col-sm-4">
+                <h6 class="mb-0">Manufacturer</h6>
+              </div>
+              <div class="col-sm-8 text-secondary" th:text="${machine.type.manufacturer.name}">
+              </div>
+              <hr>
+              <div class="col-sm-4">
+                <h6 class="mb-0">Serial number</h6>
+              </div>
+              <div class="col-sm-8 text-secondary" th:text="${machine.serialNumber}">
+              </div>
+              <hr>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="mb-0">Production year</h6>
+              </div>
+              <div class="col-sm-6 text-secondary" th:text="${machine.productionYear}">
+              </div>
+              <hr>
+              <div class="col-sm-6">
+                <h6 class="mb-0">Commissioning date</h6>
+              </div>
+              <div class="col-sm-6 text-secondary" th:text="${#temporals.format(machine.commissioningDate, 'dd-MM-yyyy')}">
+              </div>
+              <hr>
+              <div class="col-sm-6">
+                <h6 class="mb-0">Warranty start date</h6>
+              </div>
+              <div class="col-sm-6 text-secondary" th:text="${#temporals.format(machine.warrantyStartDate, 'dd-MM-yyyy')}">
+              </div>
+              <hr>
+              <div class="col-sm-6">
+                <h6 class="mb-0">Warranty end date</h6>
+              </div>
+              <div class="col-sm-6 text-secondary" th:text="${#temporals.format(machine.warrantyEndDate, 'dd-MM-yyyy')}">
+              </div>
+              <hr>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <h6 class="mb-0">Customer</h6>
+              </div>
+              <div class="col-sm-8 text-secondary" th:text="${machine.customer.name}"></div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-4">
+                <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-8 text-secondary"
+                   th:text="${machine.zipCode + ' ' + machine.city + ', ' + machine.street + ' ' + machine.streetNumber}">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="mb-0">General notice</h6>
+              </div>
+              <div class="col-sm-8 text-secondary"
+                   th:text="${machine.generalNotice}">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="mb-0">Service notice</h6>
+              </div>
+              <div class="col-sm-8 text-secondary"
+                   th:text="${machine.serviceNotice}">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="mb-0">Service priority</h6>
+              </div>
+              <div class="col-sm-6 text-secondary"
+                   th:text="${machine.servicePriority}">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                <form th:action="@{/machines/machine-details/edit-machine}" method="get">
+                  <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                  <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row gutters-sm mb-3 me-0">
+          <div class="card mb-3">
+            <div class="card-body" style="max-width: 100%; overflow-y: auto">
+              <div class="row mb-3">
+                <div class="col-auto me-auto">
+                  <h6>Machine types</h6>
+                </div>
+                <div class="col-auto">
+                  <form th:action="@{/manufacturers/manufacturer-details/add-new-type}" method="get">
+                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                    <input type="submit" value="Add new type" class="btn btn-danger btn-sm">
+                  </form>
+                </div>
+              </div>
+              <table class="table table-sm table-hover table-dark table-bordered text-center">
+                <thead>
+                <tr>
+                  <th scope="col">
+                    <a>Id</a>
+                  </th>
+                  <th scope="col">
+                    <a>Type</a>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+              <div class="row mt-3">
+                <div class="col-auto me-auto">
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#typeModal">
+                    More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="typeModal" data-bs-backdrop="static" data-bs-keyboard="false"
+               tabindex="-1"
+               aria-labelledby="typeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="typeModalLabel">All machine types</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                    <thead>
+                    <tr>
+                      <th scope="col">
+                        <a>Id</a>
+                      </th>
+                      <th scope="col">
+                        <a>Type</a>
+                      </th>
+                      <th scope="col">
+                        <a>Categories</a>
+                      </th>
+                      <th scope="col">
+                        <a>Active</a>
+                      </th>
+                      <th scope="col">
+                        <a>Edit</a>
+                      </th>
+                      <th scope="col">
+                        <a>Show machines</a>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card h-100">
+            <div class="card-body" style="max-width: 100%; overflow-y: auto">
+              <div class="row mb-3">
+                <div class="col-auto me-auto">
+                  <h6>Installed machines</h6>
+                </div>
+              </div>
+              <table class="table table-sm table-hover table-dark table-bordered text-center">
+                <thead>
+                <tr>
+                  <th scope="col">
+                    <a>Id</a>
+                  </th>
+                  <th scope="col">
+                    <a>Type</a>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+              <div class="row mt-3">
+                <div class="col-auto me-auto">
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#machinesModal">
+                    More
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="machinesModal" data-bs-backdrop="static" data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="machinesModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="machinesModalLabel">Installed machines</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                  <thead>
+                  <tr>
+                    <th scope="col">
+                      <a>Id</a>
+                    </th>
+                    <th scope="col">
+                      <a>Type</a>
+                    </th>
+                    <th scope="col">
+                      <a>Customer</a>
+                    </th>
+                    <th scope="col">
+                      <a>Production year</a>
+                    </th>
+                    <th scope="col">
+                      <a>Details</a>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="row gutters-sm me-0">
+          <div class="card h-100 mb-3">
+            <div class="card-body" style="max-width: 100%; overflow-y: auto">
+              <div class="row mb-3">
+                <div class="col-auto me-auto">
+                  <h6>Upcoming installations</h6>
+                </div>
+              </div>
+              <table class="table table-sm table-hover table-dark table-bordered text-center">
+                <thead>
+                <tr>
+                  <th scope="col">
+                    <a>Id</a>
+                  </th>
+                  <th scope="col">
+                    <a>Type</a>
+                  </th>
+                  <th scope="col">
+                    <a>Customer</a>
+                  </th>
+                  <th scope="col">
+                    <a>Date</a>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+              <div class="row mt-3">
+                <div class="col-auto me-auto">
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#installationModal">
+                    More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="installationModal" data-bs-backdrop="static" data-bs-keyboard="false"
+               tabindex="-1"
+               aria-labelledby="installationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="installationModalLabel">All upcoming installations</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                    <thead>
+                    <tr>
+                      <th scope="col">
+                        <a>Id</a>
+                      </th>
+                      <th scope="col">
+                        <a>Type</a>
+                      </th>
+                      <th scope="col">
+                        <a>Serial number</a>
+                      </th>
+                      <th scope="col">
+                        <a>Customer</a>
+                      </th>
+                      <th scope="col">
+                        <a>Start</a>
+                      </th>
+                      <th scope="col">
+                        <a>End</a>
+                      </th>
+                      <th scope="col">
+                        <a>Technician</a>
+                      </th>
+                      <th scope="col">
+                        <a>Details</a>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $("[rel='tooltip']").tooltip();
+  });
+</script>
+</body>
+</html>

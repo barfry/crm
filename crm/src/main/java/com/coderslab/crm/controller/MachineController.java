@@ -57,6 +57,12 @@ public class MachineController {
         return "user-zone/all-machines";
     }
 
+    @GetMapping("/machine-details")
+    public String showMachineDetailsPage(@RequestParam(value = "machineId") Long machineId, Model model){
+        model.addAttribute("machine", machineService.getMachineById(machineId));
+
+        return "user-zone/machine-details";
+    }
 
 
 }
