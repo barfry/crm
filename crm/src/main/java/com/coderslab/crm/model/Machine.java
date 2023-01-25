@@ -106,14 +106,13 @@ public class Machine {
     @OneToMany
     private Set<Task> taskList;
 
-
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "machine_equipment", joinColumns =
         @JoinColumn(name = "machine_id"), inverseJoinColumns =
             @JoinColumn(name = "equipment_id"))
     private Set<Equipment> equipmentList;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "modifier_id")
     private User modifier;
 

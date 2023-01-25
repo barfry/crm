@@ -471,7 +471,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="installation : ${upcomingInstallations}">
+                                <tr th:each="installation,i : ${upcomingInstallations}"
+                                    th:if="${i.index}<10" th:style="${installation.active} == false ? 'color: grey' : ''">
                                     <td th:text="${installation.id}"></td>
                                     <td th:text="${installation.inquiry.machine.type.name}"></td>
                                     <td th:text="${installation.inquiry.machine.customer.name}"></td>
