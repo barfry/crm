@@ -5,6 +5,7 @@ import com.coderslab.crm.filter.ManufacturerFilter;
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Machine;
 import com.coderslab.crm.model.Manufacturer;
+import com.coderslab.crm.model.Task;
 import com.coderslab.crm.repository.MachineRepository;
 import com.coderslab.crm.specification.MachineSpecification;
 import com.coderslab.crm.specification.ManufacturerSpecification;
@@ -27,10 +28,12 @@ public class MachineService {
     @Autowired
     MachineRepository machineRepository;
     UserService userService;
+    TaskService taskService;
 
-    public MachineService(MachineRepository machineRepository, UserService userService) {
+    public MachineService(MachineRepository machineRepository, UserService userService, TaskService taskService) {
         this.machineRepository = machineRepository;
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     public Machine addNewMachine(Machine machine, Customer customer){
@@ -104,5 +107,17 @@ public class MachineService {
         MachineSpecification spec8 = new MachineSpecification(new SearchCriteria("province",":",machineFilter.getProvince()));
 
         return this.machineRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7).and(spec8), pageable);
+    }
+
+    public void addNewTaskToMachine(Long machineId, Task task){
+        task.setUpdateDate(LocalDate.now());
+        task.setModifier(userService.getCurrentUser());
+
+        taskService.addNewTask(task);
+
+        Machine machine = machineRepository.getById(machineId);
+
+        machine.getTaskList().add(task);
+        machineRepository.save(machine);
     }
 }

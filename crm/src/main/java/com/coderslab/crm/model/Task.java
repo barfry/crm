@@ -3,6 +3,7 @@ package com.coderslab.crm.model;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -29,31 +30,30 @@ public class Task {
     private String description;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Set the planned date")
     private LocalDate plannedDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate executionDate;
 
-    private Boolean realized = false;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "supervisor_id")
+    @NotNull
     private User supervisor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "executor_id")
+    @NotNull
     private User executor;
 
-    @NotNull
-    @NotBlank(message = "This field can't be empty")
-    @Length(min = 2, max = 200, message = "This field should contain from 2 up to 200 characters")
+    @Length(min = 2, max = 200, message = "This field should contain between 2 and 200 characters")
     private String notice;
 
     @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate updateDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "modifier_id")
     private User modifier;
 
@@ -97,14 +97,6 @@ public class Task {
 
     public void setExecutionDate(LocalDate executionDate) {
         this.executionDate = executionDate;
-    }
-
-    public Boolean getRealized() {
-        return realized;
-    }
-
-    public void setRealized(Boolean realized) {
-        this.realized = realized;
     }
 
     public User getSupervisor() {
@@ -155,13 +147,12 @@ public class Task {
         this.active = active;
     }
 
-    public Task(Long id, String name, String description, LocalDate plannedDate, LocalDate executionDate, Boolean realized, User supervisor, User executor, String notice, LocalDate updateDate, User modifier, Boolean active) {
+    public Task(Long id, String name, String description, LocalDate plannedDate, LocalDate executionDate, User supervisor, User executor, String notice, LocalDate updateDate, User modifier, Boolean active) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.plannedDate = plannedDate;
         this.executionDate = executionDate;
-        this.realized = realized;
         this.supervisor = supervisor;
         this.executor = executor;
         this.notice = notice;
@@ -173,21 +164,4 @@ public class Task {
     public Task() {
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", plannedDate=" + plannedDate +
-                ", executionDate=" + executionDate +
-                ", realized=" + realized +
-                ", supervisor=" + supervisor +
-                ", executor=" + executor +
-                ", notice='" + notice + '\'' +
-                ", updateDate=" + updateDate +
-                ", modifier=" + modifier +
-                ", active=" + active +
-                '}';
-    }
 }
