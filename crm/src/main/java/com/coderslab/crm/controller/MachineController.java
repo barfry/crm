@@ -1,11 +1,10 @@
 package com.coderslab.crm.controller;
 
+import com.coderslab.crm.filter.EquipmentFilter;
 import com.coderslab.crm.filter.MachineFilter;
 import com.coderslab.crm.filter.ManufacturerFilter;
-import com.coderslab.crm.model.Machine;
-import com.coderslab.crm.model.Manufacturer;
-import com.coderslab.crm.model.Task;
-import com.coderslab.crm.model.Type;
+import com.coderslab.crm.model.*;
+import com.coderslab.crm.service.EquipmentService;
 import com.coderslab.crm.service.MachineService;
 import com.coderslab.crm.service.TaskService;
 import com.coderslab.crm.service.UserService;
@@ -24,18 +23,20 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/machines")
-@SessionAttributes("machineFilter")
+@SessionAttributes({"machineFilter", "equipmentFilter"})
 public class MachineController {
 
     @Autowired
     MachineService machineService;
     UserService userService;
     TaskService taskService;
+    EquipmentService equipmentService;
 
-    public MachineController(MachineService machineService, UserService userService, TaskService taskService) {
+    public MachineController(MachineService machineService, UserService userService, TaskService taskService, EquipmentService equipmentService) {
         this.machineService = machineService;
         this.userService = userService;
         this.taskService = taskService;
+        this.equipmentService = equipmentService;
     }
 
     @GetMapping("")
@@ -149,6 +150,53 @@ public class MachineController {
         return "redirect:/machines/machine-details?machineId=" + machineId;
     }
 
+    @GetMapping("/machine-details/add-equipment")
+    public String showAllEquipment(@RequestParam(name = "machineId") Long machineId, Model model){
+        EquipmentFilter equipmentFilter = new EquipmentFilter();
+        model.addAttribute("equipmentList", equipmentService.getAllEquipment());
+
+        return  initAddEquipmentPage(machineId, equipmentFilter,1,"id","asc", model);
+    }
+
+    @GetMapping("/machine-details/add-equipment/page/{pageNo}")
+    public String initAddEquipmentPage(@RequestParam(name = "machineId") Long machineId, @ModelAttribute EquipmentFilter equipmentFilter, @PathVariable(value = "pageNo") int pageNo,
+                                       @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model){
+
+        int pageSize = 5;
+
+        Page<Equipment> page = equipmentService.findEquipmentBySearchWithPaginationAndSorting(pageNo, pageSize, sortField, sortDir, equipmentFilter);
+        List<Equipment> listEquipment = page.getContent();
+
+        model.addAttribute("equipmentFilter", equipmentFilter);
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("equipmentList", listEquipment);
+
+        model.addAttribute("machine", machineService.getMachineById(machineId));
+
+        return "user-zone/add-equipment";
+    }
+
+    @PostMapping("/machine-details/add-equipment")
+    public String addEquipment(@RequestParam(name = "machineId") Long machineId, @RequestParam(name = "equipmentId") Long equipmentId, Model model){
+        machineService.addEquipmentToMachine(equipmentId, machineId);
+
+        return "redirect:/machines/machine-details/add-equipment?machineId=" + machineId;
+    }
+
+    @PostMapping("/machine-details/remove-equipment")
+    public String removeEquipmentFromMachine(@RequestParam(name = "machineId") Long machineId, @RequestParam(name = "equipmentId") Long equipmentId, Model model){
+        machineService.removeEquipmentFromMachine(equipmentId, machineId);
+
+        return "redirect:/machines/machine-details?machineId=" + machineId;
+    }
     
 
 }
