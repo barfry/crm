@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.3/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.3/jquery.min.js}" type="text/javascript"></script>
+    <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+</head>
+<body>
+<header>
+    <div th:replace="user-zone/fragments/header :: header">
+    </div>
+</header>
+<div class="container-fluid mt-2">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-3 mb-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Type</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${machine.type.name}">
+                            </div>
+                            <hr>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Manufacturer</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${machine.type.manufacturer.name}">
+                            </div>
+                            <hr>
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Serial number</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${machine.serialNumber}">
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Production year</h6>
+                            </div>
+                            <div class="col-sm-6 text-secondary" th:text="${machine.productionYear}">
+                            </div>
+                            <hr>
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Commissioning date</h6>
+                            </div>
+                            <div class="col-sm-6 text-secondary"
+                                 th:text="${#temporals.format(machine.commissioningDate, 'dd-MM-yyyy')}">
+                            </div>
+                            <hr>
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Warranty start date</h6>
+                            </div>
+                            <div class="col-sm-6 text-secondary"
+                                 th:text="${#temporals.format(machine.warrantyStartDate, 'dd-MM-yyyy')}">
+                            </div>
+                            <hr>
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Warranty end date</h6>
+                            </div>
+                            <div class="col-sm-6 text-secondary"
+                                 th:text="${#temporals.format(machine.warrantyEndDate, 'dd-MM-yyyy')}">
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Customer</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary" th:text="${machine.customer.name}"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"
+                                 th:text="${machine.zipCode + ' ' + machine.city + ', ' + machine.street + ' ' + machine.streetNumber}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">General notice</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"
+                                 th:text="${machine.generalNotice}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Service notice</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"
+                                 th:text="${machine.serviceNotice}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6 class="mb-0">Service priority</h6>
+                            </div>
+                            <div class="col-sm-6 text-secondary"
+                                 th:text="${machine.servicePriority}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form th:action="@{/machines/machine-details}" method="get">
+                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                    <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body" style="max-width: 100%; overflow-y: auto">
+                        <div class="row mb-3">
+                            <div class="col-auto me-auto">
+                                <h6>Equipment</h6>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-hover table-dark table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <a>Id</a>
+                                </th>
+                                <th scope="col">
+                                    <a>Code</a>
+                                </th>
+                                <th scope="col">
+                                    <a>Title</a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="equipment, i : ${machine.equipmentList}"
+                                th:if="${i.index}<5">
+                                <td th:text="${equipment.id}"></td>
+                                <td th:text="${equipment.code}"></td>
+                                <td th:text="${equipment.title}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-3">
+                            <div class="col-auto me-auto">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#equipmentModal">
+                                    More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="equipmentModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1"
+                     aria-labelledby="equipmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="equipmentModalLabel">Equipment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Code</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Title</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Description</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Remove</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Details</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                    <tr th:each="equipment : ${machine.equipmentList}">
+                                        <td th:text="${equipment.id}"></td>
+                                        <td th:text="${equipment.code}"></td>
+                                        <td th:text="${equipment.title}"></td>
+                                        <td th:text="${equipment.description}"
+                                            style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                            th:title="${equipment.description}"></td>
+                                        <td>
+                                            <form th:action="@{/machines/machine-details/remove-equipment}" method="post">
+                                                <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                <input type="hidden" name="equipmentId" th:value="${equipment.id}"/>
+                                                <input type="submit" value="Remove" class="btn btn-danger btn-sm"
+                                                       th:data-remove-equipment="|Please confirm removing equipment: ${equipment.code} ${equipment.title}|"
+                                                       onclick="if (!confirm(this.getAttribute('data-remove-equipment'))) return false"/>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{/equipment/equipment-details}" method="get">
+                                                <input type="hidden" name="equipmentId" th:value="${equipment.id}"/>
+                                                <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                    <form th:action="@{/equipment/add-new-equipment}" method="get">
+                        <input type="submit" value="Add new equipment" class="btn btn-danger btn-sm mb-2">
+                    </form>
+                <div style="overflow-x:auto;">
+                    <table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                <a th:href="@{'/machines/machine-details/add-equipment/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir} + '&machineId=' + ${machine.id}}">Id</a>
+                            </th>
+                            <th scope="col">
+                                <a th:href="@{'/machines/machine-details/add-equipment/page/' + ${currentPage} + '?sortField=code&sortDir=' + ${reverseSortDir} + '&machineId=' + ${machine.id}}">Code</a>
+                            </th>
+                            <th scope="col">
+                                <a th:href="@{'/machines/machine-details/add-equipment/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir} + '&machineId=' + ${machine.id}}">Title</a>
+                            </th>
+                            <th scope="col">
+                                <a th:href="@{'/machines/machine-details/add-equipment/page/' + ${currentPage} + '?sortField=description&sortDir=' + ${reverseSortDir} + '&machineId=' + ${machine.id}}">Description</a>
+                            </th>
+                            <th scope="col">Add to machine</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <form action="#" th:action="@{/machines/machine-details/add-equipment/page/1}" method="get"
+                                  th:object="${equipmentFilter}">
+                                <th scope="col">Search:</th>
+                                <th scope="col">
+                                    <input type="text" name="code" th:value="*{code}" placeholder="Code">
+                                </th>
+                                <th scope="col">
+                                    <input type="text" name="title" th:value="*{title}" placeholder="Title">
+                                </th>
+                                <th scope="col">
+                                    <input type="text" name="description" th:value="*{description}"
+                                           placeholder="Description">
+                                </th>
+                                <th scope="col">
+                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                    <input type="submit" class="btn btn-danger btn-sm" value="Search">
+                                </th>
+                            </form>
+                        </tr>
+                        <tr th:each="equipment : ${equipmentList}" th:style="${#lists.contains(machine.equipmentList, equipment) ? 'color: grey' : ''}">
+                            <td th:text="${equipment.id}"/>
+                            <td th:text="${equipment.code}"/>
+                            <td th:text="${equipment.title}"/>
+                            <td th:text="${equipment.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                th:title="${equipment.description}" rel="tooltip"></td>
+                            <td>
+                                <form th:action="@{/machines/machine-details/add-equipment}" method="post">
+                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                    <input type="hidden" name="equipmentId" th:value="${equipment.id}"/>
+                                    <div th:switch="${#lists.contains(machine.equipmentList, equipment)}">
+                                        <input th:case="false" type="submit" value="Add"
+                                               class="btn btn-danger btn-sm">
+                                        <input th:case="true" rel="tooltip"
+                                               title="Equipment already present in machine"
+                                               type="button" value="Add"
+                                               class="btn btn-secondary btn-sm disabled tooltip-button">
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Add to machine</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div th:if="${totalPages > 1}">
+                    <div class="row col-sm-10">
+                        <div class="col-sm-2">
+                            Total Rows: [[${totalItems}]]
+                        </div>
+                        <div class="col-sm-1">
+                             <span th:if="${currentPage != i}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            <a th:if="${currentPage != i}"
+                               th:href="@{'/machines/machine-details/add-equipment/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&machineId=' + ${machine.id}}">[[${i}]]</a><span
+                                     th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                            </span>
+                        </div>
+                        <div class="col-sm-1">
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/machines/machine-details/add-equipment/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&machineId=' + ${machine.id}}">Next</a>
+                            <span th:unless="${currentPage < totalPages}">Next</span>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/machines/machine-details/add-equipment/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&machineId=' + ${machine.id}}">Last</a>
+                            <span th:unless="${currentPage < totalPages}">Last</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
+</body>
+</html>

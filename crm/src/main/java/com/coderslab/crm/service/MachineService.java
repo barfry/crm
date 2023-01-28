@@ -10,6 +10,7 @@ import com.coderslab.crm.repository.MachineRepository;
 import com.coderslab.crm.specification.MachineSpecification;
 import com.coderslab.crm.specification.ManufacturerSpecification;
 import com.coderslab.crm.specification.SearchCriteria;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,11 +30,13 @@ public class MachineService {
     MachineRepository machineRepository;
     UserService userService;
     TaskService taskService;
+    EquipmentService equipmentService;
 
-    public MachineService(MachineRepository machineRepository, UserService userService, TaskService taskService) {
+    public MachineService(MachineRepository machineRepository, UserService userService, TaskService taskService, EquipmentService equipmentService) {
         this.machineRepository = machineRepository;
         this.userService = userService;
         this.taskService = taskService;
+        this.equipmentService = equipmentService;
     }
 
     public Machine addNewMachine(Machine machine, Customer customer){
@@ -41,7 +44,7 @@ public class MachineService {
         machine.setCreationDate(LocalDate.now());
 
         machine.setModifier(userService.getCurrentUser());
-        machine.setUpdateDate(new Date());
+        machine.setUpdateDate(LocalDate.now());
         machine.setCustomer(customer);
 
         return machineRepository.save(machine);
@@ -53,7 +56,7 @@ public class MachineService {
 
     public Machine editMachine(Machine machine){
         machine.setModifier(userService.getCurrentUser());
-        machine.setUpdateDate(new Date());
+        machine.setUpdateDate(LocalDate.now());
 
         return machineRepository.save(machine);
     }
@@ -61,7 +64,7 @@ public class MachineService {
     public Machine disableMachine(Long machineId){
         Machine machine = machineRepository.getById(machineId);
         machine.setActive(false);
-        machine.setUpdateDate(new Date());
+        machine.setUpdateDate(LocalDate.now());
         machine.setModifier(userService.getCurrentUser());
         return machineRepository.save(machine);
     }
@@ -69,7 +72,7 @@ public class MachineService {
     public Machine activateMachine(Long machineId){
         Machine machine = machineRepository.getById(machineId);
         machine.setActive(true);
-        machine.setUpdateDate(new Date());
+        machine.setUpdateDate(LocalDate.now());
         machine.setModifier(userService.getCurrentUser());
         return machineRepository.save(machine);
     }
@@ -120,4 +123,25 @@ public class MachineService {
         machine.getTaskList().add(task);
         machineRepository.save(machine);
     }
+
+    public Machine addEquipmentToMachine(Long equipmentId, Long machineId){
+        Machine machine = machineRepository.getById(machineId);
+        machine.getEquipmentList().add(equipmentService.getEquipmentById(equipmentId));
+
+        machine.setModifier(userService.getCurrentUser());
+        machine.setUpdateDate(LocalDate.now());
+
+        return machineRepository.save(machine);
+    }
+
+    public Machine removeEquipmentFromMachine(Long equipmentId, Long machineId){
+        Machine machine = machineRepository.getById(machineId);
+        machine.getEquipmentList().remove(equipmentService.getEquipmentById(equipmentId));
+
+        machine.setModifier(userService.getCurrentUser());
+        machine.setUpdateDate(LocalDate.now());
+
+        return machineRepository.save(machine);
+    }
+
 }

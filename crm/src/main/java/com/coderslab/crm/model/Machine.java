@@ -116,9 +116,8 @@ public class Machine {
     @JoinColumn(name = "modifier_id")
     private User modifier;
 
-    @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateDate;
+    private LocalDate updateDate;
 
     public Long getId() {
         return id;
@@ -312,15 +311,15 @@ public class Machine {
         this.modifier = modifier;
     }
 
-    public Date getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String province, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, Date updateDate) {
+    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String province, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, LocalDate updateDate) {
         this.id = id;
         this.customer = customer;
         this.type = type;
