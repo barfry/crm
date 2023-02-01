@@ -233,8 +233,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="task, i : ${machine.taskList}"
-                                            th:if="${i.index}<5"
+                                        <tr th:each="task : ${machine.taskList}"
                                             th:style="${task.active} == false ? 'color: grey' : ''">
                                             <td th:text="${task.id}"></td>
                                             <td th:text="${task.name}"></td>
@@ -479,13 +478,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="installationModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    <div class="modal fade" id="inquiriesModal" data-bs-backdrop="static" data-bs-keyboard="false"
                          tabindex="-1"
-                         aria-labelledby="installationModalLabel" aria-hidden="true">
+                         aria-labelledby="inquiriesModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="installationModalLabel">All upcoming installations</h5>
+                                    <h5 class="modal-title" id="inquiriesModalLabel">All inquiries</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -493,6 +492,7 @@
                                     <table class="table table-sm table-hover table-dark table-bordered text-center w-100">
                                         <thead>
                                         <tr>
+                                            <th scope="col"></th>
                                             <th scope="col">
                                                 <a>Id</a>
                                             </th>
@@ -500,19 +500,19 @@
                                                 <a>Type</a>
                                             </th>
                                             <th scope="col">
-                                                <a>Serial number</a>
+                                                <a>Machine status</a>
                                             </th>
                                             <th scope="col">
-                                                <a>Customer</a>
+                                                <a>Date</a>
                                             </th>
                                             <th scope="col">
-                                                <a>Start</a>
+                                                <a>Description</a>
                                             </th>
                                             <th scope="col">
-                                                <a>End</a>
+                                                <a>Active</a>
                                             </th>
                                             <th scope="col">
-                                                <a>Technician</a>
+                                                <a>Comment</a>
                                             </th>
                                             <th scope="col">
                                                 <a>Details</a>
@@ -520,8 +520,64 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tbody>
-
+                                        <th:block th:each="inquiry : ${machine.inquiryList}">
+                                            <tr th:style="${inquiry.active == false ? 'color: gray' : ''}"
+                                                th:styleappend="${#lists.isEmpty(inquiry.interventionList) ? 'color: red' : ''}"
+                                                data-bs-toggle="collapse" th:data-bs-target="'#m' + ${inquiry.id}">
+                                                <td>
+                                                    <button type="button"
+                                                            class="accordion-button collapsed mx-0 justify-content-start"
+                                                            data-bs-toggle="collapse"
+                                                            th:data-bs-target="'#m' + ${inquiry.id}"></button>
+                                                </td>
+                                                <td th:text="${inquiry.id}"></td>
+                                                <td th:text="${inquiry.inquiryType}"></td>
+                                                <td th:text="${inquiry.machineStatus}"></td>
+                                                <td th:text="${#temporals.format(inquiry.inquiryDate, 'dd-MM-yyyy')}"></td>
+                                                <td th:text="${inquiry.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                    th:title="${inquiry.description}" rel="tooltip"></td>
+                                                <td th:text="${inquiry.active}"></td>
+                                                <td th:text="${inquiry.comment}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                    th:title="${inquiry.comment}" rel="tooltip"></td>
+                                                <td>
+                                                    <form th:action="@{/inquiries/inquiry-details}" method="get">
+                                                        <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
+                                                        <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${!#lists.isEmpty(inquiry.interventionList)}"
+                                                class="collapse accordion-collapse" th:id="'m' + ${inquiry.id}"
+                                                data-bs-parent=".table">
+                                                <td colspan="9">
+                                                    <table class="table table-sm table-hover table-dark table-bordered text-center accordion">
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Technician</th>
+                                                            <th>Assistant</th>
+                                                            <th>Assistant 2</th>
+                                                            <th>Confirmed</th>
+                                                            <th>Start</th>
+                                                            <th>End</th>
+                                                            <th>Notice</th>
+                                                            <th>Spare parts</th>
+                                                        </tr>
+                                                        <tr th:each="intervention : ${inquiry.interventionList}">
+                                                            <td th:text="${intervention.id}"></td>
+                                                            <td th:text="${intervention.technician.nickname}"></td>
+                                                            <td th:text="${intervention.assistant ne null} ? ${intervention.assistant.nickname} : '----'"></td>
+                                                            <td th:text="${intervention.assistant2 ne null} ? ${intervention.assistant2.nickname} : '----'"></td>
+                                                            <td th:text="${intervention.confirmed}"></td>
+                                                            <td th:text="${#temporals.format(intervention.start, 'dd-MM-yyyy')}"></td>
+                                                            <td th:text="${#temporals.format(intervention.end, 'dd-MM-yyyy')}"></td>
+                                                            <td th:text="${intervention.notice}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                                th:title="${intervention.notice}" rel="tooltip"></td>
+                                                            <td th:text="${intervention.spareParts}"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </th:block>
                                         </tbody>
                                     </table>
                                 </div>
