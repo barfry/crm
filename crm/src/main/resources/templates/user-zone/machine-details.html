@@ -372,7 +372,8 @@
                                             style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                             th:title="${equipment.description}"></td>
                                         <td>
-                                            <form th:action="@{/machines/machine-details/remove-equipment}" method="post">
+                                            <form th:action="@{/machines/machine-details/remove-equipment}"
+                                                  method="post">
                                                 <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                                 <input type="hidden" name="equipmentId" th:value="${equipment.id}"/>
                                                 <input type="submit" value="Remove" class="btn btn-danger btn-sm"
@@ -400,36 +401,80 @@
                         <div class="card-body" style="max-width: 100%; overflow-y: auto">
                             <div class="row mb-3">
                                 <div class="col-auto me-auto">
-                                    <h6>Upcoming installations</h6>
+                                    <h6>Service inquiries</h6>
                                 </div>
                             </div>
-                            <table class="table table-sm table-hover table-dark table-bordered text-center">
-                                <thead>
-                                <tr>
-                                    <th scope="col">
-                                        <a>Id</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Type</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Customer</a>
-                                    </th>
-                                    <th scope="col">
-                                        <a>Date</a>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover table-dark table-bordered text-center accordion">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">
+                                            <a>Id</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Type</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Machine status</a>
+                                        </th>
+                                        <th scope="col">
+                                            <a>Date</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <th:block th:each="inquiry, i : ${machine.inquiryList}" th:if="${i.index}<5">
+                                        <tr th:style="${inquiry.active == false ? 'color: gray' : ''}"
+                                            th:styleappend="${#lists.isEmpty(inquiry.interventionList) ? 'color: red' : ''}"
+                                            data-bs-toggle="collapse" th:data-bs-target="'#r' + ${inquiry.id}">
+                                            <td>
+                                                <button type="button"
+                                                        class="accordion-button collapsed mx-0 justify-content-start"
+                                                        data-bs-toggle="collapse"
+                                                        th:data-bs-target="'#r' + ${inquiry.id}"></button>
+                                            </td>
+                                            <td th:text="${inquiry.id}"></td>
+                                            <td th:text="${inquiry.inquiryType}"></td>
+                                            <td th:text="${inquiry.machineStatus}"></td>
+                                            <td th:text="${#temporals.format(inquiry.inquiryDate, 'dd-MM-yyyy')}"></td>
+                                        </tr>
 
-                                </tbody>
-                            </table>
+                                        <tr th:if="${!#lists.isEmpty(inquiry.interventionList)}"
+                                            class="collapse accordion-collapse" th:id="'r' + ${inquiry.id}"
+                                            data-bs-parent=".table">
+                                            <td colspan="5">
+                                                <table class="table table-sm table-hover table-dark table-bordered text-center accordion">
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Technician</th>
+                                                        <th>Assistant</th>
+                                                        <th>Confirmed</th>
+                                                        <th>Start</th>
+                                                    </tr>
+                                                    <tr th:each="intervention : ${inquiry.interventionList}">
+                                                        <td th:text="${intervention.id}"></td>
+                                                        <td th:text="${intervention.technician.nickname}"></td>
+                                                        <td th:text="${intervention.assistant ne null} ? ${intervention.assistant.nickname} : '----'"></td>
+                                                        <td th:text="${intervention.confirmed}"></td>
+                                                        <td th:text="${#temporals.format(intervention.start, 'dd-MM-yyyy')}"></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row mt-3">
                                 <div class="col-auto me-auto">
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#installationModal">
+                                            data-bs-target="#inquiriesModal">
                                         More
                                     </button>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:text="'All inquiries: ' + ${#lists.size(machine.inquiryList)}"></a>
                                 </div>
                             </div>
                         </div>

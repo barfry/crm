@@ -101,15 +101,18 @@ public class Machine {
     private Boolean active = true;
 
     @OneToMany(mappedBy = "machine")
+    @OrderBy("active desc, inquiryDate desc")
     private Set<Inquiry> inquiryList;
 
     @OneToMany
+    @OrderBy("active desc, plannedDate desc")
     private Set<Task> taskList;
 
     @ManyToMany
     @JoinTable(name = "machine_equipment", joinColumns =
         @JoinColumn(name = "machine_id"), inverseJoinColumns =
             @JoinColumn(name = "equipment_id"))
+    @OrderBy("code asc")
     private Set<Equipment> equipmentList;
 
     @ManyToOne
