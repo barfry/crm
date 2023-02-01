@@ -48,6 +48,7 @@ public class Inquiry {
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL)
     @JsonBackReference
+    @OrderBy("start desc")
     private Set<Intervention> interventionList;
 
     public Long getId() {
