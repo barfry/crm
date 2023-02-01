@@ -32,7 +32,7 @@ public class Intervention {
     private User technician;
 
     @ManyToOne
-    @JoinColumn(name = "assistant_id", nullable = true)
+    @JoinColumn(name = "assistant_id")
     private User assistant;
 
     @ManyToOne
