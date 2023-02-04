@@ -29,8 +29,9 @@ public class CustomerController {
     EventService eventService;
     RoleService roleService;
     InterventionService interventionService;
+    ManufacturerService manufacturerService;
 
-    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService, UserService userService, EventService eventService, RoleService roleService, InterventionService interventionService) {
+    public CustomerController(CustomerService customerService, CategoryService categoryService, ContactPersonService contactPersonService, MachineService machineService, TypeService typeService, InquiryService inquiryService, UserService userService, EventService eventService, RoleService roleService, InterventionService interventionService, ManufacturerService manufacturerService) {
         this.customerService = customerService;
         this.categoryService = categoryService;
         this.contactPersonService = contactPersonService;
@@ -41,6 +42,7 @@ public class CustomerController {
         this.eventService = eventService;
         this.roleService = roleService;
         this.interventionService = interventionService;
+        this.manufacturerService = manufacturerService;
     }
 
     @GetMapping("")
@@ -196,6 +198,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("machine", new Machine());
         model.addAttribute("types", typeService.getAllTypes());
+        model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 
         return "/user-zone/add-new-machine";
     }
@@ -206,50 +209,12 @@ public class CustomerController {
             model.addAttribute("customerId", customerId);
             model.addAttribute("machine", machine);
             model.addAttribute("types", typeService.getAllTypes());
+            model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 
             return "/user-zone/add-new-machine";
         }
 
         machineService.addNewMachine(machine, customerService.getCustomerById(customerId));
-
-        return "redirect:/customers/customer-details?customerId=" + customerId;
-    }
-
-    @GetMapping("/customer-details/edit-machine")
-    public String initEditMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
-        model.addAttribute("customerId", customerId);
-        model.addAttribute("machine", machineService.getMachineById(machineId));
-        model.addAttribute("types", typeService.getAllTypes());
-
-        return "/user-zone/edit-machine";
-    }
-
-    @PostMapping("/customer-details/edit-machine")
-    public String editMachine(@RequestParam(value = "customerId") Long customerId, @Valid Machine machine, BindingResult result, Model model){
-        if(result.hasErrors()){
-            model.addAttribute("customerId", customerId);
-            model.addAttribute("machine", machine);
-            model.addAttribute("types", typeService.getAllTypes());
-
-            return "/user-zone/edit-machine";
-        }
-        machineService.editMachine(machine);
-
-        return "redirect:/customers/customer-details?customerId=" + customerId;
-    }
-
-    @PostMapping("/customer-details/disable-machine")
-    public String disableMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
-
-       machineService.disableMachine(machineId);
-
-        return "redirect:/customers/customer-details?customerId=" + customerId;
-    }
-
-    @PostMapping("/customer-details/activate-machine")
-    public String activateMachine(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "machineId") Long machineId, Model model){
-
-        machineService.activateMachine(machineId);
 
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }
