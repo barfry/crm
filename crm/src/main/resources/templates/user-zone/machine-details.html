@@ -311,10 +311,16 @@
                                     <h6>Equipment</h6>
                                 </div>
                                 <div class="col-auto">
-                                    <form th:action="@{/machines/machine-details/add-equipment}" method="get">
-                                        <input type="hidden" name="machineId" th:value="${machine.id}"/>
-                                        <input type="submit" value="Add equipment" class="btn btn-danger btn-sm">
-                                    </form>
+                                    <div th:switch="${machine.active == true}">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-equipment}" method="get">
+                                            <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                            <input type="submit" value="Add equipment" class="btn btn-danger btn-sm">
+                                        </form>
+                                        <input th:case="false" rel="tooltip"
+                                               title="Equipment can only be added to active machine"
+                                               type="button" value="Add new equipment"
+                                               class="btn btn-secondary btn-sm disabled tooltip-button">
+                                    </div>
                                 </div>
                             </div>
                             <table class="table table-sm table-hover table-dark table-bordered text-center">
@@ -425,6 +431,18 @@
                             <div class="row mb-3">
                                 <div class="col-auto me-auto">
                                     <h6>Service inquiries</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <div th:switch="${machine.active == true}">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-inquiry}" method="get">
+                                            <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                            <input type="submit" value="Add new inquiry" class="btn btn-danger btn-sm">
+                                        </form>
+                                        <input th:case="false" rel="tooltip"
+                                               title="Inquiries can only be added to active machine"
+                                               type="button" value="Add new inquiry"
+                                               class="btn btn-secondary btn-sm disabled tooltip-button">
+                                    </div>
                                 </div>
                             </div>
                             <div class="table-responsive">

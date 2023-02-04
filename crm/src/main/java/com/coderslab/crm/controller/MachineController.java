@@ -213,6 +213,7 @@ public class MachineController {
         if(result.hasErrors()){
             model.addAttribute("machine", machine);
             model.addAttribute("types", typeService.getAllTypes());
+            model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 
             return "/user-zone/edit-machine";
         }
