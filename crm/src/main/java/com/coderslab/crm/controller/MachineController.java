@@ -151,6 +151,13 @@ public class MachineController {
         return "redirect:/machines/machine-details?machineId=" + machineId;
     }
 
+    @PostMapping("/machine-details/remove-task")
+    public String removeTaskFromMachine(@RequestParam(name = "machineId") Long machineId, @RequestParam(name = "taskId") Long taskId, Model model){
+        machineService.removeTaskFromMachine(taskId, machineId);
+
+        return "redirect:/machines/machine-details?machineId=" + machineId;
+    }
+
     @GetMapping("/machine-details/add-equipment")
     public String showAllEquipment(@RequestParam(name = "machineId") Long machineId, Model model){
         EquipmentFilter equipmentFilter = new EquipmentFilter();
