@@ -54,11 +54,11 @@ public class MachineService {
         return machineRepository.getById(machineId);
     }
 
-    public Machine editMachine(Machine machine){
+    public void editMachine(Machine machine){
         machine.setModifier(userService.getCurrentUser());
         machine.setUpdateDate(LocalDate.now());
 
-        return machineRepository.save(machine);
+        machineRepository.updateMachine(machine.getType(), machine.getSerialNumber(), machine.getProductionYear(), machine.getGeneralNotice(), machine.getServiceNotice(), machine.getServicePriority(), machine.getProvince(), machine.getZipCode(), machine.getCity(), machine.getStreet(), machine.getStreetNumber(), machine.getId());
     }
 
     public Machine disableMachine(Long machineId){

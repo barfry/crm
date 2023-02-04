@@ -603,12 +603,6 @@
                                             <a>Open inquiries</a>
                                         </th>
                                         <th scope="col">
-                                            <a>Edit</a>
-                                        </th>
-                                        <th scope="col">
-                                            <a>Disable</a>
-                                        </th>
-                                        <th scope="col">
                                             <a>Details</a>
                                         </th>
                                     </tr>
@@ -624,35 +618,6 @@
                                         <td th:text="${machine.servicePriority}"></td>
                                         <td th:text="${machine.active}"></td>
                                         <td th:text="${#lists.size(machine.inquiryList)}"></td>
-                                        <td>
-                                            <form th:action="@{/customers/customer-details/edit-machine}" method="get">
-                                                <input type="hidden" name="machineId" th:value="${machine.id}"/>
-                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                <input type="submit" value="Edit" class="btn btn-danger btn-sm">
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <div th:if="${machine.active eq true}">
-                                                <form th:action="@{/customers/customer-details/disable-machine}"
-                                                      method="post">
-                                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
-                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                    <input type="submit" value="Disable" class="btn btn-danger btn-sm"
-                                                           th:data-disable-machine="|Please confirm disabling machine: ${machine.type.name} ${machine.serialNumber}|"
-                                                           onclick="if (!confirm(this.getAttribute('data-disable-machine'))) return false"/>
-                                                </form>
-                                            </div>
-                                            <div th:if="${machine.active eq false}">
-                                                <form th:action="@{/customers/customer-details/activate-machine}"
-                                                      method="post">
-                                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
-                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                    <input type="submit" value="Activate" class="btn btn-danger btn-sm"
-                                                           th:data-activate-machine="|Please confirm activating machine: ${machine.type.name} ${machine.serialNumber}|"
-                                                           onclick="if (!confirm(this.getAttribute('data-activate-machine'))) return false"/>
-                                                </form>
-                                            </div>
-                                        </td>
                                         <td>
                                             <form th:action="@{/machines/machine-details}" method="get">
                                                 <input type="hidden" name="machineId" th:value="${machine.id}"/>

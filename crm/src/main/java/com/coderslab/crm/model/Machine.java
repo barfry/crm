@@ -27,6 +27,7 @@ public class Machine {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
+    @NotNull(message = "Please select the manufacturer and type of the machine")
     private Type type;
 
     @NotNull

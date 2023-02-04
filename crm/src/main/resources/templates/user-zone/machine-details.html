@@ -19,7 +19,7 @@
     <div th:replace="user-zone/fragments/header :: header">
     </div>
 </header>
-<div class="container-fluid mt-2">
+<div class="container-fluid mt-2" th:style="${machine.active == false ? 'color: gray' : ''}">
     <div class="main-body">
         <div class="row gutters-sm">
             <div class="col-md-3 mb-3">
@@ -86,7 +86,7 @@
                                 <h6 class="mb-0">Address</h6>
                             </div>
                             <div class="col-sm-8 text-secondary"
-                                 th:text="${machine.zipCode + ' ' + machine.city + ', ' + machine.street + ' ' + machine.streetNumber}">
+                                 th:text="${machine.province + ' ' + machine.zipCode + ' ' + machine.city + ', ' + machine.street + ' ' + machine.streetNumber}">
                             </div>
                         </div>
                         <hr>
@@ -118,10 +118,28 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
                                 <form th:action="@{/machines/machine-details/edit-machine}" method="get">
                                     <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                     <input type="submit" value="Edit" class="btn btn-danger btn-sm">
+                                </form>
+                            </div>
+                            <div class="col-sm-4" th:if="${machine.active eq true}">
+                                <form th:action="@{/machines/machine-details/disable-machine}"
+                                      method="post">
+                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                    <input type="submit" value="Disable" class="btn btn-danger btn-sm"
+                                           th:data-disable-machine="|Please confirm disabling machine: ${machine.type.name} ${machine.serialNumber}|"
+                                           onclick="if (!confirm(this.getAttribute('data-disable-machine'))) return false"/>
+                                </form>
+                            </div>
+                            <div class="col-sm-4" th:if="${machine.active eq false}">
+                                <form th:action="@{/machines/machine-details/activate-machine}"
+                                      method="post">
+                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                    <input type="submit" value="Activate" class="btn btn-danger btn-sm"
+                                           th:data-activate-machine="|Please confirm activating machine: ${machine.type.name} ${machine.serialNumber}|"
+                                           onclick="if (!confirm(this.getAttribute('data-activate-machine'))) return false"/>
                                 </form>
                             </div>
                         </div>
@@ -137,10 +155,16 @@
                                     <h6>Tasks</h6>
                                 </div>
                                 <div class="col-auto">
-                                    <form th:action="@{/machines/machine-details/add-new-task}" method="get">
-                                        <input type="hidden" name="machineId" th:value="${machine.id}"/>
-                                        <input type="submit" value="Add new task" class="btn btn-danger btn-sm">
-                                    </form>
+                                    <div th:switch="${machine.active == true}">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-task}" method="get">
+                                            <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                            <input type="submit" value="Add new task" class="btn btn-danger btn-sm">
+                                        </form>
+                                        <input th:case="false" rel="tooltip"
+                                               title="Tasks can only be added to active machine"
+                                               type="button" value="Add new task"
+                                               class="btn btn-secondary btn-sm disabled tooltip-button">
+                                    </div>
                                 </div>
                             </div>
                             <table class="table table-sm table-hover table-dark table-bordered text-center">

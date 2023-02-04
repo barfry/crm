@@ -4,10 +4,7 @@ import com.coderslab.crm.filter.EquipmentFilter;
 import com.coderslab.crm.filter.MachineFilter;
 import com.coderslab.crm.filter.ManufacturerFilter;
 import com.coderslab.crm.model.*;
-import com.coderslab.crm.service.EquipmentService;
-import com.coderslab.crm.service.MachineService;
-import com.coderslab.crm.service.TaskService;
-import com.coderslab.crm.service.UserService;
+import com.coderslab.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.parameters.P;
@@ -31,12 +28,16 @@ public class MachineController {
     UserService userService;
     TaskService taskService;
     EquipmentService equipmentService;
+    TypeService typeService;
+    ManufacturerService manufacturerService;
 
-    public MachineController(MachineService machineService, UserService userService, TaskService taskService, EquipmentService equipmentService) {
+    public MachineController(MachineService machineService, UserService userService, TaskService taskService, EquipmentService equipmentService, TypeService typeService, ManufacturerService manufacturerService) {
         this.machineService = machineService;
         this.userService = userService;
         this.taskService = taskService;
         this.equipmentService = equipmentService;
+        this.typeService = typeService;
+        this.manufacturerService = manufacturerService;
     }
 
     @GetMapping("")
@@ -194,6 +195,44 @@ public class MachineController {
     @PostMapping("/machine-details/remove-equipment")
     public String removeEquipmentFromMachine(@RequestParam(name = "machineId") Long machineId, @RequestParam(name = "equipmentId") Long equipmentId, Model model){
         machineService.removeEquipmentFromMachine(equipmentId, machineId);
+
+        return "redirect:/machines/machine-details?machineId=" + machineId;
+    }
+
+    @GetMapping("/machine-details/edit-machine")
+    public String initEditMachine(@RequestParam(value = "machineId") Long machineId, Model model){
+        model.addAttribute("machine", machineService.getMachineById(machineId));
+        model.addAttribute("types", typeService.getAllTypes());
+        model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
+
+        return "/user-zone/edit-machine";
+    }
+
+    @PostMapping("/machine-details/edit-machine")
+    public String editMachine(@Valid Machine machine, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("machine", machine);
+            model.addAttribute("types", typeService.getAllTypes());
+
+            return "/user-zone/edit-machine";
+        }
+        machineService.editMachine(machine);
+
+        return "redirect:/machines/machine-details?machineId=" + machine.getId();
+    }
+
+    @PostMapping("/machine-details/disable-machine")
+    public String disableMachine(@RequestParam(value = "machineId") Long machineId, Model model){
+
+        machineService.disableMachine(machineId);
+
+        return "redirect:/machines/machine-details?machineId=" + machineId;
+    }
+
+    @PostMapping("/machine-details/activate-machine")
+    public String activateMachine(@RequestParam(value = "machineId") Long machineId, Model model){
+
+        machineService.activateMachine(machineId);
 
         return "redirect:/machines/machine-details?machineId=" + machineId;
     }
