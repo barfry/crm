@@ -249,7 +249,10 @@
                                                 <a>Modifier</a>
                                             </th>
                                             <th scope="col">
-                                                <a>Active</a>
+                                                <a>Complete</a>
+                                            </th>
+                                            <th scope="col">
+                                                <a>Remove</a>
                                             </th>
                                             <th scope="col">
                                                 <a>Edit</a>
@@ -287,6 +290,16 @@
                                                         </div>
                                                     </form>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <form th:if="${task.active == true}" th:action="@{/machines/machine-details/remove-task}"
+                                                      method="post">
+                                                    <input type="hidden" name="machineId" th:value="${machine.id}"/>
+                                                    <input type="hidden" name="taskId" th:value="${task.id}"/>
+                                                    <input type="submit" value="Remove" class="btn btn-danger btn-sm"
+                                                           th:data-remove-task="|Please confirm removing task: ${task.name}|"
+                                                           onclick="if (!confirm(this.getAttribute('data-remove-task'))) return false"/>
+                                                </form>
                                             </td>
                                             <td>
                                                 <form th:action="@{/machines/machine-details/edit-task}"

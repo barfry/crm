@@ -144,4 +144,14 @@ public class MachineService {
         return machineRepository.save(machine);
     }
 
+    public void removeTaskFromMachine(Long taskId, Long machineId){
+        Machine machine = machineRepository.getById(machineId);
+        machine.getTaskList().remove(taskService.getTaskById(taskId));
+        machine.setModifier(userService.getCurrentUser());
+        machine.setUpdateDate(LocalDate.now());
+        machineRepository.save(machine);
+
+        taskService.removeTask(taskId);
+    }
+
 }
