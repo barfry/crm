@@ -35,6 +35,7 @@ public class Inquiry {
     private String inquiryType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotBlank(message = "Please select the date")
     private LocalDate inquiryDate;
 
     @NotNull

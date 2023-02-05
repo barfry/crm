@@ -30,14 +30,16 @@ public class MachineController {
     EquipmentService equipmentService;
     TypeService typeService;
     ManufacturerService manufacturerService;
+    InquiryService inquiryService;
 
-    public MachineController(MachineService machineService, UserService userService, TaskService taskService, EquipmentService equipmentService, TypeService typeService, ManufacturerService manufacturerService) {
+    public MachineController(MachineService machineService, UserService userService, TaskService taskService, EquipmentService equipmentService, TypeService typeService, ManufacturerService manufacturerService, InquiryService inquiryService) {
         this.machineService = machineService;
         this.userService = userService;
         this.taskService = taskService;
         this.equipmentService = equipmentService;
         this.typeService = typeService;
         this.manufacturerService = manufacturerService;
+        this.inquiryService = inquiryService;
     }
 
     @GetMapping("")
@@ -243,6 +245,28 @@ public class MachineController {
         machineService.activateMachine(machineId);
 
         return "redirect:/machines/machine-details?machineId=" + machineId;
+    }
+
+    @GetMapping("/machine-details/add-new-inquiry")
+    public String initAddNewInquiryPage(@RequestParam(value = "machineId") Long machineId, Model model){
+        model.addAttribute("inquiry", new Inquiry());
+        model.addAttribute("machine", machineService.getMachineById(machineId));
+
+        return "/user-zone/machine-add-new-inquiry";
+    }
+
+    @PostMapping("/machine-details/add-new-inquiry")
+    public String addNewInquiry(@Valid Inquiry inquiry, @RequestParam(name = "machineId") Long machineId, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("inquiry",inquiry);
+            model.addAttribute("machine", machineService.getMachineById(machineId));
+
+            return "/user-zone/machine-add-new-inquiry";
+        }
+
+        inquiryService.addNewInquiryToMachine(inquiry, machineId);
+
+        return "redirect:/machines/machine-details?machineId=" + inquiry.getMachine().getId();
     }
     
 

@@ -13,10 +13,12 @@ public class InquiryService {
     @Autowired
     InquiryRepository inquiryRepository;
     CustomerService customerService;
+    MachineService machineService;
 
-    public InquiryService(InquiryRepository inquiryRepository, CustomerService customerService) {
+    public InquiryService(InquiryRepository inquiryRepository, CustomerService customerService, MachineService machineService) {
         this.inquiryRepository = inquiryRepository;
         this.customerService = customerService;
+        this.machineService = machineService;
     }
 
     public Inquiry addNewInquiry(Inquiry inquiry, Long customerId){
@@ -39,4 +41,12 @@ public class InquiryService {
     public Integer countInquiriesByCustomerId(Long customerId){
         return inquiryRepository.countInquiriesByCustomerId(customerId);
     }
+
+    public Inquiry addNewInquiryToMachine(Inquiry inquiry, Long machineId){
+        inquiry.setMachine(machineService.getMachineById(machineId));
+        inquiry.setCustomer(inquiry.getMachine().getCustomer());
+        return inquiryRepository.save(inquiry);
+    }
+
+
 }
