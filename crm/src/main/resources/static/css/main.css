@@ -26,3 +26,13 @@ a.fc-col-header-cell-cushion {
     text-decoration: none;
 }
 
+tr.hide-table-padding td {
+    padding: 0;
+}
+
+.accordion-button {
+    padding: 0 0 0 0;
+    background-color: transparent;
+    width: 50%;
+
+}

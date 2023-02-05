@@ -81,7 +81,8 @@
                 </th>
             </form>
         </tr>
-        <tr th:each="machine : ${machines}" th:ondblclick="|window.location.href='/machines/machine-details?machineId=${machine.id}'|">
+        <tr th:each="machine : ${machines}" th:ondblclick="|window.location.href='/machines/machine-details?machineId=${machine.id}'|"
+            th:style="${machine.active} == false ? 'color: grey' : ''">
             <td th:text="${machine.id}"/>
             <td th:text="${machine.customer.name}"/>
             <td th:text="${machine.type.name}"/>

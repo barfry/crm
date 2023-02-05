@@ -25,7 +25,7 @@ public class Equipment {
     @NotNull
     @NotBlank(message = "This field can't be empty")
     @Length(min = 2, max = 20, message = "This field should contain from 2 up to 20 characters")
-    private String name;
+    private String title;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -56,12 +56,12 @@ public class Equipment {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -88,10 +88,10 @@ public class Equipment {
         this.updateDate = updateDate;
     }
 
-    public Equipment(Long id, String code, String name, String description, User modifier, Date updateDate) {
+    public Equipment(Long id, String code, String title, String description, User modifier, Date updateDate) {
         this.id = id;
         this.code = code;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.modifier = modifier;
         this.updateDate = updateDate;
@@ -100,15 +100,4 @@ public class Equipment {
     public Equipment() {
     }
 
-    @Override
-    public String toString() {
-        return "Equipment{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", modifier=" + modifier +
-                ", updateDate=" + updateDate +
-                '}';
-    }
 }

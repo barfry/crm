@@ -27,6 +27,7 @@ public class Machine {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
+    @NotNull(message = "Please select the manufacturer and type of the machine")
     private Type type;
 
     @NotNull
@@ -45,7 +46,7 @@ public class Machine {
     private LocalDate warrantyStartDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date warrantyEndDate;
+    private LocalDate warrantyEndDate;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
@@ -101,25 +102,26 @@ public class Machine {
     private Boolean active = true;
 
     @OneToMany(mappedBy = "machine")
+    @OrderBy("active desc, inquiryDate desc")
     private Set<Inquiry> inquiryList;
 
     @OneToMany
+    @OrderBy("active desc, plannedDate desc")
     private Set<Task> taskList;
 
-
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "machine_equipment", joinColumns =
         @JoinColumn(name = "machine_id"), inverseJoinColumns =
             @JoinColumn(name = "equipment_id"))
+    @OrderBy("code asc")
     private Set<Equipment> equipmentList;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "modifier_id")
     private User modifier;
 
-    @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateDate;
+    private LocalDate updateDate;
 
     public Long getId() {
         return id;
@@ -177,11 +179,11 @@ public class Machine {
         this.warrantyStartDate = warrantyStartDate;
     }
 
-    public Date getWarrantyEndDate() {
+    public LocalDate getWarrantyEndDate() {
         return warrantyEndDate;
     }
 
-    public void setWarrantyEndDate(Date warrantyEndDate) {
+    public void setWarrantyEndDate(LocalDate warrantyEndDate) {
         this.warrantyEndDate = warrantyEndDate;
     }
 
@@ -313,15 +315,15 @@ public class Machine {
         this.modifier = modifier;
     }
 
-    public Date getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, Date warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, Date updateDate) {
+    public Machine(Long id, Customer customer, Type type, String serialNumber, String productionYear, LocalDate commissioningDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate, String generalNotice, String serviceNotice, Integer servicePriority, LocalDate creationDate, User creator, Contract contract, String zipCode, String province, String city, String street, Integer streetNumber, Boolean active, Set<Inquiry> inquiryList, Set<Task> taskList, Set<Equipment> equipmentList, User modifier, LocalDate updateDate) {
         this.id = id;
         this.customer = customer;
         this.type = type;
@@ -337,6 +339,7 @@ public class Machine {
         this.creator = creator;
         this.contract = contract;
         this.zipCode = zipCode;
+        this.province = province;
         this.city = city;
         this.street = street;
         this.streetNumber = streetNumber;
