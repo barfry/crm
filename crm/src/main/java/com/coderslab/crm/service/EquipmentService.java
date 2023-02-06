@@ -4,6 +4,7 @@ import com.coderslab.crm.filter.EquipmentFilter;
 import com.coderslab.crm.filter.MachineFilter;
 import com.coderslab.crm.model.Equipment;
 import com.coderslab.crm.model.Machine;
+import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.EquipmentRepository;
 import com.coderslab.crm.repository.MachineRepository;
 import com.coderslab.crm.specification.EquipmentSpecification;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -26,10 +28,12 @@ public class EquipmentService {
     @Autowired
     EquipmentRepository equipmentRepository;
     MachineRepository machineRepository;
+    UserService userService;
 
-    public EquipmentService(EquipmentRepository equipmentRepository, MachineRepository machineRepository) {
+    public EquipmentService(EquipmentRepository equipmentRepository, MachineRepository machineRepository, UserService userService) {
         this.equipmentRepository = equipmentRepository;
         this.machineRepository = machineRepository;
+        this.userService = userService;
     }
 
     public List<Equipment> getAllEquipment(){
@@ -71,5 +75,11 @@ public class EquipmentService {
 
     public List<Equipment> getMachinesEquipment(Long machineId){
         return equipmentRepository.getEquipmentPresentInMachine(machineId);
+    }
+
+    public Equipment addNewOrEditEquipment(Equipment equipment){
+        equipment.setModifier(userService.getCurrentUser());
+        equipment.setUpdateDate(LocalDate.now());
+        return equipmentRepository.save(equipment);
     }
 }

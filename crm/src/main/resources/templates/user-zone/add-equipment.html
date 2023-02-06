@@ -213,7 +213,8 @@
                                             style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                             th:title="${equipment.description}"></td>
                                         <td>
-                                            <form th:action="@{/machines/machine-details/remove-equipment}" method="post">
+                                            <form th:action="@{/machines/machine-details/remove-equipment}"
+                                                  method="post">
                                                 <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                                 <input type="hidden" name="equipmentId" th:value="${equipment.id}"/>
                                                 <input type="submit" value="Remove" class="btn btn-danger btn-sm"
@@ -236,9 +237,9 @@
                 </div>
             </div>
             <div class="col-md-6">
-                    <form th:action="@{/equipment/add-new-equipment}" method="get">
-                        <input type="submit" value="Add new equipment" class="btn btn-danger btn-sm mb-2">
-                    </form>
+                <form th:action="@{/all-equipment/add-new-equipment}" method="get">
+                    <input type="submit" value="Add new equipment" class="btn btn-danger btn-sm mb-2">
+                </form>
                 <div style="overflow-x:auto;">
                     <table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
                         <thead>
@@ -279,11 +280,13 @@
                                 </th>
                             </form>
                         </tr>
-                        <tr th:each="equipment : ${equipmentList}" th:style="${#lists.contains(machine.equipmentList, equipment) ? 'color: grey' : ''}">
+                        <tr th:each="equipment : ${equipmentList}"
+                            th:style="${#lists.contains(machine.equipmentList, equipment) ? 'color: grey' : ''}">
                             <td th:text="${equipment.id}"/>
                             <td th:text="${equipment.code}"/>
                             <td th:text="${equipment.title}"/>
-                            <td th:text="${equipment.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                            <td th:text="${equipment.description}"
+                                style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                 th:title="${equipment.description}" rel="tooltip"></td>
                             <td>
                                 <form th:action="@{/machines/machine-details/add-equipment}" method="post">
