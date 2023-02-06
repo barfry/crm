@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -38,7 +39,7 @@ public class Equipment {
 
     @UpdateTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateDate;
+    private LocalDate updateDate;
 
     public Long getId() {
         return id;
@@ -80,15 +81,15 @@ public class Equipment {
         this.modifier = modifier;
     }
 
-    public Date getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Equipment(Long id, String code, String title, String description, User modifier, Date updateDate) {
+    public Equipment(Long id, String code, String title, String description, User modifier, LocalDate updateDate) {
         this.id = id;
         this.code = code;
         this.title = title;
