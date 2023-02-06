@@ -29,11 +29,11 @@ public class EquipmentController {
         EquipmentFilter equipmentFilter = new EquipmentFilter();
         model.addAttribute("equipmentList", equipmentService.getAllEquipment());
 
-        return  initAddEquipmentPage(equipmentFilter,1,"id","asc", model);
+        return  showAllEquipmentPage(equipmentFilter,1,"id","asc", model);
     }
 
     @GetMapping("/page/{pageNo}")
-    public String initAddEquipmentPage(@ModelAttribute EquipmentFilter equipmentFilter, @PathVariable(value = "pageNo") int pageNo,
+    public String showAllEquipmentPage(@ModelAttribute EquipmentFilter equipmentFilter, @PathVariable(value = "pageNo") int pageNo,
                                        @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model){
 
         int pageSize = 10;

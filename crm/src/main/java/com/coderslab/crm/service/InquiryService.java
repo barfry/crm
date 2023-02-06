@@ -1,8 +1,19 @@
 package com.coderslab.crm.service;
 
+import com.coderslab.crm.filter.InquiryFilter;
+import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.Inquiry;
+import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.InquiryRepository;
+import com.coderslab.crm.specification.InquirySpecification;
+import com.coderslab.crm.specification.SearchCriteria;
+import com.coderslab.crm.specification.UserSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +57,26 @@ public class InquiryService {
         inquiry.setMachine(machineService.getMachineById(machineId));
         inquiry.setCustomer(inquiry.getMachine().getCustomer());
         return inquiryRepository.save(inquiry);
+    }
+
+    public List<Inquiry> getAllInquiries(){
+        return inquiryRepository.findAll();
+    }
+
+    public Page<Inquiry> findInquiriesBySearchWithPaginationAndSorting(int pageNo, int pageSize, String sortField, String sortDirection, InquiryFilter inquiryFilter){
+
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+
+        InquirySpecification spec1 = new InquirySpecification(new SearchCriteria("customer",":",inquiryFilter.getCustomerName()));
+        InquirySpecification spec2 = new InquirySpecification(new SearchCriteria("machine",":",inquiryFilter.getMachineType()));
+        InquirySpecification spec3 = new InquirySpecification(new SearchCriteria("machineStatus",":",inquiryFilter.getMachineStatus()));
+        InquirySpecification spec4 = new InquirySpecification(new SearchCriteria("inquiryType",":",inquiryFilter.getInquiryType()));
+        InquirySpecification spec5 = new InquirySpecification(new SearchCriteria("inquiryDate",":",inquiryFilter.getInquiryDate()));
+
+        return this.inquiryRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5), pageable);
     }
 
 
