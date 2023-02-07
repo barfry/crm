@@ -68,7 +68,7 @@
             </form>
         </tr>
         <tr th:each="inquiry : ${inquiryList}" th:style="${#lists.isEmpty(inquiry.interventionList) ? 'color: red' : ''}"
-            th:styleappend="${inquiry.active == false ? 'color: gray' : ''}">
+            th:styleappend="${inquiry.active == false ? 'color: gray' : ''}" th:ondblclick="|window.location.href='/inquiries/inquiry-details?inquiryId=${inquiry.id}'|">
             <td th:text="${inquiry.id}"/>
             <td th:text="${inquiry.customer.name}"/>
             <td th:text="${inquiry.machine.type.name}"/>
@@ -76,7 +76,7 @@
             <td th:text="${inquiry.inquiryType}"></td>
             <td th:text="${#temporals.format(inquiry.inquiryDate, 'dd-MM-yyyy')}"/>
             <td>
-                <form th:action="@{/all-inquiries/inquiry-details}" method="get">
+                <form th:action="@{/inquiries/inquiry-details}" method="get">
                     <input type="hidden" name="inquiryId" th:value="${inquiry.id}">
                     <input type="submit" value="Details" class="btn btn-danger btn-sm">
                 </form>

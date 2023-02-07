@@ -35,7 +35,7 @@ public class Inquiry {
     private String inquiryType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotBlank(message = "Please select the date")
+    @NotNull(message = "Please select the date")
     private LocalDate inquiryDate;
 
     @NotNull
@@ -45,6 +45,7 @@ public class Inquiry {
 
     private Boolean active = true;
 
+    @Length(min = 2, max = 300, message = "This field should contain from 2 up to 300 characters")
     private String comment;
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL)

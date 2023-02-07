@@ -242,28 +242,6 @@ public class CustomerController {
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }
 
-    @GetMapping("/customer-details/edit-inquiry")
-    public String initEditInquiryPage(@RequestParam(value = "customerId") Long customerId, @RequestParam(value = "inquiryId") Long inquiryId, Model model){
-        model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
-        model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
-        model.addAttribute("customerId", customerId);
-
-        return "/user-zone/edit-inquiry";
-    }
-
-    @PostMapping("/customer-details/edit-inquiry")
-    public String editInquiry(@RequestParam(name = "customerId") Long customerId ,@Valid Inquiry inquiry, BindingResult result, Model model){
-        if(result.hasErrors()){
-            model.addAttribute("inquiry", inquiry);
-            model.addAttribute("machines", machineService.getMachinesByCustomerId(inquiry.getCustomer().getId()));
-            return "/user-zone/edit-inquiry";
-        }
-
-        inquiryService.editInquiry(inquiry);
-
-        return "redirect:/customers/customer-details?customerId=" +customerId;
-    }
-
     @GetMapping("/customer-details/add-new-event")
     public String initAddNewEventPage(@RequestParam(name = "customerId") Long customerId, Model model){
         model.addAttribute("event", new Event());

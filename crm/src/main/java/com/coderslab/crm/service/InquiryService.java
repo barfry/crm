@@ -25,11 +25,13 @@ public class InquiryService {
     InquiryRepository inquiryRepository;
     CustomerService customerService;
     MachineService machineService;
+    InterventionService interventionService;
 
-    public InquiryService(InquiryRepository inquiryRepository, CustomerService customerService, MachineService machineService) {
+    public InquiryService(InquiryRepository inquiryRepository, CustomerService customerService, MachineService machineService, InterventionService interventionService) {
         this.inquiryRepository = inquiryRepository;
         this.customerService = customerService;
         this.machineService = machineService;
+        this.interventionService = interventionService;
     }
 
     public Inquiry addNewInquiry(Inquiry inquiry, Long customerId){
@@ -79,5 +81,14 @@ public class InquiryService {
         return this.inquiryRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5), pageable);
     }
 
+    public Inquiry disableInquiry(Long inquiryId){
+        Inquiry inquiry = inquiryRepository.getById(inquiryId);
+        inquiry.setActive(false);
+        return inquiryRepository.save(inquiry);
+    }
+
+    public Boolean checkIfInquiryHasNoActiveInterventionsByInquiryId(Long inquiryId){
+        return interventionService.checkIfInquiryHasNoActiveInterventionsByInquiryId(inquiryId);
+    }
 
 }
