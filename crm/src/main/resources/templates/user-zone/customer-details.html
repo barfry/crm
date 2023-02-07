@@ -461,24 +461,9 @@
                                             th:title="${inquiry.description}"></td>
                                         <td th:text="${inquiry.active}"></td>
                                         <td>
-                                            <form th:action="@{/customers/customer-details/edit-inquiry}" method="get">
-                                                <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
-                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                <div th:switch="${currentUserPrivileges.service == true}">
-                                                    <input th:case="true" type="submit" value="Edit"
-                                                           class="btn btn-danger btn-sm">
-                                                    <input th:case="false" rel="tooltip"
-                                                           title="Inquiries can be only edited by authorized users"
-                                                           type="button" value="Edit"
-                                                           class="btn btn-secondary btn-sm disabled tooltip-button">
-                                                </div>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form th:action="@{/customers/customer-details/inquiry-details}"
+                                            <form th:action="@{/inquiries/inquiry-details}"
                                                   method="get">
                                                 <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
-                                                <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                 <input type="submit" value="Details" class="btn btn-danger btn-sm">
                                             </form>
                                         </td>

@@ -31,4 +31,6 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     public List<Intervention> getInterventionsByInquiry_InquiryTypeAndInquiry_CustomerId(String inquiryType, Long customerId);
 
     List<Intervention> getInterventionsByInquiry_Machine_Type_ManufacturerIdAndInquiry_InquiryTypeAndConfirmedIsFalse(Long manufacturerId, String inquiryType);
+
+    Integer countInterventionsByInquiryIdAndActiveIsTrue(Long inquiryId);
 }

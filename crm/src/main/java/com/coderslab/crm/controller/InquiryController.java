@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -25,16 +27,16 @@ public class InquiryController {
     }
 
     @GetMapping("")
-    public String showAllInquiries(Model model){
+    public String showAllInquiries(Model model) {
         InquiryFilter inquiryFilter = new InquiryFilter();
         model.addAttribute("inquiryList", inquiryService.getAllInquiries());
 
-        return  initAddEquipmentPage(inquiryFilter,1,"id","asc", model);
+        return initAddEquipmentPage(inquiryFilter, 1, "id", "asc", model);
     }
 
     @GetMapping("/page/{pageNo}")
     public String initAddEquipmentPage(@ModelAttribute InquiryFilter inquiryFilter, @PathVariable(value = "pageNo") int pageNo,
-                                       @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model){
+                                       @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model) {
 
         int pageSize = 10;
 
@@ -55,4 +57,46 @@ public class InquiryController {
 
         return "user-zone/all-inquiries";
     }
+
+    @GetMapping("/inquiry-details")
+    public String showInquiryDetailsPage(@RequestParam(name = "inquiryId") Long inquiryId, Model model) {
+        model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
+
+        return "user-zone/inquiry-details";
+    }
+
+    @GetMapping("/inquiry-details/edit-inquiry")
+    public String initEditInquiryPage(@RequestParam(name = "inquiryId") Long inquiryId, Model model) {
+        model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
+
+        return "/user-zone/edit-inquiry";
+    }
+
+    @PostMapping("/inquiry-details/edit-inquiry")
+    public String editInquiry(@Valid Inquiry inquiry, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("inquiry", inquiry);
+
+            return "/user-zone/edit-inquiry";
+        }
+
+        inquiryService.editInquiry(inquiry);
+
+        return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiry.getId();
+    }
+
+    @PostMapping("/inquiry-details/disable-inquiry")
+    public String disableInquiry(@RequestParam(name = "inquiryId") Long inquiryId,  Model model) {
+        if (inquiryService.checkIfInquiryHasNoActiveInterventionsByInquiryId(inquiryId)) {
+            inquiryService.disableInquiry(inquiryId);
+
+            return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;
+        }
+
+        model.addAttribute("disableError", "Inquiry cannot be disabled with active interventions");
+        model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
+        return "user-zone/inquiry-details";
+    }
+
+
 }

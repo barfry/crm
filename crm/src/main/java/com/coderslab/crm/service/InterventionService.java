@@ -61,4 +61,8 @@ public class InterventionService {
     public List<Intervention> getPlannedInterventionsByManufacturerAndByInquiryType(Long manufacturerId, String inquiryType){
         return interventionRepository.getInterventionsByInquiry_Machine_Type_ManufacturerIdAndInquiry_InquiryTypeAndConfirmedIsFalse(manufacturerId, inquiryType);
     }
+
+    public Boolean checkIfInquiryHasNoActiveInterventionsByInquiryId(Long inquiryId){
+        return interventionRepository.countInterventionsByInquiryIdAndActiveIsTrue(inquiryId).equals(0);
+    }
 }
