@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +56,9 @@ public class Intervention {
     private Boolean spareParts = false;
 
     private Boolean active = true;
+
+    @Transient
+    private List<Long> resourceIds;
 
     public Long getId() {
         return id;
@@ -143,7 +148,15 @@ public class Intervention {
         this.active = active;
     }
 
-    public Intervention(Long id, Inquiry inquiry, User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, String notice, Boolean spareParts, Boolean active) {
+    public List<Long> getResourceIds() {
+        return resourceIds;
+    }
+
+    public void setResourceIds(List<Long> resourceIds) {
+        this.resourceIds = resourceIds;
+    }
+
+    public Intervention(Long id, Inquiry inquiry, User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, String notice, Boolean spareParts, Boolean active, List<Long> resourceIds) {
         this.id = id;
         this.inquiry = inquiry;
         this.technician = technician;
@@ -155,6 +168,7 @@ public class Intervention {
         this.notice = notice;
         this.spareParts = spareParts;
         this.active = active;
+        this.resourceIds = resourceIds;
     }
 
     public Intervention() {

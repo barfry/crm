@@ -8,7 +8,10 @@ import com.coderslab.crm.repository.InquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InterventionService {
@@ -64,5 +67,21 @@ public class InterventionService {
 
     public Boolean checkIfInquiryHasNoActiveInterventionsByInquiryId(Long inquiryId){
         return interventionRepository.countInterventionsByInquiryIdAndActiveIsTrue(inquiryId).equals(0);
+    }
+
+    public List<Intervention> getAllInterventions(){
+        List<Intervention> interventions = interventionRepository.findAll();
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventionRepository.findAll();
     }
 }

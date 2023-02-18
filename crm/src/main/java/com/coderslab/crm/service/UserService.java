@@ -78,4 +78,9 @@ public class UserService implements UserDetailsService {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
+    public List<User> getAllTechnicians() {
+        List<User> technicians = userRepository.getUsersByDepartmentName("SERVICE/HFO");
+        technicians.forEach(t -> t.setTitle(t.getFirstName() +  ' ' + t.getLastName()));
+        return technicians;
+    }
 }

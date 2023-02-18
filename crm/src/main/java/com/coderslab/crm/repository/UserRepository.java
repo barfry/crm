@@ -22,13 +22,15 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Transactional
     @Modifying
-    @Query("update User u set u.firstName = ?1, u.lastName = ?2, u.nickname = ?3, u.email = ?4, u.mobilePhoneNumber = ?5, u.internalPhoneNumber = ?6, u.department = ?7, u.position = ?8 " +
+    @Query("update User u set u.firstName = ?1, u.lastName = ?2, u.nickname = ?3, u.email = ?4, u.mobilePhoneNumber = ?5, u.internalPhoneNumber = ?6, u.department = ?7, u.position = ?8" +
             "where u.id = ?9")
     void updateUser(String firstName, String lastName, String nickname, String email, String mobilePhoneNumber, String internalPhoneNumber, Department department, String position, Long id);
 
     long countByRoles_Name(String name);
 
     long countByDepartment_Id(Long id);
+
+    List<User> getUsersByDepartmentName(String departmentName);
 
 
     @Query(value = "SELECT u FROM User u JOIN Role r WHERE r.id = ?1")

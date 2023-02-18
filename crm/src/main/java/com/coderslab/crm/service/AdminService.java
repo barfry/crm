@@ -41,6 +41,7 @@ public class AdminService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setTitle(user.getFirstName() + ' ' + user.getLastName());
 
         user.setEnabled(true);
         roleService.assignUserRole(user);

@@ -77,6 +77,9 @@ public class User implements UserDetails {
 
     private Boolean enabled = true;
 
+    @Transient
+    private String title;
+
     public Long getId() {
         return id;
     }
@@ -173,7 +176,15 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(Long id, String firstName, String lastName, String nickname, String email, String password, String mobilePhoneNumber, String internalPhoneNumber, Department department, String position, Set<Role> roles, Boolean enabled) {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public User(Long id, String firstName, String lastName, String nickname, String email, String password, String mobilePhoneNumber, String internalPhoneNumber, Department department, String position, Set<Role> roles, Boolean enabled, String title) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -186,6 +197,7 @@ public class User implements UserDetails {
         this.position = position;
         this.roles = roles;
         this.enabled = enabled;
+        this.title = title;
     }
 
     public User() {
