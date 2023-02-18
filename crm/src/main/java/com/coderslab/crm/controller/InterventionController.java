@@ -5,12 +5,14 @@ import com.coderslab.crm.service.InquiryService;
 import com.coderslab.crm.service.InterventionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("")
 public class InterventionController {
 
     @Autowired
@@ -18,6 +20,11 @@ public class InterventionController {
 
     public InterventionController(InterventionService interventionService) {
         this.interventionService = interventionService;
+    }
+
+    @GetMapping("/all-interventions")
+    public List<Intervention> getAllInterventions(){
+        return interventionService.getAllInterventions();
     }
 
     @GetMapping("/interventions")
@@ -64,5 +71,7 @@ public class InterventionController {
     public List<Intervention> confirmedInterventionsByCustomerId(@RequestParam(name = "customerId") Long customerId){
         return interventionService.getInterventionsByCustomerIdWhereConfirmedIsTrue(customerId);
     }
+
+    
 
 }

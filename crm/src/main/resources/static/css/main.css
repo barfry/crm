@@ -36,3 +36,6 @@ tr.hide-table-padding td {
     width: 50%;
 
 }
+.fc-day-today {
+    background: #7a2b2b40 !important;
+}

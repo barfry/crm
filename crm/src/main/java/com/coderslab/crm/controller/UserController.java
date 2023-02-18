@@ -1,9 +1,11 @@
 package com.coderslab.crm.controller;
 
+import com.coderslab.crm.model.Intervention;
 import com.coderslab.crm.model.Role;
 import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.RoleRepository;
 import com.coderslab.crm.repository.UserRepository;
+import com.coderslab.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,22 +13,27 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Controller
+@RestController
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     RoleRepository roleRepository;
+    UserRepository userRepository;
 
-    public UserController(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService, RoleRepository roleRepository, UserRepository userRepository) {
+        this.userService = userService;
         this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/addUser")
@@ -53,5 +60,10 @@ public class UserController {
         user.getRoles().add(roleRepository.getById(2L));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    @GetMapping("/technicians")
+    public List<User> getAllTechnicians(){
+        return userService.getAllTechnicians();
     }
 }
