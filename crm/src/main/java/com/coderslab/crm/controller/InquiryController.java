@@ -17,6 +17,8 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/inquiries")
+@SessionAttributes({"inquiryFilter"})
+
 public class InquiryController {
 
     @Autowired
@@ -31,11 +33,11 @@ public class InquiryController {
         InquiryFilter inquiryFilter = new InquiryFilter();
         model.addAttribute("inquiryList", inquiryService.getAllInquiries());
 
-        return initAddEquipmentPage(inquiryFilter, 1, "id", "asc", model);
+        return showAllInquiriesPage(inquiryFilter, 1, "id", "asc", model);
     }
 
     @GetMapping("/page/{pageNo}")
-    public String initAddEquipmentPage(@ModelAttribute InquiryFilter inquiryFilter, @PathVariable(value = "pageNo") int pageNo,
+    public String showAllInquiriesPage(@ModelAttribute InquiryFilter inquiryFilter, @PathVariable(value = "pageNo") int pageNo,
                                        @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model) {
 
         int pageSize = 10;

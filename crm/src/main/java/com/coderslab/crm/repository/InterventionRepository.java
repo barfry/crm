@@ -3,7 +3,9 @@ package com.coderslab.crm.repository;
 import com.coderslab.crm.model.Intervention;
 import com.coderslab.crm.model.Manufacturer;
 import com.coderslab.crm.model.User;
+import org.hibernate.event.service.spi.JpaBootstrapSensitive;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface InterventionRepository extends JpaRepository<Intervention, Long> {
+public interface InterventionRepository extends JpaRepository<Intervention, Long>, JpaSpecificationExecutor<Intervention> {
 
     @Transactional
     @Modifying
@@ -33,4 +35,8 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     List<Intervention> getInterventionsByInquiry_Machine_Type_ManufacturerIdAndInquiry_InquiryTypeAndConfirmedIsFalse(Long manufacturerId, String inquiryType);
 
     Integer countInterventionsByInquiryIdAndActiveIsTrue(Long inquiryId);
+
+    List<Intervention> getAllByConfirmedIsTrue();
+
+    List<Intervention> getAllByConfirmedIsFalse();
 }

@@ -39,3 +39,7 @@ tr.hide-table-padding td {
 .fc-day-today {
     background: #7a2b2b40 !important;
 }
+
+#red > * {
+    background-color: #7a2b2b40;
+}

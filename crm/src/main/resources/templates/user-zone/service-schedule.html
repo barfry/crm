@@ -32,8 +32,8 @@
                 resourceAreaWidth: '15%',
                 eventSources: [{
                     url: '/all-interventions',
-                    resources: 'technician_id',
                     name: 'event',
+                    editable: true,
                     type: 'GET',
                     backgroundColor: '#6495ED',
                     borderColor: '#6495ED',
@@ -79,11 +79,18 @@
                         });
                     }
                 },
+
                 eventClick: function(info) {
                     info.jsEvent.preventDefault(); // don't let the browser navigate
 
                     window.open('/interventions/intervention-details?interventionId=' + info.event.id);
-                }
+                },
+                eventDrop: function(info) {
+                    alert(info.event.title + " was dropped on " + info.event.start.toISOString());
+
+                    if (!confirm("Are you sure about this change?")) {
+                        info.revert();
+                    }}
             });
             calendar.render();
         });
