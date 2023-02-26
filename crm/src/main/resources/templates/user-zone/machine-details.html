@@ -31,49 +31,59 @@
                             </div>
                             <div class="col-sm-8 text-secondary" th:text="${machine.type.name}">
                             </div>
-                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-4">
                                 <h6 class="mb-0">Manufacturer</h6>
                             </div>
                             <div class="col-sm-8 text-secondary" th:text="${machine.type.manufacturer.name}">
                             </div>
-                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-4">
                                 <h6 class="mb-0">Serial number</h6>
                             </div>
                             <div class="col-sm-8 text-secondary" th:text="${machine.serialNumber}">
                             </div>
-                            <hr>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-sm-6">
                                 <h6 class="mb-0">Production year</h6>
                             </div>
                             <div class="col-sm-6 text-secondary" th:text="${machine.productionYear}">
                             </div>
-                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <h6 class="mb-0">Commissioning date</h6>
                             </div>
                             <div class="col-sm-6 text-secondary"
                                  th:text="${#temporals.format(machine.commissioningDate, 'dd-MM-yyyy')}">
                             </div>
-                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <h6 class="mb-0">Warranty start date</h6>
                             </div>
                             <div class="col-sm-6 text-secondary"
                                  th:text="${#temporals.format(machine.warrantyStartDate, 'dd-MM-yyyy')}">
                             </div>
-                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <h6 class="mb-0">Warranty end date</h6>
                             </div>
                             <div class="col-sm-6 text-secondary"
                                  th:text="${#temporals.format(machine.warrantyEndDate, 'dd-MM-yyyy')}">
                             </div>
-                            <hr>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-sm-4">
                                 <h6 class="mb-0">Customer</h6>
@@ -164,7 +174,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <div th:switch="${machine.active == true}">
-                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-task}" method="get">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-task}"
+                                              method="get">
                                             <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                             <input type="submit" value="Add new task" class="btn btn-danger btn-sm">
                                         </form>
@@ -300,7 +311,8 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <form th:if="${task.active == true}" th:action="@{/machines/machine-details/remove-task}"
+                                                <form th:if="${task.active == true}"
+                                                      th:action="@{/machines/machine-details/remove-task}"
                                                       method="post">
                                                     <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                                     <input type="hidden" name="taskId" th:value="${task.id}"/>
@@ -333,7 +345,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <div th:switch="${machine.active == true}">
-                                        <form th:case="true" th:action="@{/machines/machine-details/add-equipment}" method="get">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-equipment}"
+                                              method="get">
                                             <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                             <input type="submit" value="Add equipment" class="btn btn-danger btn-sm">
                                         </form>
@@ -455,7 +468,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <div th:switch="${machine.active == true}">
-                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-inquiry}" method="get">
+                                        <form th:case="true" th:action="@{/machines/machine-details/add-new-inquiry}"
+                                              method="get">
                                             <input type="hidden" name="machineId" th:value="${machine.id}"/>
                                             <input type="submit" value="Add new inquiry" class="btn btn-danger btn-sm">
                                         </form>
@@ -488,7 +502,7 @@
                                     <tbody>
                                     <th:block th:each="inquiry, i : ${machine.inquiryList}" th:if="${i.index}<5">
                                         <tr th:style="${inquiry.active == false ? 'color: gray' : ''}"
-                                            th:styleappend="${#lists.isEmpty(inquiry.interventionList) ? 'color: red' : ''}"
+                                            th:id="${#lists.isEmpty(inquiry.interventionList) ? 'red' : 'normal'}"
                                             data-bs-toggle="collapse" th:data-bs-target="'#r' + ${inquiry.id}">
                                             <td>
                                                 <button type="button"
@@ -585,7 +599,7 @@
                                         <tbody>
                                         <th:block th:each="inquiry : ${machine.inquiryList}">
                                             <tr th:style="${inquiry.active == false ? 'color: gray' : ''}"
-                                                th:styleappend="${#lists.isEmpty(inquiry.interventionList) ? 'color: red' : ''}"
+                                                th:id="${#lists.isEmpty(inquiry.interventionList) ? 'red' : 'normal'}"
                                                 data-bs-toggle="collapse" th:data-bs-target="'#m' + ${inquiry.id}">
                                                 <td>
                                                     <button type="button"
@@ -597,15 +611,18 @@
                                                 <td th:text="${inquiry.inquiryType}"></td>
                                                 <td th:text="${inquiry.machineStatus}"></td>
                                                 <td th:text="${#temporals.format(inquiry.inquiryDate, 'dd-MM-yyyy')}"></td>
-                                                <td th:text="${inquiry.description}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                <td th:text="${inquiry.description}"
+                                                    style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                                     th:title="${inquiry.description}" rel="tooltip"></td>
                                                 <td th:text="${inquiry.active}"></td>
-                                                <td th:text="${inquiry.comment}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                <td th:text="${inquiry.comment}"
+                                                    style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                                     th:title="${inquiry.comment}" rel="tooltip"></td>
                                                 <td>
                                                     <form th:action="@{/inquiries/inquiry-details}" method="get">
                                                         <input type="hidden" name="inquiryId" th:value="${inquiry.id}"/>
-                                                        <input type="submit" value="Details" class="btn btn-danger btn-sm">
+                                                        <input type="submit" value="Details"
+                                                               class="btn btn-danger btn-sm">
                                                     </form>
                                                 </td>
                                             </tr>
@@ -633,7 +650,8 @@
                                                             <td th:text="${intervention.confirmed}"></td>
                                                             <td th:text="${#temporals.format(intervention.start, 'dd-MM-yyyy')}"></td>
                                                             <td th:text="${#temporals.format(intervention.end, 'dd-MM-yyyy')}"></td>
-                                                            <td th:text="${intervention.notice}" style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
+                                                            <td th:text="${intervention.notice}"
+                                                                style="max-width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis"
                                                                 th:title="${intervention.notice}" rel="tooltip"></td>
                                                             <td th:text="${intervention.spareParts}"></td>
                                                         </tr>
