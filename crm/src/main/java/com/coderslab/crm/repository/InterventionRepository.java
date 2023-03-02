@@ -19,9 +19,9 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 
     @Transactional
     @Modifying
-    @Query("update Intervention i set i.technician = ?1, i.assistant = ?2, i.assistant2 = ?3, i.start = ?4, i.end = ?5, i.confirmed = ?6, i.spareParts = ?7 , i.notice = ?8 where" +
-            " i.id = ?9")
-    void updateIntervention(User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean confirmed, Boolean spareParts, String notice, Long interventionId);
+    @Query("update Intervention i set i.technician = ?1, i.assistant = ?2, i.assistant2 = ?3, i.start = ?4, i.end = ?5, i.spareParts = ?6 , i.notice = ?7 where" +
+            " i.id = ?8")
+    void updateIntervention(User technician, User assistant, User assistant2, LocalDateTime start, LocalDateTime end, Boolean spareParts, String notice, Long interventionId);
 
     Integer countInterventionsByInquiry_CustomerId(Long customerId);
 

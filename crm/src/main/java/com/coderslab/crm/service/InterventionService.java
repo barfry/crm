@@ -48,7 +48,7 @@ public class InterventionService {
     }
 
     public void editIntervention(Intervention intervention){
-        interventionRepository.updateIntervention(intervention.getTechnician(), intervention.getAssistant(), intervention.getAssistant2(), intervention.getStart(), intervention.getEnd(), intervention.getConfirmed(), intervention.getSpareParts(), intervention.getNotice(), intervention.getId());
+        interventionRepository.updateIntervention(intervention.getTechnician(), intervention.getAssistant(), intervention.getAssistant2(), intervention.getStart(), intervention.getEnd(), intervention.getSpareParts(), intervention.getNotice(), intervention.getId());
     }
 
     public Integer countInterventionByCustomerId(Long customerId){
@@ -124,5 +124,12 @@ public class InterventionService {
     public void removeInterventionById(Long interventionId){
         
         interventionRepository.deleteById(interventionId);
+    }
+
+    public Intervention confirmInterventionById(Long interventionId){
+        Intervention intervention = interventionRepository.getById(interventionId);
+        intervention.setConfirmed(true);
+
+        return interventionRepository.save(intervention);
     }
 }

@@ -223,11 +223,7 @@
                 <div class="col-sm-6">
                   <h6 class="mb-0">Confirmed</h6>
                 </div>
-                <div class="col-sm-12 text-secondary">
-                  <select th:field="*{confirmed}">
-                    <option th:value="true">YES</option>
-                    <option th:value="false">NO</option>
-                  </select>
+                <div class="col-sm-12 text-secondary" th:text="${intervention.confirmed}">
                 </div>
               </div>
               <hr>

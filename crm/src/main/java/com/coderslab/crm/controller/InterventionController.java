@@ -156,7 +156,7 @@ public class InterventionController {
 
         interventionService.editIntervention(intervention);
 
-        return "redirect:/interventions/intervention-details?interventionId=" + intervention.getId().toString();
+        return "redirect:/interventions/intervention-details?interventionId=" + intervention.getId();
     }
 
     @PostMapping("/interventions/intervention-details/remove-intervention")
@@ -164,6 +164,13 @@ public class InterventionController {
         interventionService.removeInterventionById(interventionId);
 
         return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;
+    }
+
+    @PostMapping("/interventions/intervention-details/confirm-intervention")
+    public String confirmIntervention(@RequestParam(name = "interventionId") Long interventionId, Model model){
+        interventionService.confirmInterventionById(interventionId);
+
+        return "redirect:/interventions/intervention-details?interventionId=" + interventionId;
     }
 
 
