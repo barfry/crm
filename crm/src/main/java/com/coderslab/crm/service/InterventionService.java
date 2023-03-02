@@ -48,7 +48,7 @@ public class InterventionService {
     }
 
     public void editIntervention(Intervention intervention){
-        interventionRepository.updateIntervention(intervention.getTechnician(), intervention.getAssistant(), intervention.getAssistant2(), intervention.getStart(), intervention.getEnd(), intervention.getConfirmed(), intervention.getSpareParts(), intervention.getId());
+        interventionRepository.updateIntervention(intervention.getTechnician(), intervention.getAssistant(), intervention.getAssistant2(), intervention.getStart(), intervention.getEnd(), intervention.getSpareParts(), intervention.getNotice(), intervention.getId());
     }
 
     public Integer countInterventionByCustomerId(Long customerId){
@@ -119,5 +119,17 @@ public class InterventionService {
         InterventionSpecification spec7 = new InterventionSpecification(new SearchCriteria("confirmed",":",interventionFilter.getConfirmed()));
 
         return this.interventionRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7), pageable);
+    }
+
+    public void removeInterventionById(Long interventionId){
+        
+        interventionRepository.deleteById(interventionId);
+    }
+
+    public Intervention confirmInterventionById(Long interventionId){
+        Intervention intervention = interventionRepository.getById(interventionId);
+        intervention.setConfirmed(true);
+
+        return interventionRepository.save(intervention);
     }
 }

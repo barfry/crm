@@ -6,12 +6,15 @@ import com.coderslab.crm.model.Inquiry;
 import com.coderslab.crm.model.Intervention;
 import com.coderslab.crm.service.InquiryService;
 import com.coderslab.crm.service.InterventionService;
+import com.coderslab.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -21,9 +24,11 @@ public class InterventionController {
 
     @Autowired
     InterventionService interventionService;
+    UserService userService;
 
-    public InterventionController(InterventionService interventionService) {
+    public InterventionController(InterventionService interventionService, UserService userService) {
         this.interventionService = interventionService;
+        this.userService = userService;
     }
 
     @GetMapping("/all-interventions")
@@ -130,6 +135,44 @@ public class InterventionController {
         model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
         return "user-zone/intervention-details";
     }
+
+    @GetMapping("/interventions/intervention-details/edit-intervention")
+    public String initEditInterventionPage(@RequestParam(name = "interventionId") Long interventionId, Model model){
+        model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
+        model.addAttribute("technicians", userService.getAllTechnicians());
+        model.addAttribute("actionUrl", "/interventions/intervention-details/edit-intervention");
+        return "user-zone/edit-intervention";
+    }
+
+    @PostMapping("/interventions/intervention-details/edit-intervention")
+    public String editIntervention(@Valid Intervention intervention, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("intervention", intervention);
+            model.addAttribute("technicians", userService.getAllTechnicians());
+            model.addAttribute("actionUrl", "/interventions/intervention-details/edit-intervention");
+
+            return "/user-zone/edit-intervention";
+        }
+
+        interventionService.editIntervention(intervention);
+
+        return "redirect:/interventions/intervention-details?interventionId=" + intervention.getId();
+    }
+
+    @PostMapping("/interventions/intervention-details/remove-intervention")
+    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId, @RequestParam(name = "inquiryId") Long inquiryId, Model model){
+        interventionService.removeInterventionById(interventionId);
+
+        return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;
+    }
+
+    @PostMapping("/interventions/intervention-details/confirm-intervention")
+    public String confirmIntervention(@RequestParam(name = "interventionId") Long interventionId, Model model){
+        interventionService.confirmInterventionById(interventionId);
+
+        return "redirect:/interventions/intervention-details?interventionId=" + interventionId;
+    }
+
 
 
 }

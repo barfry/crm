@@ -351,7 +351,8 @@ public class CustomerController {
     public String initEditInterventionPage(@RequestParam(name = "customerId") Long customerId, @RequestParam(name = "interventionId") Long interventionId, Model model){
         model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
         model.addAttribute("customerId", customerId);
-        model.addAttribute("service", userService.usersWithServicePrivilege());
+        model.addAttribute("technicians", userService.getAllTechnicians());
+        model.addAttribute("actionUrl", "/customers/customer-details/edit-intervention");
 
         return "/user-zone/edit-intervention";
     }
@@ -360,9 +361,9 @@ public class CustomerController {
     public String editIntervention(@RequestParam(name = "customerId") Long customerId, @Valid Intervention intervention, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("intervention", intervention);
-            model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
             model.addAttribute("customerId", customerId);
-            model.addAttribute("service", userService.usersWithServicePrivilege());
+            model.addAttribute("technicians", userService.getAllTechnicians());
+            model.addAttribute("actionUrl", "/customers/customer-details/edit-intervention");
 
             return "/user-zone/add-new-intervention";
         }
