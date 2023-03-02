@@ -159,4 +159,13 @@ public class InterventionController {
         return "redirect:/interventions/intervention-details?interventionId=" + intervention.getId().toString();
     }
 
+    @PostMapping("/interventions/intervention-details/remove-intervention")
+    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId, @RequestParam(name = "inquiryId") Long inquiryId, Model model){
+        interventionService.removeInterventionById(interventionId);
+
+        return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;
+    }
+
+
+
 }

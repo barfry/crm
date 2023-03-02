@@ -895,9 +895,6 @@
                                             <a>Spare parts</a>
                                         </th>
                                         <th scope="col">
-                                            <a>Edit</a>
-                                        </th>
-                                        <th scope="col">
                                             <a>Details</a>
                                         </th>
                                     </tr>
@@ -920,23 +917,7 @@
                                             <td th:text="${intervention.confirmed}"></td>
                                             <td th:text="${intervention.spareParts}"></td>
                                             <td>
-                                                <form th:action="@{/customers/customer-details/edit-intervention}"
-                                                      method="get">
-                                                    <input type="hidden" name="interventionId"
-                                                           th:value="${intervention.id}"/>
-                                                    <input type="hidden" name="customerId" th:value="${customer.id}"/>
-                                                    <div th:switch="${currentUserPrivileges.service == true}">
-                                                        <input th:case="true" type="submit" value="Edit"
-                                                               class="btn btn-danger btn-sm">
-                                                        <input th:case="false" rel="tooltip"
-                                                               title="Interventions can be only edited by authorized users"
-                                                               type="button" value="Edit"
-                                                               class="btn btn-secondary btn-sm disabled tooltip-button">
-                                                    </div>
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form th:action="@{/customer-details/intervention-details}"
+                                                <form th:action="@{/interventions/intervention-details}"
                                                       method="get">
                                                     <input type="hidden" name="interventionId"
                                                            th:value="${intervention.id}"/>

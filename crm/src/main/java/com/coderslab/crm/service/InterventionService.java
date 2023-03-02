@@ -120,4 +120,9 @@ public class InterventionService {
 
         return this.interventionRepository.findAll(Specification.where(spec1).and(spec2).and(spec3).and(spec4).and(spec5).and(spec6).and(spec7), pageable);
     }
+
+    public void removeInterventionById(Long interventionId){
+        
+        interventionRepository.deleteById(interventionId);
+    }
 }

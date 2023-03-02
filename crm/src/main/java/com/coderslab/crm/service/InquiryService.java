@@ -3,6 +3,7 @@ package com.coderslab.crm.service;
 import com.coderslab.crm.filter.InquiryFilter;
 import com.coderslab.crm.filter.UserFilter;
 import com.coderslab.crm.model.Inquiry;
+import com.coderslab.crm.model.Intervention;
 import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.InquiryRepository;
 import com.coderslab.crm.specification.InquirySpecification;
