@@ -17,4 +17,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long>, JpaSpec
 
     Integer countInquiriesByCustomerId(Long customerId);
 
+    @Query("select i from Inquiry i inner join i.interventionList int where int.id = :interventionId")
+    Inquiry getInquiryByInterventionId(Long interventionId);
+
 }

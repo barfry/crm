@@ -206,13 +206,14 @@
                                     <input type="submit" value="Edit" class="btn btn-danger btn-sm">
                                 </form>
                             </div>
-                            <div class="col-sm-4" th:if="${intervention.active eq true}">
-                                <form th:action="@{/interventions/intervention-details/disable-intervention}"
+                            <div class="col-sm-4">
+                                <form th:action="@{/interventions/intervention-details/remove-intervention}"
                                       method="post">
                                     <input type="hidden" name="interventionId" th:value="${intervention.id}"/>
-                                    <input type="submit" value="Disable" class="btn btn-danger btn-sm"
-                                           th:data-disable-inquiry="|Please confirm disabling inquiry: ${intervention.id}|"
-                                           onclick="if (!confirm(this.getAttribute('data-disable-inquiry'))) return false"/>
+                                    <input type="hidden" name="inquiryId" th:value="${intervention.inquiry.id}"/>
+                                    <input type="submit" value="Remove" class="btn btn-danger btn-sm"
+                                           th:data-remove-intervention="|Please confirm removing intervention: Id ${intervention.id}|"
+                                           onclick="if (!confirm(this.getAttribute('data-remove-intervention'))) return false"/>
                                 </form>
                             </div>
                         </div>
