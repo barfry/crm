@@ -25,11 +25,12 @@ public class Intervention {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull(message = "Please select the inquiry")
     @JsonManagedReference
     private Inquiry inquiry;
 
     @ManyToOne
-    @NotNull
+    @NotNull(message = "Please select the technician")
     @JoinColumn(name = "technician_id")
     private User technician;
 

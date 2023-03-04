@@ -33,7 +33,7 @@ public class InterventionController {
 
     @GetMapping("/all-interventions")
     @ResponseBody
-    public List<Intervention> getAllInterventions(){
+    public List<Intervention> getAllInterventions() {
         return interventionService.getAllInterventions();
     }
 
@@ -45,7 +45,7 @@ public class InterventionController {
 
     @GetMapping("/repairs-by-customer")
     @ResponseBody
-    public List<Intervention> repairsByCustomerId(@RequestParam(name = "customerId") Long customerId){
+    public List<Intervention> repairsByCustomerId(@RequestParam(name = "customerId") Long customerId) {
         return interventionService.getInterventionsByTypeAndCustomerId("REPAIR", customerId);
     }
 
@@ -75,25 +75,25 @@ public class InterventionController {
 
     @GetMapping("/planned-interventions")
     @ResponseBody
-    public List<Intervention> plannedInterventionsByCustomerId(@RequestParam(name = "customerId") Long customerId){
+    public List<Intervention> plannedInterventionsByCustomerId(@RequestParam(name = "customerId") Long customerId) {
         return interventionService.getInterventionsByCustomerIdWhereConfirmedIsFalse(customerId);
     }
 
     @GetMapping("/confirmed-interventions")
     @ResponseBody
-    public List<Intervention> confirmedInterventionsByCustomerId(@RequestParam(name = "customerId") Long customerId){
+    public List<Intervention> confirmedInterventionsByCustomerId(@RequestParam(name = "customerId") Long customerId) {
         return interventionService.getInterventionsByCustomerIdWhereConfirmedIsTrue(customerId);
     }
 
     @GetMapping("/all-confirmed-interventions")
     @ResponseBody
-    public List<Intervention> allConfirmedInterventions(){
+    public List<Intervention> allConfirmedInterventions() {
         return interventionService.getAllConfirmedInterventions();
     }
 
     @GetMapping("/all-planned-interventions")
     @ResponseBody
-    public List<Intervention> allPlannedInterventions(){
+    public List<Intervention> allPlannedInterventions() {
         return interventionService.getAllPlannedInterventions();
     }
 
@@ -108,7 +108,7 @@ public class InterventionController {
 
     @GetMapping("/interventions/page/{pageNo}")
     public String showAllInterventionsPage(@ModelAttribute InterventionFilter interventionFilter, @PathVariable(value = "pageNo") int pageNo,
-                                       @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model) {
+                                           @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir, Model model) {
 
         int pageSize = 10;
 
@@ -131,13 +131,13 @@ public class InterventionController {
     }
 
     @GetMapping("/interventions/intervention-details")
-    public String showInterventionDetailsPage(@RequestParam(name = "interventionId") Long interventionId, Model model){
+    public String showInterventionDetailsPage(@RequestParam(name = "interventionId") Long interventionId, Model model) {
         model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
         return "user-zone/intervention-details";
     }
 
     @GetMapping("/interventions/intervention-details/edit-intervention")
-    public String initEditInterventionPage(@RequestParam(name = "interventionId") Long interventionId, Model model){
+    public String initEditInterventionPage(@RequestParam(name = "interventionId") Long interventionId, Model model) {
         model.addAttribute("intervention", interventionService.getInterventionById(interventionId));
         model.addAttribute("technicians", userService.getAllTechnicians());
         model.addAttribute("actionUrl", "/interventions/intervention-details/edit-intervention");
@@ -145,8 +145,8 @@ public class InterventionController {
     }
 
     @PostMapping("/interventions/intervention-details/edit-intervention")
-    public String editIntervention(@Valid Intervention intervention, BindingResult result, Model model){
-        if(result.hasErrors()){
+    public String editIntervention(@Valid Intervention intervention, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("intervention", intervention);
             model.addAttribute("technicians", userService.getAllTechnicians());
             model.addAttribute("actionUrl", "/interventions/intervention-details/edit-intervention");
@@ -160,19 +160,18 @@ public class InterventionController {
     }
 
     @PostMapping("/interventions/intervention-details/remove-intervention")
-    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId, @RequestParam(name = "inquiryId") Long inquiryId, Model model){
+    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId, @RequestParam(name = "inquiryId") Long inquiryId, Model model) {
         interventionService.removeInterventionById(interventionId);
 
         return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;
     }
 
     @PostMapping("/interventions/intervention-details/confirm-intervention")
-    public String confirmIntervention(@RequestParam(name = "interventionId") Long interventionId, Model model){
+    public String confirmIntervention(@RequestParam(name = "interventionId") Long interventionId, Model model) {
         interventionService.confirmInterventionById(interventionId);
 
         return "redirect:/interventions/intervention-details?interventionId=" + interventionId;
     }
-
 
 
 }

@@ -92,4 +92,5 @@ public class InquiryService {
         return interventionService.checkIfInquiryHasNoActiveInterventionsByInquiryId(inquiryId);
     }
 
+
 }
