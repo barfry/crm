@@ -4,7 +4,10 @@ import com.coderslab.crm.filter.EquipmentFilter;
 import com.coderslab.crm.filter.InquiryFilter;
 import com.coderslab.crm.model.Equipment;
 import com.coderslab.crm.model.Inquiry;
+import com.coderslab.crm.model.Intervention;
 import com.coderslab.crm.service.InquiryService;
+import com.coderslab.crm.service.InterventionService;
+import com.coderslab.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -23,9 +26,13 @@ public class InquiryController {
 
     @Autowired
     InquiryService inquiryService;
+    UserService userService;
+    InterventionService interventionService;
 
-    public InquiryController(InquiryService inquiryService) {
+    public InquiryController(InquiryService inquiryService, UserService userService, InterventionService interventionService) {
         this.inquiryService = inquiryService;
+        this.userService = userService;
+        this.interventionService = interventionService;
     }
 
     @GetMapping("")
@@ -99,6 +106,31 @@ public class InquiryController {
         model.addAttribute("inquiry", inquiryService.getInquiryById(inquiryId));
         return "user-zone/inquiry-details";
     }
+
+    @GetMapping("/inquiry-details/add-new-intervention")
+    public String initAddNewInterventionForm(@RequestParam(name = "inquiryId") Long inquiryId, Model model){
+        Intervention intervention = new Intervention();
+        intervention.setInquiry(inquiryService.getInquiryById(inquiryId));
+        model.addAttribute("intervention", intervention);
+        model.addAttribute("technicians", userService.getAllTechnicians());
+
+        return "user-zone/inquiry-add-new-intervention";
+    }
+
+    @PostMapping("/inquiry-details/add-new-intervention")
+    public String addNewIntervention(@Valid Intervention intervention, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("intervention", intervention);
+            model.addAttribute("technicians", userService.getAllTechnicians());
+
+            return "user-zone/inquiry-add-new-intervention";
+        }
+
+        interventionService.addNewIntervention(intervention);
+
+        return "redirect:/inquiries/inquiry-details?inquiryId=" + intervention.getInquiry().getId();
+    }
+
 
 
 }

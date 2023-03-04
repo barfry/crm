@@ -24,7 +24,7 @@
             <label>Machine</label>
             <select name="machine">
                 <option value="" disabled selected>Select your option</option>
-                <option th:each="m : ${machines}" th:value="${m.serialNumber}"
+                <option th:each="m : ${machines}" th:value="${m.serialNumber}" th:field="*{inquiry.machine}"
                         th:text="${m.type.name}+' '+${m.serialNumber}"></option>
             </select>
         </div>
@@ -46,7 +46,7 @@
                 <option th:each="s : ${service}" th:value="${s.id}"
                         th:text="${s.firstName + ' ' + s.lastName}"></option>
             </select>
-            <span th:if="${#fields.hasErrors('technician')}" th:errors="*{techncian}"></span>
+            <span th:if="${#fields.hasErrors('technician')}" th:errors="*{technician}"></span>
         </div>
         <div class="col-md-auto">
             <label>Assisting user</label>
@@ -77,13 +77,6 @@
             <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
                    placeholder="Event end">
             <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
-        </div>
-        <div class="col-md-auto">
-            <label>Confirmed</label>
-            <select th:field="*{confirmed}">
-                <option th:value="true">YES</option>
-                <option th:value="false">NO</option>
-            </select>
         </div>
         <div class="col-md-auto">
             <label>Spare parts</label>
