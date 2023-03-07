@@ -92,16 +92,238 @@ public class InterventionService {
                 intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
             }
         });
-        return interventionRepository.findAll();
+        return interventions;
     }
 
     public List<Intervention> getAllPlannedInterventions(){
-        return interventionRepository.getAllByConfirmedIsFalse();
+        List<Intervention> interventions = interventionRepository.getAllByConfirmedIsFalse();
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
     }
 
     public List<Intervention> getAllConfirmedInterventions(){
-        return interventionRepository.getAllByConfirmedIsTrue();
+        List<Intervention> interventions = interventionRepository.getAllByConfirmedIsTrue();
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
     }
+
+    public List<Intervention> getAllConfirmedRepairs(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("REPAIR");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+    public List<Intervention> getAllPlannedRepairs(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("REPAIR");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+    public List<Intervention> getAllConfirmedDiagnoses(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("DIAGNOSE");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
+    public List<Intervention> getAllPlannedDiagnoses(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("DIAGNOSE");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+    public List<Intervention> getAllConfirmedInstallations(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("INSTALLATION");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
+    public List<Intervention> getAllPlannedInstallations(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("INSTALLATION");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+    public List<Intervention> getAllConfirmedDeinstallations(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("DEINSTALLATION");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
+    public List<Intervention> getAllPlannedDeinstallations(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("DEINSTALLATION");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+    public List<Intervention> getAllConfirmedTraining(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("TRAINING");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
+    public List<Intervention> getAllPlannedTraining(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("TRAINING");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+    public List<Intervention> getAllConfirmedReview(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue("TECHNICAL REVIEW");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
+    public List<Intervention> getAllPlannedReview(){
+        List<Intervention> interventions = interventionRepository.getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse("TECHNICAL REVIEW");
+        interventions.forEach(intervention -> {
+            if(intervention.getAssistant() == null && intervention.getAssistant2() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId()));
+            } else if (intervention.getAssistant2() == null) {
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId()));
+            } else if(intervention.getAssistant() == null){
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant2().getId()));
+            } else{
+                intervention.setResourceIds(Arrays.asList(intervention.getTechnician().getId(), intervention.getAssistant().getId(), intervention.getAssistant2().getId()));
+            }
+        });
+        return interventions;
+    }
+
+
 
     public Page<Intervention> findInterventionsBySearchWithPaginationAndSorting(int pageNo, int pageSize, String sortField, String sortDirection, InterventionFilter interventionFilter){
 

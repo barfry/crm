@@ -97,6 +97,77 @@ public class InterventionController {
         return interventionService.getAllPlannedInterventions();
     }
 
+    @GetMapping("/all-planned-repairs")
+    @ResponseBody
+    public List<Intervention> allPlannedRepairs(){
+        return interventionService.getAllPlannedRepairs();
+    }
+
+    @GetMapping("/all-confirmed-repairs")
+    @ResponseBody
+    public List<Intervention> allConfirmedRepairs(){
+        return interventionService.getAllConfirmedRepairs();
+    }
+
+    @GetMapping("/all-planned-diagnoses")
+    @ResponseBody
+    public List<Intervention> allPlannedDiagnoses(){
+        return interventionService.getAllPlannedDiagnoses();
+    }
+
+    @GetMapping("/all-confirmed-diagnoses")
+    @ResponseBody
+    public List<Intervention> allConfirmedDiagnoses(){
+        return interventionService.getAllConfirmedDiagnoses();
+    }
+
+    @GetMapping("/all-planned-installations")
+    @ResponseBody
+    public List<Intervention> allPlannedInstallations(){
+        return interventionService.getAllPlannedInstallations();
+    }
+
+    @GetMapping("/all-confirmed-installations")
+    @ResponseBody
+    public List<Intervention> allConfirmedInstallations(){
+        return interventionService.getAllConfirmedInstallations();
+    }
+
+    @GetMapping("/all-planned-deinstallations")
+    @ResponseBody
+    public List<Intervention> allPlannedDeinstallations(){
+        return interventionService.getAllPlannedDeinstallations();
+    }
+
+    @GetMapping("/all-confirmed-deinstallations")
+    @ResponseBody
+    public List<Intervention> allConfirmedDeinstallations(){
+        return interventionService.getAllConfirmedDeinstallations();
+    }
+
+    @GetMapping("/all-planned-trainings")
+    @ResponseBody
+    public List<Intervention> allPlannedTrainings(){
+        return interventionService.getAllPlannedTraining();
+    }
+
+    @GetMapping("/all-confirmed-trainings")
+    @ResponseBody
+    public List<Intervention> allConfirmedTrainings(){
+        return interventionService.getAllConfirmedTraining();
+    }
+
+    @GetMapping("/all-planned-reviews")
+    @ResponseBody
+    public List<Intervention> allPlannedReviews(){
+        return interventionService.getAllPlannedReview();
+    }
+
+    @GetMapping("/all-confirmed-reviews")
+    @ResponseBody
+    public List<Intervention> allConfirmedReview(){
+        return interventionService.getAllConfirmedReview();
+    }
 
     @GetMapping("/interventions")
     public String showAllInterventions(Model model) {

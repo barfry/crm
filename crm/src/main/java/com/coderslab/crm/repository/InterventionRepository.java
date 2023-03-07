@@ -39,4 +39,8 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     List<Intervention> getAllByConfirmedIsTrue();
 
     List<Intervention> getAllByConfirmedIsFalse();
+
+    List<Intervention> getInterventionsByInquiry_InquiryTypeAndConfirmedIsTrue(String inquiryType);
+
+    List<Intervention> getInterventionsByInquiry_InquiryTypeAndConfirmedIsFalse(String inquiryType);
 }

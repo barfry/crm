@@ -43,3 +43,8 @@ tr.hide-table-padding td {
 #red > * {
     background-color: #7a2b2b40;
 }
+
+.confirmed {
+    border: medium solid limegreen !important;
+}
+
