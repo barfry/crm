@@ -33,4 +33,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> getEventsByCustomerIdAndActiveIsFalse(Long customerId);
 
+    @Query("SELECT e FROM Event e WHERE e.mainUser =?1 or e.assistingUser = ?1 order by e.start desc")
+    List<Event> getEventsByUser(User user);
+
+    @Query("SELECT e FROM Event e WHERE e.active is true AND (e.mainUser =?1 or e.assistingUser = ?1) order by e.start desc")
+    List<Event> getActiveEventsByUser(User user);
+
+    @Query("SELECT e FROM Event e WHERE e.active is false AND (e.mainUser =?1 or e.assistingUser = ?1) order by e.start desc")
+    List<Event> getInactiveEventsByUser(User user);
+
 }

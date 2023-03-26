@@ -4,6 +4,7 @@ import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Event;
 import com.coderslab.crm.repository.EventRepository;
 import com.coderslab.crm.service.EventService;
+import com.coderslab.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +18,11 @@ public class EventController {
 
     @Autowired
     EventService eventService;
+    UserService userService;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, UserService userService) {
         this.eventService = eventService;
+        this.userService = userService;
     }
 
     @GetMapping("/events")
@@ -35,6 +38,16 @@ public class EventController {
     @GetMapping("/inactive-events")
     public List<Event> inactiveEventsByCustomerId(@RequestParam(value = "customerId") Long customerId){
         return eventService.getInactiveEventsByCustomerId(customerId);
+    }
+
+    @GetMapping("/user-active-events")
+    public List<Event> activeEventsByUser(){
+        return eventService.getActiveEventsByUser(userService.getCurrentUser());
+    }
+
+    @GetMapping("/user-inactive-events")
+    public List<Event> inactiveEventsByUser(){
+        return eventService.getInactiveEventsByUser(userService.getCurrentUser());
     }
 
 

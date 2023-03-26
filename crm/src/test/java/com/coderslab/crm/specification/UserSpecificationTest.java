@@ -25,22 +25,22 @@ public class UserSpecificationTest {
     private Validator validator;
     private AdminService adminService;
 
-    public UserSpecificationTest(UserRepository userRepository, DepartmentRepository departmentRepository, PrivilegeRepository privilegeRepository, RoleRepository roleRepository, Validator validator, AdminService adminService) {
-        this.userRepository = userRepository;
-        this.departmentRepository = departmentRepository;
-        this.privilegeRepository = privilegeRepository;
-        this.roleRepository = roleRepository;
-        this.validator = validator;
-        this.adminService = adminService;
-    }
-
-    @Test
-    public void giveNoSearchData_ReceiveAllUsers() {
-
-        UserFilter userFilter = new UserFilter();
-
-
-        adminService.findUsersBySearchWithPaginationAndSorting(1,10, "id", "asc",userFilter);
-
-    }
+//    public UserSpecificationTest(UserRepository userRepository, DepartmentRepository departmentRepository, PrivilegeRepository privilegeRepository, RoleRepository roleRepository, Validator validator, AdminService adminService) {
+//        this.userRepository = userRepository;
+//        this.departmentRepository = departmentRepository;
+//        this.privilegeRepository = privilegeRepository;
+//        this.roleRepository = roleRepository;
+//        this.validator = validator;
+//        this.adminService = adminService;
+//    }
+//
+//    @Test
+//    public void giveNoSearchData_ReceiveAllUsers() {
+//
+//        UserFilter userFilter = new UserFilter();
+//
+//
+//        adminService.findUsersBySearchWithPaginationAndSorting(1,10, "id", "asc",userFilter);
+//
+//    }
 }

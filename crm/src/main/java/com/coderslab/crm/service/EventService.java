@@ -3,6 +3,7 @@ package com.coderslab.crm.service;
 
 import com.coderslab.crm.model.Customer;
 import com.coderslab.crm.model.Event;
+import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,19 @@ public class EventService {
 
     public List<Event> getInactiveEventsByCustomerId(Long customerId){
         return eventRepository.getEventsByCustomerIdAndActiveIsFalse(customerId);
+    }
+
+    public List<Event> getEventsByUser(User user){
+        return eventRepository.getEventsByUser(user);
+    }
+
+    public List<Event> getActiveEventsByUser(User user){
+        return eventRepository.getActiveEventsByUser(user);
+    }
+
+    public List<Event> getInactiveEventsByUser(User user){
+
+        return  eventRepository.getInactiveEventsByUser(user);
     }
 
 }
