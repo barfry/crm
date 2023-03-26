@@ -115,6 +115,7 @@ public class MachineService {
     public void addNewTaskToMachine(Long machineId, Task task){
         task.setUpdateDate(LocalDate.now());
         task.setModifier(userService.getCurrentUser());
+        task.setMachine(machineRepository.getById(machineId));
 
         taskService.addNewTask(task);
 

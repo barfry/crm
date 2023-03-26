@@ -32,7 +32,7 @@
     </div>
     <div class="row g-3 mx-5 my-2">
         <div class="col-md-auto">
-            <label for="plannedDate" class="form-label">Inquiry date</label>
+            <label for="plannedDate" class="form-label">Planned date</label>
             <input type="date" th:field="*{plannedDate}" class="form-control" id="plannedDate"
                    placeholder="Planned date">
             <span th:if="${#fields.hasErrors('plannedDate')}" th:errors="*{plannedDate}"></span>

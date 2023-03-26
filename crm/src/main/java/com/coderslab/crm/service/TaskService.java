@@ -1,11 +1,13 @@
 package com.coderslab.crm.service;
 
 import com.coderslab.crm.model.Task;
+import com.coderslab.crm.model.User;
 import com.coderslab.crm.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -35,6 +37,7 @@ public class TaskService {
         tempTask.setPlannedDate(task.getPlannedDate());
         tempTask.setExecutor(task.getExecutor());
         tempTask.setSupervisor(task.getSupervisor());
+        tempTask.setMachine(task.getMachine());
 
         tempTask.setModifier(userService.getCurrentUser());
         tempTask.setUpdateDate(LocalDate.now());
@@ -52,5 +55,9 @@ public class TaskService {
 
     public void removeTask(Long taskId){
         taskRepository.deleteById(taskId);
+    }
+
+    public List<Task> getActiveTasksByUser(User user){
+        return taskRepository.getActiveTasksByUser(user);
     }
 }

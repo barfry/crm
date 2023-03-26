@@ -44,7 +44,6 @@ tr.hide-table-padding td {
     background-color: #7a2b2b40;
 }
 
-.confirmed {
-    border: medium solid limegreen !important;
+.btn.btn-primary:disabled{
+    background-color: #00ff00;
 }
-

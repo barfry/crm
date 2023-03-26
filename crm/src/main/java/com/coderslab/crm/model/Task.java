@@ -57,6 +57,10 @@ public class Task {
     @JoinColumn(name = "modifier_id")
     private User modifier;
 
+    @ManyToOne
+    @JoinColumn(name = "machine_id")
+    private Machine machine;
+
     private Boolean active = true;
 
     public Long getId() {
@@ -139,6 +143,14 @@ public class Task {
         this.modifier = modifier;
     }
 
+    public Machine getMachine() {
+        return machine;
+    }
+
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -147,7 +159,7 @@ public class Task {
         this.active = active;
     }
 
-    public Task(Long id, String name, String description, LocalDate plannedDate, LocalDate executionDate, User supervisor, User executor, String notice, LocalDate updateDate, User modifier, Boolean active) {
+    public Task(Long id, String name, String description, LocalDate plannedDate, LocalDate executionDate, User supervisor, User executor, String notice, LocalDate updateDate, User modifier, Machine machine, Boolean active) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -158,6 +170,7 @@ public class Task {
         this.notice = notice;
         this.updateDate = updateDate;
         this.modifier = modifier;
+        this.machine = machine;
         this.active = active;
     }
 
