@@ -21,32 +21,32 @@
     <div class="col-md-auto">
         <label for="firstName" class="form-label">First name</label>
         <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="First name">
-        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="lastName" class="form-label">Last name</label>
         <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Last name">
-        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="position" class="form-label">Position</label>
         <input type="text" th:field="*{position}" class="form-control" id="position" placeholder="Position">
-        <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+        <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="stationaryPhoneNumber" class="form-label">Stationary phone number</label>
         <input type="text" th:field="*{stationaryPhoneNumber}" class="form-control" id="stationaryPhoneNumber" placeholder="Stationary phone number">
-        <span th:if="${#fields.hasErrors('stationaryPhoneNumber')}" th:errors="*{stationaryPhoneNumber}"></span>
+        <span th:if="${#fields.hasErrors('stationaryPhoneNumber')}" th:errors="*{stationaryPhoneNumber}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="mobilePhoneNumber" class="form-label">Mobile phone number</label>
         <input type="text" th:field="*{mobilePhoneNumber}" class="form-control" id="mobilePhoneNumber" placeholder="Mobile phone number">
-        <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></span>
+        <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="email" class="form-label">E-mail</label>
         <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="E-mail">
-        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
     </div>
     <div class="col-md-auto">
         <label for="inputState" class="form-label">Profile</label>

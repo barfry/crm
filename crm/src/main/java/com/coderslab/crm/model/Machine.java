@@ -107,6 +107,7 @@ public class Machine {
 
     @OneToMany
     @OrderBy("active desc, plannedDate desc")
+    @JsonIgnore
     private Set<Task> taskList;
 
     @ManyToMany

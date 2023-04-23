@@ -182,7 +182,7 @@
                                         <td th:text="${#temporals.format(event.start, 'dd-MM-yyyy')}"></td>
                                         <td th:text="${#temporals.format(event.end, 'dd-MM-yyyy')}"></td>
                                         <td>
-                                            <form th:action="@{/events/event-details/edit-event}" method="get">
+                                            <form th:action="@{/customers/customer-details/edit-event}" method="get">
                                                 <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                     <input type="submit" value="Edit"
                                                            class="btn btn-danger btn-sm">
@@ -190,9 +190,10 @@
                                         </td>
                                         <td>
                                             <div th:if="${event.active eq true}">
-                                                <form th:action="@{/events/event-details/complete-event}"
+                                                <form th:action="@{/customers/customer-details/complete-event}"
                                                       method="get">
                                                     <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                    <input type="hidden" name="customerId" th:value="${event.customer.id}">
                                                         <input type="submit" value="Complete"
                                                                class="btn btn-danger btn-sm"
                                                                th:data-complete-event="|Please confirm completing event: ${event.type} planned on ${#temporals.format(event.start, 'dd-MM-yyyy')}. Comment after the event is required, fill the next form.|"
@@ -206,7 +207,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <form th:action="@{/events/event-details}" method="get">
+                                            <form th:action="@{/customers/customer-details/event-details}" method="get">
                                                 <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                 <input type="submit" value="Details" class="btn btn-danger btn-sm">
                                             </form>
@@ -371,6 +372,5 @@
     });
 </script>
 </body>
-
 </body>
 </html>
