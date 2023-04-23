@@ -6,6 +6,7 @@ import com.coderslab.crm.repository.EventRepository;
 import com.coderslab.crm.service.EventService;
 import com.coderslab.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +50,5 @@ public class EventController {
     public List<Event> inactiveEventsByUser(){
         return eventService.getInactiveEventsByUser(userService.getCurrentUser());
     }
-
 
 }

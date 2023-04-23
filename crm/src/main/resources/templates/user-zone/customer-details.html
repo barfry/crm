@@ -762,7 +762,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <form th:action="@{/events/event-details}" method="get">
+                                            <form th:action="@{/customers/customer-details/event-details}" method="get">
                                                 <input type="hidden" name="eventId" th:value="${event.id}"/>
                                                 <input type="hidden" name="customerId" th:value="${customer.id}"/>
                                                 <input type="submit" value="Details" class="btn btn-danger btn-sm">

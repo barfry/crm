@@ -116,7 +116,7 @@ public class CustomerController {
         model.addAttribute("customer", customerService.getCustomerById(customerId));
         model.addAttribute("categories", categoryService.getAllCategories());
 
-        return "/user-zone/edit-customer";
+        return "user-zone/edit-customer";
     }
 
     @PostMapping("/customer-details/edit-customer")
@@ -125,7 +125,7 @@ public class CustomerController {
             model.addAttribute("customer", customer);
             model.addAttribute("categories", categoryService.getAllCategories());
 
-            return "/user-zone/edit-customer";
+            return "user-zone/edit-customer";
         }
 
         customerService.editCustomer(customer);
@@ -138,7 +138,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("contactPerson", new ContactPerson());
 
-        return "/user-zone/add-new-contact";
+        return "user-zone/add-new-contact";
     }
 
     @PostMapping("/customer-details/add-new-contact")
@@ -147,7 +147,7 @@ public class CustomerController {
             model.addAttribute("customerId", customerId);
             model.addAttribute("contactPerson", contactPerson);
 
-            return "/user-zone/add-new-contact";
+            return "user-zone/add-new-contact";
         }
 
         contactPersonService.addNewContactPersonToCustomer(contactPerson, customerService.getCustomerById(customerId));
@@ -160,7 +160,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("contactPerson", contactPersonService.getContactPersonById(contactId));
 
-        return "/user-zone/edit-contact";
+        return "user-zone/edit-contact";
     }
 
     @PostMapping("/customer-details/edit-contact")
@@ -169,7 +169,7 @@ public class CustomerController {
             model.addAttribute("customerId", customerId);
             model.addAttribute("contactPerson", contactPerson);
 
-            return "/user-zone/edit-contact";
+            return "user-zone/edit-contact";
         }
 
         contactPersonService.editContactPerson(contactPerson);
@@ -200,7 +200,7 @@ public class CustomerController {
         model.addAttribute("types", typeService.getAllTypes());
         model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 
-        return "/user-zone/add-new-machine";
+        return "user-zone/add-new-machine";
     }
 
     @PostMapping("/customer-details/add-new-machine")
@@ -211,7 +211,7 @@ public class CustomerController {
             model.addAttribute("types", typeService.getAllTypes());
             model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 
-            return "/user-zone/add-new-machine";
+            return "user-zone/add-new-machine";
         }
 
         machineService.addNewMachine(machine, customerService.getCustomerById(customerId));
@@ -225,7 +225,7 @@ public class CustomerController {
         model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
         model.addAttribute("customerId", customerId);
 
-        return "/user-zone/add-new-inquiry";
+        return "user-zone/add-new-inquiry";
     }
 
     @PostMapping("/customer-details/add-new-inquiry")
@@ -234,7 +234,7 @@ public class CustomerController {
             model.addAttribute("inquiry",inquiry);
             model.addAttribute("machines", machineService.getMachinesByCustomerId(customerId));
             model.addAttribute("customerId", customerId);
-            return "/user-zone/add-new-inquiry";
+            return "user-zone/add-new-inquiry";
         }
 
         inquiryService.addNewInquiry(inquiry, customerId);
@@ -249,7 +249,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("users", userService.getActiveUsers());
 
-        return "/user-zone/add-new-event";
+        return "user-zone/add-new-event";
     }
 
     @PostMapping("/customer-details/add-new-event")
@@ -259,7 +259,7 @@ public class CustomerController {
             model.addAttribute("customerId", customerId);
             model.addAttribute("users", userService.getActiveUsers());
 
-            return "/user-zone/add-new-event";
+            return "user-zone/add-new-event";
         }
 
         eventService.addNewEvent(event, customerId);
@@ -275,7 +275,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("users", userService.getActiveUsers());
 
-        return "/user-zone/edit-event";
+        return "user-zone/edit-event";
     }
 
     @PostMapping("/customer-details/edit-event")
@@ -286,7 +286,7 @@ public class CustomerController {
             model.addAttribute("customerId", customerId);
             model.addAttribute("users", userService.getActiveUsers());
 
-            return "/user-zone/edit-event";
+            return "user-zone/edit-event";
         }
 
         eventService.editEvent(event);
@@ -298,7 +298,7 @@ public class CustomerController {
     public String initCompleteEventPage(@RequestParam(name = "eventId") Long eventId, @RequestParam(name = "customerId") Long customerId, Model model){
         model.addAttribute("event", eventService.getEventById(eventId));
         model.addAttribute("customerId", customerId);
-        return "/user-zone/complete-event";
+        return "user-zone/complete-event";
     }
 
     @PostMapping("/customer-details/complete-event")
@@ -306,7 +306,7 @@ public class CustomerController {
         if(result.hasErrors()){
             model.addAttribute("event", event);
             model.addAttribute("customerId", customerId);
-            return "/user-zone/complete-event";
+            return "user-zone/complete-event";
         }
 
         eventService.completeEvent(event);
@@ -329,7 +329,7 @@ public class CustomerController {
         model.addAttribute("customerId", customerId);
         model.addAttribute("service", userService.usersWithServicePrivilege());
 
-        return "/user-zone/add-new-intervention";
+        return "user-zone/add-new-intervention";
     }
 
     @PostMapping("/customer-details/add-new-intervention")
@@ -354,7 +354,7 @@ public class CustomerController {
         model.addAttribute("technicians", userService.getAllTechnicians());
         model.addAttribute("actionUrl", "/customers/customer-details/edit-intervention");
 
-        return "/user-zone/edit-intervention";
+        return "user-zone/edit-intervention";
     }
 
     @PostMapping("/customer-details/edit-intervention")
@@ -372,4 +372,11 @@ public class CustomerController {
 
         return "redirect:/customers/customer-details?customerId=" + customerId;
     }
+
+    @GetMapping("/customer-details/event-details")
+    public String showEventDetailsPage(@RequestParam(name = "eventId") Long eventId, Model model){
+        model.addAttribute("event", eventService.getEventById(eventId));
+        return "user-zone/event-details";
+    }
+
 }

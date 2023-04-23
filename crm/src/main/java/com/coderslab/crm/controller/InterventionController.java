@@ -222,7 +222,7 @@ public class InterventionController {
             model.addAttribute("technicians", userService.getAllTechnicians());
             model.addAttribute("actionUrl", "/interventions/intervention-details/edit-intervention");
 
-            return "/user-zone/edit-intervention";
+            return "user-zone/edit-intervention";
         }
 
         interventionService.editIntervention(intervention);
@@ -231,7 +231,8 @@ public class InterventionController {
     }
 
     @PostMapping("/interventions/intervention-details/remove-intervention")
-    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId, @RequestParam(name = "inquiryId") Long inquiryId, Model model) {
+    public String removeIntervention(@RequestParam(name = "interventionId") Long interventionId,
+                                     @RequestParam(name = "inquiryId") Long inquiryId, Model model) {
         interventionService.removeInterventionById(interventionId);
 
         return "redirect:/inquiries/inquiry-details?inquiryId=" + inquiryId;

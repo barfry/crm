@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -38,18 +40,18 @@ public class Customer {
     private String street;
 
     @NotNull(message = "This field can't be empty")
-    @Min(1)
-    @Max(1000)
-    private Integer streetNumber;
+    @NotBlank
+    @Pattern(regexp = "^([1-9][0-9]{0,2}|1000)$", message = "This filed must be a number between 1 and 1000")
+    private String streetNumber;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
-    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}")
+    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}", message = "Input must match XX-XXX pattern")
     private String zipCode;
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
-    @Pattern(regexp = "^\\d{9}$")
+    @Pattern(regexp = "^\\d{9}$", message = "Input must consist of 9 digits")
     private String phoneNumber;
 
     @NotNull
@@ -68,7 +70,7 @@ public class Customer {
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
-    @Pattern(regexp = "^\\d{10}$")
+    @Pattern(regexp = "^\\d{10}$", message = "The tax code has to be in form of 10 digit number")
     private String taxCode;
 
     @OneToMany()
@@ -159,11 +161,11 @@ public class Customer {
         this.street = street;
     }
 
-    public Integer getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(Integer streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
@@ -303,7 +305,7 @@ public class Customer {
         this.active = active;
     }
 
-    public Customer(Long id, String name, String city, String street, Integer streetNumber, String zipCode, String phoneNumber, String email, String webPage, String province, String taxCode, Set<ContactPerson> contactPersonList, Set<Event> eventList, Set<Machine> machineList, Integer servicePriority, Set<Contract> contractList, Set<Offer> offerList, Set<Category> categoryList, Set<Payment> paymentList, LocalDate updateDate, User modifier, Boolean active) {
+    public Customer(Long id, String name, String city, String street, String streetNumber, String zipCode, String phoneNumber, String email, String webPage, String province, String taxCode, Set<ContactPerson> contactPersonList, Set<Event> eventList, Set<Machine> machineList, Integer servicePriority, Set<Contract> contractList, Set<Offer> offerList, Set<Category> categoryList, Set<Payment> paymentList, LocalDate updateDate, User modifier, Boolean active) {
         this.id = id;
         this.name = name;
         this.city = city;
