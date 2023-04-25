@@ -39,9 +39,9 @@ public class Customer {
     @Length(min = 2, max = 30, message = "This field should contain from 2 up to 30 characters")
     private String street;
 
-    @NotNull(message = "This field can't be empty")
-    @NotBlank
-    @Pattern(regexp = "^([1-9][0-9]{0,2}|1000)$", message = "This filed must be a number between 1 and 1000")
+    @NotNull
+    @NotBlank(message = "This field can't be empty")
+    @Pattern(regexp = "^([1-9][0-9]{0,2}|1000)$", message = "This field must be a number between 1 and 1000")
     private String streetNumber;
 
     @NotNull

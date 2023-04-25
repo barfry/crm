@@ -35,27 +35,27 @@
                 th:text="${t.name}" th:class="${m.id}"></option>
       </th:block>
     </select>
-    <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
+    <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></span>
   </div>
   <div class="col-md-auto">
     <label for="serialNumber" class="form-label">Serial number</label>
     <input type="text" th:field="*{serialNumber}" class="form-control" id="serialNumber" placeholder="Serial number">
-    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>
+    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}" class="text-danger"></span>
   </div>
   <div class="col-md-auto">
     <label for="productionYear" class="form-label">Production year</label>
     <input type="text" th:field="*{productionYear}" class="form-control" id="productionYear" placeholder="Production year">
-    <span th:if="${#fields.hasErrors('productionYear')}" th:errors="*{productionYear}"></span>
+    <span th:if="${#fields.hasErrors('productionYear')}" th:errors="*{productionYear}" class="text-danger"></span>
   </div>
   <div class="col-md-auto">
     <label for="generalNotice" class="form-label">General notice</label>
     <input type="text" th:field="*{generalNotice}" class="form-control" id="generalNotice" placeholder="General notice">
-    <span th:if="${#fields.hasErrors('generalNotice')}" th:errors="*{generalNotice}"></span>
+    <span th:if="${#fields.hasErrors('generalNotice')}" th:errors="*{generalNotice}" class="text-danger"></span>
   </div>
   <div class="col-md-auto">
     <label for="serviceNotice" class="form-label">Service notice</label>
     <input type="text" th:field="*{serviceNotice}" class="form-control" id="serviceNotice" placeholder="Service notice">
-    <span th:if="${#fields.hasErrors('serviceNotice')}" th:errors="*{serviceNotice}"></span>
+    <span th:if="${#fields.hasErrors('serviceNotice')}" th:errors="*{serviceNotice}" class="text-danger"></span>
   </div>
   <div class="col-md-auto">
     <label class="form-label" for="servicePriority">Service priority</label>
@@ -91,23 +91,23 @@
   <div class="col-md-4">
     <label for="zipCode" class="form-label">Zip code</label>
     <input type="text" th:field="*{zipCode}" class="form-control" id="zipCode" placeholder="Zip code">
-    <span th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></span>
+    <span th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" class="text-danger"></span>
   </div>
   <div class="col-md-4">
     <label for="city" class="form-label">City</label>
     <input type="text" th:field="*{city}" class="form-control" id="city" placeholder="City">
-    <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+    <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></span>
   </div>
   <div class="col-md-4">
     <label for="street" class="form-label">Street</label>
     <input type="text" th:field="*{street}" class="form-control" id="street" placeholder="Street">
-    <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+    <span th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></span>
   </div>
   <div class="col-md-4">
     <label for="streetNumber" class="form-label">Street number</label>
     <input type="text" th:field="*{streetNumber}" class="form-control" id="streetNumber"
            placeholder="Street number">
-    <span th:if="${#fields.hasErrors('streetNumber')}" th:errors="*{streetNumber}"></span>
+    <span th:if="${#fields.hasErrors('streetNumber')}" th:errors="*{streetNumber}" class="text-danger"></span>
   </div>
   <div class="col-md-a">
     <button type="submit" class="btn btn-danger">Save</button>

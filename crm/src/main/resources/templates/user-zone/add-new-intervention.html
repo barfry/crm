@@ -37,7 +37,7 @@
                             th:text="${i.id + ' ' + i.inquiryType}" th:class="${m.serialNumber}"></option>
                 </th:block>
             </select>
-            <span th:if="${#fields.hasErrors('inquiry')}" th:errors="*{inquiry}"></span>
+            <span th:if="${#fields.hasErrors('inquiry')}" th:errors="*{inquiry}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label>Main technician</label>
@@ -46,7 +46,7 @@
                 <option th:each="s : ${service}" th:value="${s.id}"
                         th:text="${s.firstName + ' ' + s.lastName}"></option>
             </select>
-            <span th:if="${#fields.hasErrors('technician')}" th:errors="*{technician}"></span>
+            <span th:if="${#fields.hasErrors('technician')}" th:errors="*{technician}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label>Assisting user</label>
@@ -55,7 +55,7 @@
                 <option th:each="s : ${service}" th:value="${s.id}"
                         th:text="${s.firstName + ' ' + s.lastName}"></option>
             </select>
-            <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}"></span>
+            <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label>Assisting user</label>
@@ -64,19 +64,19 @@
                 <option th:each="s : ${service}" th:value="${s.id}"
                         th:text="${s.firstName + ' ' + s.lastName}"></option>
             </select>
-            <span th:if="${#fields.hasErrors('assistant2')}" th:errors="*{assistant2}"></span>
+            <span th:if="${#fields.hasErrors('assistant2')}" th:errors="*{assistant2}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label for="start" class="form-label">Intervention start</label>
             <input type="datetime-local" th:field="*{start}" class="form-control" id="start"
                    placeholder="Event start">
-            <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
+            <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label for="end" class="form-label">Intervention end</label>
             <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
                    placeholder="Event end">
-            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label>Spare parts</label>

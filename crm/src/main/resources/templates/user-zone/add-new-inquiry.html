@@ -51,13 +51,13 @@
             <label for="inquiryDate" class="form-label">Inquiry date</label>
             <input type="date" th:field="*{inquiryDate}" class="form-control" id="inquiryDate"
                    placeholder="Inquiry date">
-            <span th:if="${#fields.hasErrors('inquiryDate')}" th:errors="*{inquiryDate}"></span>
+            <span th:if="${#fields.hasErrors('inquiryDate')}" th:errors="*{inquiryDate}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label for="description" class="form-label">Description</label>
             <textarea type="text" rows="5" cols="50" th:field="*{description}" class="form-control" id="description"
                       placeholder="Description"></textarea>
-            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
         </div>
         <div class="col-md-a">
             <button type="submit" class="btn btn-danger">Save</button>

@@ -144,7 +144,7 @@
                     <option th:each="technician : ${technicians}" th:value="${technician.id}"
                             th:text="${technician.firstName + ' ' + technician.lastName}"></option>
                   </select>
-                  <span th:if="${#fields.hasErrors('technician')}" th:errors="*{techncian}"></span>
+                  <span th:if="${#fields.hasErrors('technician')}" th:errors="*{techncian}" class="text-danger"></span>
                 </div>
               </div>
               <hr>
@@ -158,7 +158,7 @@
                     <option th:each="technician : ${technicians}" th:value="${technician.id}"
                             th:text="${technician.firstName + ' ' + technician.lastName}"></option>
                   </select>
-                  <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}"></span>
+                  <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}" class="text-danger"></span>
                 </div>
               </div>
               <hr>
@@ -172,7 +172,7 @@
                     <option th:each="technician : ${technicians}" th:value="${technician.id}"
                             th:text="${technician.firstName + ' ' + technician.lastName}"></option>
                   </select>
-                  <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}"></span>
+                  <span th:if="${#fields.hasErrors('assistant')}" th:errors="*{assistant}" class="text-danger"></span>
                 </div>
               </div>
               <hr>
@@ -183,7 +183,7 @@
                 <div class="col-sm-6 text-secondary">
                   <input type="datetime-local" th:field="*{start}" class="form-control" id="start"
                          placeholder="Event start">
-                  <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
+                  <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}" class="text-danger"></span>
                 </div>
               </div>
               <hr>
@@ -194,7 +194,7 @@
                 <div class="col-sm-6 text-secondary">
                   <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
                          placeholder="Event end">
-                  <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+                  <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}" class="text-danger"></span>
                 </div>
               </div>
               <hr>
@@ -204,7 +204,7 @@
                 </div>
                 <div class="col-sm-12 text-secondary">
                   <input type="text" th:field="*{notice}" class="form-control" id="notice" placeholder="Notice">
-                  <span th:if="${#fields.hasErrors('notice')}" th:errors="*{notice}"></span>
+                  <span th:if="${#fields.hasErrors('notice')}" th:errors="*{notice}" class="text-danger"></span>
                 </div>
               </div>
               <hr>

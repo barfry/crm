@@ -14,7 +14,9 @@
   <div th:replace="user-zone/fragments/header :: header">
   </div>
 </header>
-<p><a href="/manufacturers/add-new-manufacturer">Create new manufacturer</a></p>
+<form th:action="@{/manufacturers/add-new-manufacturer}" method="get">
+  <input type="submit" value="Create new manufacturer" class="btn btn-danger btn-sm m-2">
+</form>
 <div style="overflow-x:auto;">
   <table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
     <thead>

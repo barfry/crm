@@ -14,7 +14,9 @@
     <div th:replace="user-zone/fragments/header :: header">
     </div>
 </header>
-<p><a href="/customers/add-new-customer">Create new customer</a></p>
+<form th:action="@{/customers/add-new-customer}" method="get">
+    <input type="submit" value="Create new customer" class="btn btn-danger btn-sm m-2">
+</form>
 <div style="overflow-x:auto;">
     <table class="table table-sm table-hover table-dark table-bordered text-center table-responsive">
         <thead>

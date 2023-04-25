@@ -47,19 +47,19 @@
             <label for="start" class="form-label">Event start</label>
             <input type="datetime-local" th:field="*{start}" class="form-control" id="start"
                    placeholder="Event start">
-            <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}"></span>
+            <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label for="end" class="form-label">Event end</label>
             <input type="datetime-local" th:field="*{end}" class="form-control" id="end"
                    placeholder="Event end">
-            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}"></span>
+            <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}" class="text-danger"></span>
         </div>
         <div class="col-md-auto">
             <label for="description" class="form-label">Description</label>
             <textarea type="text" rows="5" cols="50" th:field="*{description}" class="form-control" id="description"
                       placeholder="Description"></textarea>
-            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
         </div>
         <div class="col-md-a">
             <button type="submit" class="btn btn-danger">Save</button>
