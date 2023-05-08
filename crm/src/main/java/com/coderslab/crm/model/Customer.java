@@ -51,7 +51,7 @@ public class Customer {
 
     @NotNull
     @NotBlank(message = "This field can't be empty")
-    @Pattern(regexp = "^\\d{9}$", message = "Input must consist of 9 digits")
+    @Pattern(regexp = "^\\d{9}$", message = "Input must consist proper phone number (9 digits)")
     private String phoneNumber;
 
     @NotNull
