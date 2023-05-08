@@ -21,4 +21,16 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public Category addNewCategory(Category category){
+        return  categoryRepository.save(category);
+    }
+
+    public Category getCategoryById(Long categoryId){
+        return categoryRepository.getById(categoryId);
+    }
+
+    public Category editCategory(Category category){
+        return categoryRepository.save(category);
+    }
+
 }
