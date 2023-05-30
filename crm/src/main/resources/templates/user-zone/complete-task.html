@@ -14,51 +14,134 @@
   <div th:replace="user-zone/fragments/header :: header">
   </div>
 </header>
-<form action="#" th:action="@{/machines/machine-details/complete-task}" th:object="${task}" method="post">
-  <div class="row g-3 mx-5 my-2">
-    <input type="hidden" th:field="*{id}" id="id">
-    <input type="hidden" id="machineId" name="machineId" th:value="${machineId}">
-    <div class="col-md-auto">
-      <label>Title</label>
-      <span th:text="*{name}"></span>
-      <input type="hidden" th:field="*{name}">
-    </div>
-    <div class="col-md-auto">
-      <label>Description</label>
-      <span th:text="*{description}"></span>
-      <input type="hidden" th:field="*{description}">
-    </div>
-    <div class="col-md-auto">
-      <label>Executor</label>
-      <span th:text="*{executor.firstName + ' ' + executor.lastName}"></span>
-      <input type="hidden" th:field="*{executor}">
-    </div>
-    <div class="col-md-auto">
-      <label>Supervisor</label>
-      <span th:text="*{supervisor.firstName + ' ' + supervisor.lastName}"></span>
-      <input type="hidden" th:field="*{supervisor}">
-    </div>
-  </div>
-  <div class="row g-3 mx-5 my-2">
-    <div class="col-md-auto">
-      <label>Planned date`</label>
-      <span th:text="${#temporals.format(task.plannedDate, 'dd-MM-yyyy HH:mm')}"></span>
-      <input type="hidden" th:field="*{plannedDate}">
-    </div>
-    <div class="col-md-auto">
-      <label for="notice" class="form-label">Notice</label>
-      <textarea type="text" rows="5" cols="50" th:field="*{notice}" class="form-control" id="notice"
-                placeholder="Notice after completing the task"></textarea>
-      <span th:if="${#fields.hasErrors('notice')}" th:errors="*{notice}"></span>
-    </div>
-    <div class="col-md-auto">
-      <label for="executionDate" class="form-label">Execution date</label>
-      <input type="date" th:field="*{executionDate}" class="form-control" id="executionDate"
-             placeholder="Execution date">
-      <span th:if="${executionDateError}" th:text="${executionDateError}"></span>
-    </div>
-    <div class="col-md-a">
-      <button type="submit" class="btn btn-danger">Save</button>
+<form th:action="${actionUrl}" th:object="${task}" method="post">
+  <input type="hidden" th:field="*{id}" id="id">
+  <input type="hidden" th:field="*{machine}" id="machine">
+  <input type="hidden" th:field="*{name}" id="name">
+  <input type="hidden" th:field="*{description}" id="description">
+  <input type="hidden" th:field="*{plannedDate}" id="plannedDate">
+  <input type="hidden" th:field="*{supervisor}" id="supervisor">
+  <input type="hidden" th:field="*{executor}" id="executor">
+  <div class="container-fluid mt-2">
+    <div class="main-body">
+      <div class="row gutters-sm">
+        <div class="col-md-3 mb-3">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Task id</h6>
+                </div>
+                <div class="col-sm-8 text-secondary" th:text="${task.id}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Customer</h6>
+                </div>
+                <div class="col-sm-7 text-secondary" th:text="${task.machine.customer.name}">
+                </div>
+                <div class="col-sm-1">
+                  <form th:action="@{/customers/customer-details}"
+                        method="get">
+                    <input type="hidden" name="customerId"
+                           th:value="${task.machine.customer.id}"/>
+                    <input type="submit" value=">"
+                           class="btn btn-danger btn-sm p-1">
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Machine</h6>
+                </div>
+                <div class="col-sm-7 text-secondary"
+                     th:text="${task.machine.type.name + ' s/n: ' + task.machine.serialNumber}">
+                </div>
+                <div class="col-sm-1">
+                  <form th:action="@{/machines/machine-details}"
+                        method="get">
+                    <input type="hidden" name="machineId" th:value="${task.machine.id}"/>
+                    <input type="submit" value=">"
+                           class="btn btn-danger btn-sm p-1">
+                  </form>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Task name</h6>
+                </div>
+                <div class="col-sm-8 text-secondary" th:text="${task.name}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Task description</h6>
+                </div>
+                <div class="col-sm-6 text-secondary" th:text="${task.description}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Planned date</h6>
+                </div>
+                <div class="col-sm-6 text-secondary"
+                     th:text="${#temporals.format(task.plannedDate, 'dd-MM-yyyy')}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Execution date</h6>
+                </div>
+                <div class="col-sm-6 text-secondary">
+                  <input type="date" th:field="*{executionDate}" class="form-control" id="executionDate"
+                         placeholder="Execution date">
+                  <span th:if="${executionDateError}" th:text="${executionDateError}"></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h6 class="mb-0">Supervisor</h6>
+                </div>
+                <div class="col-sm-12 text-secondary" th:text="${task.supervisor.firstName + ' ' + task.supervisor.lastName}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h6 class="mb-0">Executor</h6>
+                </div>
+                <div class="col-sm-12 text-secondary" th:text="${task.executor.firstName + ' ' + task.executor.lastName}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h6 class="mb-0">Notice</h6>
+                </div>
+                <div class="col-sm-12 text-secondary">
+                  <textarea type="text" rows="5" cols="50" th:field="*{notice}" class="form-control" id="notice"
+                            placeholder="Notice after completing the task"></textarea>
+                  <span th:if="${#fields.hasErrors('notice')}" th:errors="*{notice}"></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-a">
+                  <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </form>

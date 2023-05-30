@@ -295,14 +295,16 @@ public class CustomerController {
     }
 
     @GetMapping("/customer-details/complete-event")
-    public String initCompleteEventPage(@RequestParam(name = "eventId") Long eventId, @RequestParam(name = "customerId") Long customerId, Model model){
+    public String initCompleteEventPage(@RequestParam(name = "eventId") Long eventId,
+                                        @RequestParam(name = "customerId") Long customerId, Model model){
         model.addAttribute("event", eventService.getEventById(eventId));
         model.addAttribute("customerId", customerId);
         return "user-zone/complete-event";
     }
 
     @PostMapping("/customer-details/complete-event")
-    public String completeEvent(@RequestParam(name = "customerId") Long customerId, @Valid Event event, BindingResult result, Model model){
+    public String completeEvent(@RequestParam(name = "customerId") Long customerId, @Valid Event event,
+                                BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("event", event);
             model.addAttribute("customerId", customerId);

@@ -18,43 +18,43 @@
         <li>
             <label for="firstName">First name</label>
             <input type="text" th:field="*{firstName}" id="firstName" placeholder="First name">
-            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="lastName">Last name</label>
             <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last name">
-            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="nickname">Nickname</label>
             <input type="text" th:field="*{nickname}" id="nickname" placeholder="Nickname">
-            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span>
+            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="email">Email</label>
             <input type="text" th:field="*{email}" id="email" placeholder="Email">
-            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="position">Position</label>
             <input type="text" th:field="*{position}" id="position" placeholder="Position">
-            <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+            <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="mobilePhoneNumber">Mobile phone number</label>
             <input type="text" th:field="*{mobilePhoneNumber}" id="mobilePhoneNumber" placeholder="Mobile phone number">
-            <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></span>
+            <span th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}" class="text-danger"></span>
         </li>
 
         <li>
             <label for="internalPhoneNumber">Internal phone number</label>
             <input type="text" th:field="*{internalPhoneNumber}" id="internalPhoneNumber" placeholder="Internal phone number">
-            <span th:if="${#fields.hasErrors('internalPhoneNumber')}" th:errors="*{internalPhoneNumber}"></span>
+            <span th:if="${#fields.hasErrors('internalPhoneNumber')}" th:errors="*{internalPhoneNumber}" class="text-danger"></span>
         </li>
 
         <li>
@@ -62,7 +62,7 @@
             <select th:field="*{department}">
                 <option th:each="d : ${departmentList}" th:value="${d.id}" th:text="${d.name}"></option>
             </select>
-            <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></span>
+            <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="text-danger"></span>
         </li>
     </ul>
     <input type="submit"/>

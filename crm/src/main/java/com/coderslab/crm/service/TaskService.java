@@ -29,28 +29,14 @@ public class TaskService {
         return taskRepository.getById(taskId);
     }
 
-    public Task editTask(Task task){
-        Task tempTask = taskRepository.getById(task.getId());
+    public void editTask(Task task){
 
-        tempTask.setName(task.getName());
-        tempTask.setDescription(task.getDescription());
-        tempTask.setPlannedDate(task.getPlannedDate());
-        tempTask.setExecutor(task.getExecutor());
-        tempTask.setSupervisor(task.getSupervisor());
-        tempTask.setMachine(task.getMachine());
-
-        tempTask.setModifier(userService.getCurrentUser());
-        tempTask.setUpdateDate(LocalDate.now());
-
-        return taskRepository.save(tempTask);
+        taskRepository.updateTask(task.getName(),task.getDescription(),task.getPlannedDate(),task.getExecutor(),task.getSupervisor(), userService.getCurrentUser(), LocalDate.now(), task.getId());
     }
 
-    public Task completeTask(Task task){
-        task.setUpdateDate(LocalDate.now());
-        task.setModifier(userService.getCurrentUser());
-        task.setActive(false);
+    public void completeTask(Task task){
 
-        return taskRepository.save(task);
+        taskRepository.completeTask(LocalDate.now(), userService.getCurrentUser(), false, task.getId());
     }
 
     public void removeTask(Long taskId){
