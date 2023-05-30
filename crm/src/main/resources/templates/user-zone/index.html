@@ -326,7 +326,7 @@
                                         <td th:text="${task.executor.firstName + ' ' + task.executor.lastName}" th:style="${task.executor.id == user.id} ? 'text-decoration: underline' : ''"></td>
                                         <td th:text="${task.supervisor.firstName + ' ' + task.supervisor.lastName}" th:style="${task.supervisor.id == user.id} ? 'text-decoration: underline' : ''"></td>
                                         <td>
-                                            <form th:action="@{/tasks/task-details/edit-task}" method="get">
+                                            <form th:action="@{/tasks/edit-task}" method="get">
                                                 <input type="hidden" name="taskId" th:value="${task.id}"/>
                                                 <input type="submit" value="Edit"
                                                        class="btn btn-danger btn-sm">
@@ -334,7 +334,7 @@
                                         </td>
                                         <td>
                                             <div th:if="${task.active eq true}">
-                                                <form th:action="@{/tasks/task-details/complete-task}"
+                                                <form th:action="@{/tasks/complete-task}"
                                                       method="get">
                                                     <input type="hidden" name="taskId" th:value="${task.id}"/>
                                                     <input type="submit" value="Complete"

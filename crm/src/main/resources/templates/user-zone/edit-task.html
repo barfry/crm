@@ -14,7 +14,7 @@
   <div th:replace="user-zone/fragments/header :: header">
   </div>
 </header>
-<form action="#" th:action="@{/machines/machine-details/edit-task}" th:object="${task}" method="post">
+<form action="#" th:action="${url}" th:object="${task}" method="post">
   <div class="row g-3 mx-5 my-2">
     <input type="hidden" th:field="*{id}" id="id">
     <input type="hidden" id="machineId" name="machineId" th:value="${machineId}">

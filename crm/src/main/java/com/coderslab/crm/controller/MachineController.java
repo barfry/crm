@@ -111,6 +111,7 @@ public class MachineController {
         model.addAttribute("task", taskService.getTaskById(taskId));
         model.addAttribute("machineId", machineId);
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("url", "/machines/machine-details/edit-task");
 
         return "user-zone/edit-task";
     }
@@ -121,6 +122,7 @@ public class MachineController {
             model.addAttribute("task", task);
             model.addAttribute("machineId", machineId);
             model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("url", "/machines/machine-details/edit-task");
 
             return "user-zone/edit-task";
         }
@@ -134,6 +136,7 @@ public class MachineController {
     public String initCompleteTaskPage(@RequestParam(name = "taskId") Long taskId, @RequestParam(name = "machineId") Long machineId, Model model){
         model.addAttribute("task", taskService.getTaskById(taskId));
         model.addAttribute("machineId", machineId);
+        model.addAttribute("actionUrl", "/machines/machine-details/complete-task");
 
         return "user-zone/complete-task";
     }
@@ -144,7 +147,7 @@ public class MachineController {
             model.addAttribute("task", task);
             model.addAttribute("machineId", machineId);
             model.addAttribute("executionDateError", "Please select execution date");
-
+            model.addAttribute("actionUrl", "/machines/machine-details/complete-task");
             return "user-zone/complete-task";
         }
 

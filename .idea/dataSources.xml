@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="crmDB@crm.ccf75cfntimc.us-east-1.rds.amazonaws.com" uuid="cc1a1fe4-06cb-4ab8-8976-9be35b17bb72">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://crm.ccf75cfntimc.us-east-1.rds.amazonaws.com:3306/crmDB?useSSL=false&amp;allowPublicKeyRetrieval=True</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

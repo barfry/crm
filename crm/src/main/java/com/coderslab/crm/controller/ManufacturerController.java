@@ -51,7 +51,7 @@ public class ManufacturerController {
     public String showAllManufacturersPage(@ModelAttribute ManufacturerFilter manufacturerFilter, @PathVariable(value = "pageNo") int pageNo,
                                            @RequestParam(value = "sortField", defaultValue = "id") String sortField, @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir,
                                            Model model){
-        int pageSize = 5;
+        int pageSize = 15;
 
         Page<Manufacturer> page = manufacturerService.findManufacturersBySearchWithPaginationAndSorting(pageNo, pageSize, sortField, sortDir, manufacturerFilter);
         List<Manufacturer> listManufacturers = page.getContent();

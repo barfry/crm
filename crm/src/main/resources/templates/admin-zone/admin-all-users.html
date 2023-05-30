@@ -22,8 +22,9 @@
     <p style="color:red"
        th:text="'Unable to remove user ' + ${user.firstName} + ' ' + ${user.lastName} + ' ' + ${user.email} + ', there must be at least 1 ADMIN remaining'"></p>
 </div>
-
-<p><a href="/admin/sign-new-user">Sign new user</a></p>
+<form th:action="@{/admin/sign-new-user}" method="get">
+    <input type="submit" value="Sign new user" class="btn btn-danger btn-sm m-2">
+</form>
 <table class="table table-sm table-hover table-dark table-bordered text-center">
     <thead>
     <tr>

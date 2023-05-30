@@ -14,8 +14,9 @@
 <div th:if="${error}">
     <p style="color:red" th:text="'Cannot delete the department ' + ${department.name} + ', You need to remove the users asigned to the department first'"></p>
 </div>
-
-<p><a href="/admin/create-new-department">Create new department</a> </p>
+<form th:action="@{/admin/create-new-department}" method="get">
+    <input type="submit" value="Create new department" class="btn btn-danger btn-sm m-2">
+</form>
 <table class="table table-sm table-hover table-dark table-bordered text-center">
     <thead>
     <tr>
